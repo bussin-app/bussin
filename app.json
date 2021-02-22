@@ -1,0 +1,12 @@
+{
+  "name": "bussin",
+  "displayName": "bussin",
+  "expo": {
+    "name": "bussin",
+    "slug": "bussin",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
