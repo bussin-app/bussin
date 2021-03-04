@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import FormContainer from "../Shared/Form/FormContainer"
 import Input from "../Shared/Form/Input"
@@ -12,6 +12,43 @@ const Register = (props) => {
     const [password, setPassword] = useState("")
     const [birthday, setBirthday] = useState("")
     const [gender, setGender] = useState("")
+
+    const sendRequest = async () => {
+        // Construct user data for request
+        let user = {
+            name,
+            username,
+            email,
+            password,
+            birthday,
+            gender
+        };
+
+        // Send request to server and await response
+        let res = await fetch("https://bussin.blakekjohnson.dev/api/user/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                user,
+            })
+        });
+
+        // Reject if status is anything other than 200
+        if (res.status !== 200) {
+            let data = await res.json();
+            console.log(data);
+            return;
+        }
+
+        // Convert response to a JSON object
+        let data = await res.json();
+
+        // Output the token that the server response
+        console.log(data.token);
+        props.navigation.navigate("User Profile");
+    };
 
     return (
         <KeyboardAwareScrollView
@@ -27,14 +64,14 @@ const Register = (props) => {
                     id={"name"}
                     onChangeText={(text) => setName(text.toLowerCase())}
                 />
-                
+
                 <Input
                     placeholder={"Username"}
                     name={"username"}
                     id={"username"}
                     onChangeText={(text) => setUsername(text.toLowerCase())}
                 />
-                
+
                 <Input
                     placeholder={"Email"}
                     name={"email"}
@@ -66,7 +103,7 @@ const Register = (props) => {
                 />
 
                 <View>
-                    <Button title={"Register"}/>
+                    <Button title={"Register"} onPress={sendRequest} />
                 </View>
             </FormContainer>
         </KeyboardAwareScrollView>
