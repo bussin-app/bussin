@@ -5,7 +5,7 @@ const Header = () => {
   return (
     <SafeAreaView style={styles.header}>
         <Image 
-            source = {require("../Assets/logo.png")}
+            source = {require("../Assets/logo1.png")}
             resizeMode='contain'
             style={{height: 50}}
         />
