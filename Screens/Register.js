@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
-import FormContainer from "../Shared/Form/FormContainer"
-import Input from "../Shared/Form/Input"
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
+import React, {useState, Component} from 'react';
+import { View, Text, StyleSheet, Button, Modal } from 'react-native';
+import FormContainer from "../Shared/Form/FormContainer";
+import Input from "../Shared/Form/Input";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import DatePicker from "../Shared/DatePicker";
+import moment from "moment";
 
 const Register = (props) => {
 
-    const [name, setName] = useState("")
-    const [username, setUsername] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [birthday, setBirthday] = useState("")
-    const [gender, setGender] = useState("")
+    const [name, setName] = useState("");
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [gender, setGender] = useState("");
+    const [mode, setMode] = useState('date');
+    const [date, setDate] = useState(new Date(1598051730000));
+    const [show, setShow] = useState(true);
+
 
     const sendRequest = async () => {
         // Construct user data for request
@@ -50,6 +55,13 @@ const Register = (props) => {
         props.navigation.navigate("User Profile");
     };
 
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+      };
+    
+
     return (
         <KeyboardAwareScrollView
             viewIsInsideTabBar={true}
@@ -86,22 +98,21 @@ const Register = (props) => {
                     secureTextEntry={true}
                     onChangeText={(text) => setPassword(text)}
                 />
-
-                <Input
-                    placeholder={"Birthday"}
-                    name={"birthday"}
-                    id={"birthday"}
-                    onChangeText={(text) => setBirthday(text.toLowerCase())}
-                />
-
-
                 <Input
                     placeholder={"Gender"}
                     name={"gender"}
                     id={"gender"}
                     onChangeText={(text) => setGender(text.toLowerCase())}
                 />
-
+                <View>
+                    {show && (
+                     <DatePicker
+                         date={date}
+                        onChange={onChange}
+                    />
+                    )}
+                </View>
+                 
                 <View>
                     <Button title={"Register"} onPress={sendRequest} />
                 </View>
