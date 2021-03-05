@@ -25,8 +25,8 @@ const Register = (props) => {
             username,
             email,
             password,
-            birthday,
-            gender
+            gender,
+            birthday: date,
         };
 
         // Send request to server and await response
@@ -60,7 +60,7 @@ const Register = (props) => {
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
       };
-    
+
 
     return (
         <KeyboardAwareScrollView
@@ -112,7 +112,7 @@ const Register = (props) => {
                     />
                     )}
                 </View>
-                 
+
                 <View>
                     <Button title={"Register"} onPress={sendRequest} />
                 </View>
