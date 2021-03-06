@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { View, Text, StyleSheet, Button } from 'react-native';
+import React, {useState} from "react";
+import { View, Text, Button } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
@@ -47,17 +47,17 @@ const Login = (props) => {
       extraHeight={200}
       enableOnAndroid={true}
     >
-      <FormContainer title={"Register"}>
+      <FormContainer title={"Login"}>
 
         <Input
-          placeholder={"Username"}
+          placeholder={"Enter Username"}
           name={"username"}
           id={"username"}
           onChangeText={(text) => setUsername(text.toLowerCase())}
         />
 
         <Input
-          placeholder={"Password"}
+          placeholder={"Enter Password"}
           name={"password"}
           id={"password"}
           secureTextEntry={true}
@@ -66,6 +66,12 @@ const Login = (props) => {
 
         <View>
           <Button title={"Login"} onPress={sendRequest} />
+        </View>
+        <View>
+          <Text>Don't have an account yet?</Text>
+          <Button title={"Register"} onPress={
+              () => props.navigation.navigate("Register")
+          }></Button>
         </View>
       </FormContainer>
     </KeyboardAwareScrollView>

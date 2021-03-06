@@ -1,10 +1,10 @@
-import React, {useState, Component} from 'react';
-import { View, Text, StyleSheet, Button, Modal } from 'react-native';
+import React, {useState} from 'react';
+import { View, Button, Text } from 'react-native';
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DatePicker from "../Shared/DatePicker";
-import moment from "moment";
+
 
 const Register = (props) => {
 
@@ -112,9 +112,14 @@ const Register = (props) => {
                     />
                     )}
                 </View>
-
                 <View>
                     <Button title={"Register"} onPress={sendRequest} />
+                </View>
+                <View>
+                    <Text>Have an account already?</Text>
+                    <Button title={"Login"} onPress={
+                        () => props.navigation.navigate("Login")}>
+                    </Button>
                 </View>
             </FormContainer>
         </KeyboardAwareScrollView>
