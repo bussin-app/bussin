@@ -1,14 +1,25 @@
-import React from "react"
-import { createStackNavigator } from '@react-navigation/stack'
+import React from "react";
+import { createStackNavigator } from '@react-navigation/stack';
 
-import Register from '../Screens/Register'
-import UserProfile from '../Screens/UserProfile'
+import Register from '../Screens/Register';
+import Login from '../Screens/Login';
+import UserProfile from '../Screens/UserProfile';
 
 const Stack = createStackNavigator();
 
 function MyStack() {
     return (
        <Stack.Navigator>
+           
+           <Stack.Screen
+              name="Login"
+              component ={Login}
+              options = {{
+                  headerShown: false
+              }}
+            />
+           
+           
            <Stack.Screen
               name="Register"
               component ={Register}
