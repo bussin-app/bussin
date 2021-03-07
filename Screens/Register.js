@@ -107,7 +107,8 @@ const Register = (props) => {
                 <View>
                     {show && (
                      <DatePicker
-                         date={date}
+                        date={date}
+                        mode="time"
                         onChange={onChange}
                     />
                     )}

@@ -5382,7 +5382,7 @@ promise@^8.0.3:
   dependencies:
     asap "~2.0.6"
 
-prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -5480,6 +5480,19 @@ react-native-keyboard-aware-scroll-view@^0.9.3:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
 
+react-native-numeric-input@^1.8.3:
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/react-native-numeric-input/-/react-native-numeric-input-1.8.3.tgz#e869aa1b60d0c38b92e84e44bb28944f48b4ccd3"
+  integrity sha512-8MeAgbM4+doAkwjPg7iEA604z4d7krJz9r0755YThldCdIvwWZh5VbtRDHxbkMVQ2Ix5xRujFSn7uQWMtln8RA==
+  dependencies:
+    prop-types "^15.6.1"
+    react-native-pixel-perfect "^1.0.1"
+
+react-native-pixel-perfect@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-pixel-perfect/-/react-native-pixel-perfect-1.0.2.tgz#8e6dc97e377caa4bd07f9e584ba438d53c0e25e8"
+  integrity sha512-0IvYCNkxuQbQC9q4tI+C3i6o38nbx916p7gBRBWuPxDhKBCuTkVV3VukcfW6vtjRlwQm6kwQcF9OtI+yUBt+YA==
+
 react-native-reanimated@~1.13.0:
   version "1.13.2"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.13.2.tgz#1ae5457b24b4913d173a5a064bb28eae7783d293"
@@ -5496,6 +5509,13 @@ react-native-screens@~2.15.2:
   version "2.15.2"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.15.2.tgz#a449700e895b462937211ec72ed6f09652758f06"
   integrity sha512-CagNf2APXkVoRlF3Mugr264FbKbrBg9eXUkqhIPVeZB8EsdS8XPrnt99yj/pzmT+yJMBY0dGrjXT8+68WYh6YQ==
+
+react-native-switch@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-switch/-/react-native-switch-2.0.0.tgz#028371b946ba0520e421f02caa7685878cf4bd4e"
+  integrity sha512-Yy8GQBazGBz/VI/Xl2LkyO/4wElnt9hRQ+gY3j/7ZkdfIQftY6IAtvSpU2NEksezUxs4DgNAkcmeDfRO0t2wbg==
+  dependencies:
+    prop-types "^15.6.0"
 
 react-native-unimodules@~0.12.0:
   version "0.12.0"

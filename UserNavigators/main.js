@@ -9,7 +9,7 @@ import UserNavigator from "./UserNavigator";
 import AuthGlobal from "../Context/store/AuthGlobal";
 import Search from "../Screens/Search";
 import Settings from "../Screens/Settings";
-import Events from "../Screens/Events";
+import createEvent from "../Screens/createEvent";
 
 const Tab = createBottomTabNavigator();
 
@@ -48,7 +48,7 @@ const context = useContext(AuthGlobal)
 
       <Tab.Screen
         name="Events"
-        component={Events}
+        component={createEvent}
         options={{
           tabBarIcon: ({ color }) => (
             <Icon name="plus" color={color} size={30} />
