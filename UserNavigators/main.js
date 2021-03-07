@@ -7,7 +7,9 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 import UserNavigator from "./UserNavigator";
 import AuthGlobal from "../Context/store/AuthGlobal";
-
+import Search from "../Screens/Search";
+import Settings from "../Screens/Settings";
+import Events from "../Screens/Events";
 
 const Tab = createBottomTabNavigator();
 
@@ -30,6 +32,36 @@ const context = useContext(AuthGlobal)
         options={{
           tabBarIcon: ({ color }) => (
             <Icon name="user" color={color} size={30} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Search"
+        component={Search}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Icon name="search" color={color} size={30} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Events"
+        component={Events}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Icon name="plus" color={color} size={30} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Settings"
+        component={Settings}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Icon name="cog" color={color} size={30} />
           ),
         }}
       />
