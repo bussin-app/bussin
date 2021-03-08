@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Button, Text } from 'react-native';
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DatePicker from "../Shared/DatePicker";
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Register = (props) => {
 
@@ -17,6 +18,22 @@ const Register = (props) => {
     const [date, setDate] = useState(new Date(1598051730000));
     const [show, setShow] = useState(true);
 
+    useEffect(() => {
+        redirectIfLoggedIn(props);
+    }, [props]);
+
+    const redirectIfLoggedIn = async (props) => {
+        let token = await AsyncStorage.getItem('@bussin-token');
+
+        if (!token) return;
+
+        props.navigation.reset({
+            index: 0,
+            routes: [
+                { name: 'User Profile' }
+            ]
+        });
+    };
 
     const sendRequest = async () => {
         // Construct user data for request
@@ -50,16 +67,21 @@ const Register = (props) => {
         // Convert response to a JSON object
         let data = await res.json();
 
-        // Output the token that the server response
-        console.log(data.token);
-        props.navigation.navigate("User Profile");
+        await AsyncStorage.setItem('@bussin-token', data.token);
+
+        props.navigation.reset({
+            index: 0,
+            routes: [
+                { name: 'User Profile' }
+            ]
+        });
     };
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
-      };
+    };
 
 
     return (
@@ -105,15 +127,15 @@ const Register = (props) => {
                     onChangeText={(text) => setGender(text.toLowerCase())}
                 />
             </FormContainer>
-                <View style = {{marginTop: 220}}>
-                    {show && (
-                     <DatePicker
+            <View style={{ marginTop: 220 }}>
+                {show && (
+                    <DatePicker
                         date={date}
                         mode="time"
                         onChange={onChange}
                     />
-                    )}
-                </View>
+                )}
+            </View>
             <FormContainer>
                 <View>
                     <Button title={"Register"} onPress={sendRequest} />

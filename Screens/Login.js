@@ -1,15 +1,35 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Button } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    redirectIfLoggedIn(props);
+  }, [props]);
+
+  const redirectIfLoggedIn = async (props) => {
+    let token = await AsyncStorage.getItem('@bussin-token');
+
+    if (!token) return;
+
+    props.navigation.reset({
+      index: 0,
+      routes: [
+        { name: 'User Profile' }
+      ]
+    });
+  };
+
   const sendRequest = async () => {
     // Construct user data for request
-    let user = {
+    let body = {
       username,
       password
     };
@@ -19,9 +39,7 @@ const Login = (props) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        user,
-      }),
+      body: JSON.stringify(body),
     });
 
     // Reject if status is anything other than 200
@@ -33,14 +51,17 @@ const Login = (props) => {
 
     // Convert response to a JSON object
     let data = await res.json();
-    // Output the token that the server response
-    console.log(data.token);
 
-    // TODO: redirect to the user page
-    props.navigation.navigate(
-      "https://bussin.blakekjohnson.dev/api/user/$USER:id"
-    );
+    await AsyncStorage.setItem('@bussin-token', data.token);
+
+    props.navigation.reset({
+      index: 0,
+      routes: [
+        { name: 'User Profile' }
+      ]
+    });
   };
+
   return (
     <KeyboardAwareScrollView
       viewIsInsideTabBar={true}
@@ -70,7 +91,7 @@ const Login = (props) => {
         <View>
           <Text>Don't have an account yet?</Text>
           <Button title={"Register"} onPress={
-              () => props.navigation.navigate("Register")
+            () => props.navigation.navigate("Register")
           }></Button>
         </View>
       </FormContainer>
