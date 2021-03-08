@@ -5,20 +5,20 @@ import Input from "../Shared/Form/Input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 
-const Register = (props) => {
+const ModifyAcc = (props) => {
 
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    // const [email, setEmail] = useState("");
+    // const [password, setPassword] = useState("");
 
     const sendRequest = async () => {
         // Construct user data for request
         let user = {
             name,
             username,
-            email,
-            password,
+            // email,
+            // password,
         };
 
         // Send request to server and await response
@@ -75,6 +75,11 @@ const Register = (props) => {
                     id={"username"}
                     onChangeText={(text) => setUsername(text.toLowerCase())}
                 />
+                <View>
+                    <Button title={"Change Password"} onPress={
+                        () => props.navigation.navigate("EditPassword")}>
+                    </Button>
+                </View>
 
                 <Input
                     placeholder={"Email"}
@@ -93,6 +98,9 @@ const Register = (props) => {
                 <View>
                     <Button title={"Save"} onPress={sendRequest} />
                 </View>
+                    <Button title={"Login"} onPress={
+                        () => props.navigation.navigate("Login")}>
+                    </Button>
             </FormContainer>
         </KeyboardAwareScrollView>
     )

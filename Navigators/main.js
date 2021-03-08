@@ -9,13 +9,16 @@ import EventNavigator from "./EventNavigator";
 import AuthGlobal from "../Context/store/AuthGlobal";
 import Search from "../Screens/Search";
 import Settings from "../Screens/Settings";
+import ModififyAcc from "../Screens/ModifyAcc";
+import Events from "../Screens/Events";
+import ModifyAcc from "../Screens/ModifyAcc";
 
 const Tab = createBottomTabNavigator();
 
 const Main = () => {
 
-const context = useContext(AuthGlobal)
-  
+  const context = useContext(AuthGlobal)
+
   return (
     <Tab.Navigator
       initialRouteName="User"
@@ -57,7 +60,7 @@ const context = useContext(AuthGlobal)
 
       <Tab.Screen
         name="Settings"
-        component={Settings}
+        component={ModifyAcc}
         options={{
           tabBarIcon: ({ color }) => (
             <Icon name="cog" color={color} size={30} />
