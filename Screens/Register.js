@@ -104,7 +104,8 @@ const Register = (props) => {
                     id={"gender"}
                     onChangeText={(text) => setGender(text.toLowerCase())}
                 />
-                <View>
+            </FormContainer>
+                <View style = {{marginTop: 220}}>
                     {show && (
                      <DatePicker
                         date={date}
@@ -113,6 +114,7 @@ const Register = (props) => {
                     />
                     )}
                 </View>
+            <FormContainer>
                 <View>
                     <Button title={"Register"} onPress={sendRequest} />
                 </View>

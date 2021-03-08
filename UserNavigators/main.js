@@ -23,7 +23,7 @@ const context = useContext(AuthGlobal)
       tabBarOptions={{
         keyboardHidesTabBar: true,
         showLabel: false,
-        activeTintColor: "#e91e63",
+        activeTintColor: '#B92126',
       }}
     >
       <Tab.Screen

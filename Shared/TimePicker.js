@@ -12,30 +12,30 @@ const Container = styled.TouchableOpacity`
   height: 100%;
   align-content: center;
 `;
-export default class DatePicker extends React.Component {
+export default class TimePicker extends React.Component {
   constructor(props) {
     super(props);
     
     this.state = {
-      date: new Date(this.props.date),
+      time: new Date(this.props.time),
     };
   }
   
   render() {
     const { onClose, onChange } = this.props;
-    const { date } = this.state;
+    const { time } = this.state;
     return (
       <Container onPress={onClose}>
         <DateTimePicker
-          value={date}
-          mode="date"
+          value={time}
+          mode="time"
           display="spinner"
-          onChange={(e, d) => {
+          onChange={(e, t) => {
             if (Platform.OS === 'ios') {
-              this.setState({ date: d });
-              onChange(d);
+              this.setState({ time: t });
+              onChange(t);
             } else {
-              onClose(d);
+              onClose(t);
             }
          }}
          style={{ backgroundColor: 'white' }}
