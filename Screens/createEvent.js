@@ -6,7 +6,6 @@ import Input from "../Shared/Form/Input";
 import NumericInput from 'react-native-numeric-input';
 import DatePicker from "../Shared/DatePicker";
 import TimePicker from "../Shared/TimePicker";
-import DropDownPicker from 'react-native-dropdown-picker';
 import { Picker } from '@react-native-community/picker';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -18,9 +17,7 @@ const Event = (props) => {
     const [time, setTime] = useState(new Date());
     const [show, setShow] = useState(true);
     const [maxAttendees, setMaxAttendees] = useState(1);
-    const [value, setValue] = useState(null);
     const [status, setStatus] = useState("");
-    let controller;
 
 
     const onDateChange = (event, _) => {
@@ -44,8 +41,8 @@ const Event = (props) => {
         let eventData = {
             name,
             maxAttendees,
+            private: status,
             date: dateData,
-            private: true,
         };
 
         // Send the request
@@ -88,19 +85,6 @@ const Event = (props) => {
                     id={"location"}
                     onChangeText={(text) => setLocation(text)}
                 />
-                <View style={{ alignItems: 'center' }} >
-                    <Text>Number of Attendees</Text>
-                    <NumericInput onChange={value => console.log(value)} rounded borderColor={'#B92126'} />
-                    <Picker
-                        style={{ height: 50, width: 300 }}
-                        selectedValue={status}
-                        onValueChange={(itemValue, itemIndex) => setStatus(itemValue)}
-                    >
-                        <Picker.Item label="Public" value="public" />
-                        <Picker.Item label="Private" value="private" />
-                    </Picker>
-                </View>
-                <Text>Enter Date Below</Text>
             </FormContainer>
 
             <View style={{ marginTop: 220 }}>
@@ -122,15 +106,22 @@ const Event = (props) => {
                 )}
             </View>
             <FormContainer>
-                <View >
+                <View style={{ alignItems: 'center' }}>
                     <Text>Number of Attendees</Text>
                     <NumericInput
                         onChange={value => setMaxAttendees(value)}
                         value={maxAttendees}
                         rounded borderColor={'#B92126'} />
-
+                    <Picker
+                        style={{ height: 50, width: 300 }}
+                        selectedValue={status}
+                        onValueChange={(itemValue, itemIndex) => setStatus(itemValue)}
+                    >
+                        <Picker.Item label="Public" value="public" />
+                        <Picker.Item label="Private" value="private" />
+                    </Picker>
                 </View>
-                <View style={{ marginTop: 30 }}>
+                <View style={{ marginTop: 200 }}>
                     <Button title={"Create"} onPress={createEvent} />
                     <Button title={"Back"} onPress={
                         () => props.navigation.navigate("Event")}>
