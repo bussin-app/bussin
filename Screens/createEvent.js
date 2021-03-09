@@ -41,7 +41,7 @@ const Event = (props) => {
         let eventData = {
             name,
             maxAttendees,
-            private: status,
+            private: (status == 'private'),
             date: dateData,
         };
 
