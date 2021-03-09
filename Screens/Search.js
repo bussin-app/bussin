@@ -3,11 +3,13 @@ import React, { useState, useEffect } from 'react';
 // import all the components we are going to use
 import { SafeAreaView, Text, StyleSheet, View, FlatList } from 'react-native';
 import { SearchBar } from 'react-native-elements';
+import { Picker } from '@react-native-community/picker';
 
 const Search = () => {
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/posts')
@@ -75,8 +77,18 @@ const Search = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <SearchBar
+      <View style={{alignItems: 'center'}}>
+        <Picker 
+            style={{height: 50, width: 400}}
+            selectedValue={status}
+            onValueChange = {(itemValue, itemIndex) => setStatus(itemValue)}
+            >
+            <Picker.Item label="Events" value="events" />
+            <Picker.Item label="Users" value="users" />
+        </Picker>
+      </View>
+      <View style = {{marginTop: 160}}>
+        <SearchBar 
           round
           searchIcon={{ size: 24 }}
           onChangeText={(text) => searchFilterFunction(text)}
@@ -91,6 +103,8 @@ const Search = () => {
           renderItem={ItemView}
         />
       </View>
+        
+      
     </SafeAreaView>
   );
 };

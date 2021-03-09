@@ -1,4 +1,4 @@
-import React, {useState, Component} from "react";
+import React, {useState} from "react";
 import { View, Text, Button } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import FormContainer from "../Shared/Form/FormContainer";
@@ -6,7 +6,6 @@ import Input from "../Shared/Form/Input";
 import NumericInput from 'react-native-numeric-input';
 import DatePicker from "../Shared/DatePicker";
 import TimePicker from "../Shared/TimePicker";
-import DropDownPicker from 'react-native-dropdown-picker';
 import {Picker} from '@react-native-community/picker';
 
 
@@ -19,8 +18,6 @@ const Event = (props) => {
     const [maxAttendees, setMaxAttendees] = useState(1);
     const [value, setValue] = useState(null);
     const [status, setStatus] = useState("");
-    let controller;
-    
 
     const onDateChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
