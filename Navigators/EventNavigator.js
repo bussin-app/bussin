@@ -1,8 +1,9 @@
 import React from "react";
 import { createStackNavigator } from '@react-navigation/stack';
 
-import createEvent from '../Screens/createEvent';
+import CreateEvent from '../Screens/CreateEvent';
 import Event from '../Screens/Event';
+import EditEvent from '../Screens/EditEvent';
 
 const Stack = createStackNavigator();
 
@@ -20,8 +21,16 @@ function MyStack() {
            
            
            <Stack.Screen
-              name="createEvent"
-              component ={createEvent}
+              name="CreateEvent"
+              component ={CreateEvent}
+              options = {{
+                  headerShown: false
+              }}
+            />
+
+            <Stack.Screen
+              name="EditEvent"
+              component ={EditEvent}
               options = {{
                   headerShown: false
               }}

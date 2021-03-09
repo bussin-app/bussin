@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Event = (props) => {
@@ -34,15 +34,51 @@ const Event = (props) => {
         return <View><Text>{error}</Text></View>
     }
 
+
+    const createAlert = () =>
+    Alert.alert(
+      "Modify Event",
+      "Edit or Delete this Event?",
+      [
+        {
+          text: "Delete",
+          onPress: () => {createDeleteAlert}
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel"),
+          style: "cancel"
+        },
+        { text: "Edit", onPress: () => props.navigation.navigate("EditEvent") }
+      ],
+      { cancelable: false }
+    );
+
+
+    const createDeleteAlert = () =>
+    Alert.alert(
+      "Alert Title",
+      "My Alert Msg",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: false }
+    );
+
     return (
         <View>
             {
                 events.map((event, index) => (
-                    <Text key={index}>{event._id} - {event.name}</Text>
+                    <Text key={index} onPress = {createAlert} style = {{fontSize: 20}}>{event._id} - {event.name}  </Text>
                 ))
             }
             <Button title={"Add Event"} onPress={
-                () => props.navigation.navigate("createEvent")}>
+                () => props.navigation.navigate("CreateEvent")}>
             </Button>
         </View>
     )
