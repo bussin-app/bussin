@@ -6,6 +6,9 @@ import Input from "../Shared/Form/Input";
 import NumericInput from 'react-native-numeric-input';
 import DatePicker from "../Shared/DatePicker";
 import TimePicker from "../Shared/TimePicker";
+import DropDownPicker from 'react-native-dropdown-picker';
+import { Picker } from '@react-native-community/picker';
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Event = (props) => {
@@ -15,6 +18,10 @@ const Event = (props) => {
     const [time, setTime] = useState(new Date());
     const [show, setShow] = useState(true);
     const [maxAttendees, setMaxAttendees] = useState(1);
+    const [value, setValue] = useState(null);
+    const [status, setStatus] = useState("");
+    let controller;
+
 
     const onDateChange = (event, _) => {
         setShow(Platform.OS === 'ios');
@@ -81,6 +88,18 @@ const Event = (props) => {
                     id={"location"}
                     onChangeText={(text) => setLocation(text)}
                 />
+                <View style={{ alignItems: 'center' }} >
+                    <Text>Number of Attendees</Text>
+                    <NumericInput onChange={value => console.log(value)} rounded borderColor={'#B92126'} />
+                    <Picker
+                        style={{ height: 50, width: 300 }}
+                        selectedValue={status}
+                        onValueChange={(itemValue, itemIndex) => setStatus(itemValue)}
+                    >
+                        <Picker.Item label="Public" value="public" />
+                        <Picker.Item label="Private" value="private" />
+                    </Picker>
+                </View>
                 <Text>Enter Date Below</Text>
             </FormContainer>
 
