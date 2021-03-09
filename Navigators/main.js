@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 // Stacks
@@ -10,7 +9,6 @@ import EventNavigator from "./EventNavigator";
 import AuthGlobal from "../Context/store/AuthGlobal";
 import Search from "../Screens/Search";
 import Settings from "../Screens/Settings";
-import Event from "../Screens/Event";
 
 const Tab = createBottomTabNavigator();
 
@@ -52,7 +50,7 @@ const context = useContext(AuthGlobal)
         component={EventNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <Icon name="plus" color={color} size={30} />
+            <Icon name="list-ul" color={color} size={30} />
           ),
         }}
       />
