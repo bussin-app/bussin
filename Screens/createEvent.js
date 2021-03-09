@@ -1,4 +1,4 @@
-import React, {useState, Component} from "react";
+import React, { useState, Component } from "react";
 import { View, Text, Button } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import FormContainer from "../Shared/Form/FormContainer";
@@ -7,97 +7,138 @@ import NumericInput from 'react-native-numeric-input';
 import DatePicker from "../Shared/DatePicker";
 import TimePicker from "../Shared/TimePicker";
 import DropDownPicker from 'react-native-dropdown-picker';
-import {Picker} from '@react-native-community/picker';
+import { Picker } from '@react-native-community/picker';
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Event = (props) => {
     const [name, setName] = useState("");
     const [location, setLocation] = useState("");
-    const [date, setDate] = useState(new Date(1598051730000));
-    const [time, setTime] = useState(new Date(1598051730000));
+    const [date, setDate] = useState(new Date());
+    const [time, setTime] = useState(new Date());
     const [show, setShow] = useState(true);
     const [maxAttendees, setMaxAttendees] = useState(1);
     const [value, setValue] = useState(null);
     const [status, setStatus] = useState("");
     let controller;
-    
 
-    const onDateChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
+
+    const onDateChange = (event, _) => {
         setShow(Platform.OS === 'ios');
-        setDate(currentDate);
+        setDate(event);
     };
 
-    const onTimeChange = (event, selectedTime) => {
-        const currentTime = selectedTime || time;
+    const onTimeChange = (event, _) => {
         setShow(Platform.OS === 'ios');
-        setTime(currentTime);
+        setTime(event);
     };
 
-    
+    const createEvent = async () => {
+        // Construct the date based on time and date
+        let dateData = new Date(date);
+        dateData.setHours(time.getHours());
+        dateData.setMinutes(time.getMinutes());
+        dateData.setSeconds(time.getSeconds());
+
+        // Construct data for backend
+        let eventData = {
+            name,
+            maxAttendees,
+            date: dateData,
+            private: true,
+        };
+
+        // Send the request
+        let token = await AsyncStorage.getItem('@bussin-token');
+        let res = await fetch('https://bussin.blakekjohnson.dev/api/event/', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                event: eventData
+            }),
+        });
+
+        // Accept the response
+        res = await res.json();
+        console.log(res);
+
+        props.navigation.navigate('Event');
+    };
+
     return (
-    <KeyboardAwareScrollView
-      viewIsInsideTabBar={true}
-      extraHeight={200}
-      enableOnAndroid={true}
-    >
-      <FormContainer title={"Create Event"}>
-            <Input
-                placeholder={"Enter Name of Event"}
-                name={"name"}
-                id={"name"}
-                onChangeText={(text) => setName(text.toLowerCase())}
-            />
+        <KeyboardAwareScrollView
+            viewIsInsideTabBar={true}
+            extraHeight={200}
+            enableOnAndroid={true}
+        >
+            <FormContainer title={"Create Event"}>
+                <Input
+                    placeholder={"Enter Name of Event"}
+                    name={"name"}
+                    id={"name"}
+                    onChangeText={(text) => setName(text)}
+                />
 
-            <Input
-                placeholder={"Enter Location"}
-                name={"location"}
-                id={"location"}
-                onChangeText={(text) => setLocation(text)}
-            />
-            <Text>Enter Date Below</Text>
-    </FormContainer>
-        
-        <View style = {{marginTop: 220}}>
-            {show && (
-                <DatePicker
-                    date={date}
-                    mode = "date"
-                    onChange={onDateChange}
+                <Input
+                    placeholder={"Enter Location"}
+                    name={"location"}
+                    id={"location"}
+                    onChangeText={(text) => setLocation(text)}
                 />
-            )}
-        </View>
-        <View style = {{marginTop: 220}}>
-            {show && (
-                <TimePicker
-                    time={time}
-                    mode = "time"
-                    onChange={onTimeChange}
-                />
-            )}
-        </View>
-    <FormContainer>
-        <View style = {{alignItems: 'center'}} >
-            <Text>Number of Attendees</Text>
-            <NumericInput onChange={value => console.log(value)} rounded borderColor = {'#B92126'} />
-            <Picker
-            style={{height: 50, width: 300}}
-            selectedValue={status}
-            onValueChange = {(itemValue, itemIndex) => setStatus(itemValue)}
-            >
-            <Picker.Item label="Public" value="public" />
-            <Picker.Item label="Private" value="private" />
-            </Picker>
-        </View>
-        <View style = {{marginTop: 200}}>
-          <Button title={"Create"}/>
-          <Button title={"Back"} onPress={
-                () => props.navigation.navigate("Event")}>
-          </Button>
-          
-        </View>
-      </FormContainer>
-    </KeyboardAwareScrollView>
+                <View style={{ alignItems: 'center' }} >
+                    <Text>Number of Attendees</Text>
+                    <NumericInput onChange={value => console.log(value)} rounded borderColor={'#B92126'} />
+                    <Picker
+                        style={{ height: 50, width: 300 }}
+                        selectedValue={status}
+                        onValueChange={(itemValue, itemIndex) => setStatus(itemValue)}
+                    >
+                        <Picker.Item label="Public" value="public" />
+                        <Picker.Item label="Private" value="private" />
+                    </Picker>
+                </View>
+                <Text>Enter Date Below</Text>
+            </FormContainer>
+
+            <View style={{ marginTop: 220 }}>
+                {show && (
+                    <DatePicker
+                        date={date}
+                        mode="date"
+                        onChange={onDateChange}
+                    />
+                )}
+            </View>
+            <View style={{ marginTop: 220 }}>
+                {show && (
+                    <TimePicker
+                        time={time}
+                        mode="time"
+                        onChange={onTimeChange}
+                    />
+                )}
+            </View>
+            <FormContainer>
+                <View >
+                    <Text>Number of Attendees</Text>
+                    <NumericInput
+                        onChange={value => setMaxAttendees(value)}
+                        value={maxAttendees}
+                        rounded borderColor={'#B92126'} />
+
+                </View>
+                <View style={{ marginTop: 30 }}>
+                    <Button title={"Create"} onPress={createEvent} />
+                    <Button title={"Back"} onPress={
+                        () => props.navigation.navigate("Event")}>
+                    </Button>
+
+                </View>
+            </FormContainer>
+        </KeyboardAwareScrollView>
     )
 }
 
