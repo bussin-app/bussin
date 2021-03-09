@@ -1,8 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Header from './Shared/Header'
-import Main from './UserNavigators/main'
+import Header from './Shared/Header';
+import Main from './Navigators/main';
 import { NavigationContainer } from "@react-navigation/native";
 
 // test

@@ -6,6 +6,9 @@ import Input from "../Shared/Form/Input";
 import NumericInput from 'react-native-numeric-input';
 import DatePicker from "../Shared/DatePicker";
 import TimePicker from "../Shared/TimePicker";
+import DropDownPicker from 'react-native-dropdown-picker';
+import {Picker} from '@react-native-community/picker';
+
 
 const Event = (props) => {
     const [name, setName] = useState("");
@@ -14,6 +17,10 @@ const Event = (props) => {
     const [time, setTime] = useState(new Date(1598051730000));
     const [show, setShow] = useState(true);
     const [maxAttendees, setMaxAttendees] = useState(1);
+    const [value, setValue] = useState(null);
+    const [status, setStatus] = useState("");
+    let controller;
+    
 
     const onDateChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -27,7 +34,7 @@ const Event = (props) => {
         setTime(currentTime);
     };
 
-
+    
     return (
     <KeyboardAwareScrollView
       viewIsInsideTabBar={true}
@@ -70,17 +77,24 @@ const Event = (props) => {
             )}
         </View>
     <FormContainer>
-        <View >
+        <View style = {{alignItems: 'center'}} >
             <Text>Number of Attendees</Text>
             <NumericInput onChange={value => console.log(value)} rounded borderColor = {'#B92126'} />
-            
+            <Picker
+            style={{height: 50, width: 300}}
+            selectedValue={status}
+            onValueChange = {(itemValue, itemIndex) => setStatus(itemValue)}
+            >
+            <Picker.Item label="Public" value="public" />
+            <Picker.Item label="Private" value="private" />
+            </Picker>
         </View>
-        <View style = {{marginTop: 30}}>
+        <View style = {{marginTop: 200}}>
           <Button title={"Create"}/>
           <Button title={"Back"} onPress={
                 () => props.navigation.navigate("Event")}>
           </Button>
-            
+          
         </View>
       </FormContainer>
     </KeyboardAwareScrollView>
