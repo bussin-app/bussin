@@ -77,6 +77,9 @@ const Event = (props) => {
         </View>
         <View style = {{marginTop: 30}}>
           <Button title={"Create"}/>
+          <Button title={"Back"} onPress={
+                () => props.navigation.navigate("Event")}>
+          </Button>
             
         </View>
       </FormContainer>
