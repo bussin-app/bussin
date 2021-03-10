@@ -1,5 +1,5 @@
-import React, { useState, Component } from "react";
-import { View, Text, Button } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, Button, LogBox } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
@@ -9,6 +9,8 @@ import TimePicker from "../Shared/TimePicker";
 import { Picker } from '@react-native-community/picker';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+LogBox.ignoreLogs(['Warning:']);
 
 const Event = (props) => {
     const [name, setName] = useState("");
