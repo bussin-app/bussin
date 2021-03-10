@@ -16,8 +16,7 @@ const Search = (props) => {
     let token = await AsyncStorage.getItem('@bussin-token');
     if (!token) return;
 
-    //let source = `${status.substr(0, status.length - 1)}/all`;
-    let source = 'event/all';
+    let source = `${status.substr(0, status.length - 1)}/all`;
     let response = await fetch(`https://bussin.blakekjohnson.dev/api/${source}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -28,8 +27,8 @@ const Search = (props) => {
     response = await response.json();
 
     // Set data sources
-    setFilteredDataSource(response.events);
-    setMasterDataSource(response.events);
+    setFilteredDataSource(response.items);
+    setMasterDataSource(response.items);
   };
 
   useEffect(() => {
