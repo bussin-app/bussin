@@ -17,10 +17,27 @@ const UserProfile = (props) => {
                     onPress: () => console.log("Cancel Pressed"),
                     style: "cancel"
                 },
-                { text: "Delete", onPress: () => console.log("OK Pressed") }
+                { text: "Delete", onPress: deleteProfile }
             ],
             { cancelable: false }
         );
+
+    const deleteProfile = async () => {
+        let token = await AsyncStorage.getItem('@bussin-token');
+        if (!token) return token;
+
+        let res = await fetch('https://bussin.blakekjohnson.dev/api/user', {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        res = await res.json();
+
+        logOut();
+    };
 
 
     const fetchProfile = async () => {
