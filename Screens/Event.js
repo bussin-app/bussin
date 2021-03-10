@@ -38,35 +38,16 @@ const Event = (props) => {
 
   const createAlert = () =>
     Alert.alert(
-      "Modify Event",
-      "Edit or Delete this Event?",
+      "Update Event",
+      "Edit or Start this Event?",
       [
-        {
-          text: "Delete",
-          onPress: () => { createDeleteAlert }
-        },
         {
           text: "Cancel",
           onPress: () => console.log("Cancel"),
           style: "cancel"
         },
-        { text: "Edit", onPress: () => props.navigation.navigate("EditEvent") }
-      ],
-      { cancelable: false }
-    );
-
-
-  const createDeleteAlert = () =>
-    Alert.alert(
-      "Alert Title",
-      "My Alert Msg",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "OK", onPress: () => console.log("OK Pressed") }
+        { text: "Edit", onPress: () => props.navigation.navigate("EditEvent") },
+        { text: "Start", onPress: () => console.log("Start")}
       ],
       { cancelable: false }
     );
