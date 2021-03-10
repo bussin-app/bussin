@@ -82,6 +82,7 @@ const EditPassword = (props) => {
                 <Input
                     placeholder={"Old Password"}
                     name={"old Password"}
+                    secureTextEntry={true}
                     id={"oldPassword"}
                     secureTextEntry={true}
                     value={currentPassword}
@@ -92,6 +93,7 @@ const EditPassword = (props) => {
                 <Input
                     placeholder={"New Password"}
                     name={"new Password"}
+                    secureTextEntry={true}
                     id={"newPassword"}
                     secureTextEntry={true}
                     value={newPassword}
