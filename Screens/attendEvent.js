@@ -76,10 +76,9 @@ const attendEvent = (props) => {
             {
                 <FormContainer title="attendEvent">
                     <Text key={index}>{event._id} - {event.name}</Text>
-                    
                 </FormContainer>
             }
-            <Button title={"Create"} onPress={attendEvent} />
+            <Button title={"Attend Event"} onPress={attendEvent} />
         </View>
     )
 
