@@ -74,7 +74,7 @@ const Login = (props) => {
           placeholder={"Enter Username"}
           name={"username"}
           id={"username"}
-          onChangeText={(text) => setUsername(text.toLowerCase())}
+          onChangeText={(text) => setUsername(text)}
         />
 
         <Input

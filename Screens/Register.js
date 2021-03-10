@@ -96,21 +96,21 @@ const Register = (props) => {
                     placeholder={"Name"}
                     name={"name"}
                     id={"name"}
-                    onChangeText={(text) => setName(text.toLowerCase())}
+                    onChangeText={(text) => setName(text)}
                 />
 
                 <Input
                     placeholder={"Username"}
                     name={"username"}
                     id={"username"}
-                    onChangeText={(text) => setUsername(text.toLowerCase())}
+                    onChangeText={(text) => setUsername(text)}
                 />
 
                 <Input
                     placeholder={"Email"}
                     name={"email"}
                     id={"email"}
-                    onChangeText={(text) => setEmail(text.toLowerCase())}
+                    onChangeText={(text) => setEmail(text)}
                 />
 
                 <Input
@@ -124,7 +124,7 @@ const Register = (props) => {
                     placeholder={"Gender"}
                     name={"gender"}
                     id={"gender"}
-                    onChangeText={(text) => setGender(text.toLowerCase())}
+                    onChangeText={(text) => setGender(text.toUpperCase)}
                 />
             </FormContainer>
             <View style={{ marginTop: 220 }}>
