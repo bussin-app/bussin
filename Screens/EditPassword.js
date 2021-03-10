@@ -4,7 +4,6 @@ import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-
 const EditPassword = (props) => {
 
     const [password, setPassword] = useState("");

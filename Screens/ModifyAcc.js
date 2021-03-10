@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { View, Button, Text } from 'react-native';
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
@@ -6,7 +6,6 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 
 const ModifyAcc = (props) => {
-
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     // const [email, setEmail] = useState("");
@@ -51,7 +50,7 @@ const ModifyAcc = (props) => {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
-      };
+    };
 
 
     return (
@@ -61,46 +60,28 @@ const ModifyAcc = (props) => {
             enableOnAndroid={true}
         >
 
-            <FormContainer title={"Edit Profile"}>
+            <FormContainer title={"Settings"}>
                 <Input
-                    placeholder={"Name"}
+                    placeholder={"Change name"}
                     name={"name"}
                     id={"name"}
                     onChangeText={(text) => setName(text.toLowerCase())}
                 />
 
                 <Input
-                    placeholder={"Username"}
+                    placeholder={"Change username"}
                     name={"username"}
                     id={"username"}
                     onChangeText={(text) => setUsername(text.toLowerCase())}
                 />
                 <View>
+                    <Button title={"Save"} onPress={sendRequest} />
+                </View>
+                <View>
                     <Button title={"Change Password"} onPress={
                         () => props.navigation.navigate("EditPassword")}>
                     </Button>
                 </View>
-
-                <Input
-                    placeholder={"Email"}
-                    name={"email"}
-                    id={"email"}
-                    onChangeText={(text) => setEmail(text.toLowerCase())}
-                />
-
-                <Input
-                    placeholder={"Password"}
-                    name={"password"}
-                    id={"password"}
-                    secureTextEntry={true}
-                    onChangeText={(text) => setPassword(text)}
-                />
-                <View>
-                    <Button title={"Save"} onPress={sendRequest} />
-                </View>
-                    <Button title={"Login"} onPress={
-                        () => props.navigation.navigate("Login")}>
-                    </Button>
             </FormContainer>
         </KeyboardAwareScrollView>
     )

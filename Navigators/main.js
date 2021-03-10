@@ -6,12 +6,9 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 import UserNavigator from "./UserNavigator";
 import EventNavigator from "./EventNavigator";
+import SettingsNavigator from "./SettingsNavigator";
 import AuthGlobal from "../Context/store/AuthGlobal";
 import Search from "../Screens/Search";
-import Settings from "../Screens/Settings";
-import ModififyAcc from "../Screens/ModifyAcc";
-import Events from "../Screens/Events";
-import ModifyAcc from "../Screens/ModifyAcc";
 
 const Tab = createBottomTabNavigator();
 
@@ -60,7 +57,7 @@ const Main = () => {
 
       <Tab.Screen
         name="Settings"
-        component={ModifyAcc}
+        component={SettingsNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <Icon name="cog" color={color} size={30} />
