@@ -59,12 +59,14 @@ const EditPassword = (props) => {
                 <Input
                     placeholder={"Old Password"}
                     name={"old Password"}
+                    secureTextEntry={true}
                     id={"oldPassword"}
                 />
 
                 <Input
                     placeholder={"New Password"}
                     name={"new Password"}
+                    secureTextEntry={true}
                     id={"newPassword"}
                 />
                 <View>
