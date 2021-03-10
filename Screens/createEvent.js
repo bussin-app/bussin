@@ -43,6 +43,7 @@ const Event = (props) => {
         let eventData = {
             name,
             maxAttendees,
+            description,
             private: (status == 'private'),
             date: dateData,
         };
@@ -85,7 +86,7 @@ const Event = (props) => {
                     placeholder={"Enter Description"}
                     name={"description"}
                     id={"description"}
-                    onChangeText={(text) => setDiscription(text)}
+                    onChangeText={(text) => setDescription(text)}
                 />
             </FormContainer>
 
