@@ -6,7 +6,6 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 import UserNavigator from "./UserNavigator";
 import EventNavigator from "./EventNavigator";
-import SettingsNavigator from "./SettingsNavigator";
 import AuthGlobal from "../Context/store/AuthGlobal";
 import Search from "../Screens/Search";
 
@@ -51,16 +50,6 @@ const Main = () => {
         options={{
           tabBarIcon: ({ color }) => (
             <Icon name="list-ul" color={color} size={30} />
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="Settings"
-        component={SettingsNavigator}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Icon name="cog" color={color} size={30} />
           ),
         }}
       />
