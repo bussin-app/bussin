@@ -49,7 +49,6 @@ const UserProfile = (props) => {
       <Text>Name: {profile.name}</Text>
       <Text>Username: {profile.username}</Text>
       <Text>Gender: {profile.gender}</Text>
-      <Text></Text>
     </View>
   );
   
