@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Button, LogBox } from 'react-native';
+import { View, Text, Button, LogBox, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
@@ -28,6 +28,22 @@ const EditEvent = (props) => {
         setTime(event);
     };
 
+    const createDeleteAlert = () =>
+        Alert.alert(
+            "Delete Event",
+            "You will not be able to recover this event.",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "Delete", onPress: () => console.log("Delete Pressed") }
+            ],
+            { cancelable: false }
+        );
+
+
     return (
         <KeyboardAwareScrollView
             viewIsInsideTabBar={true}
@@ -46,7 +62,7 @@ const EditEvent = (props) => {
                     placeholder={"Enter Description"}
                     name={"description"}
                     id={"description"}
-                    onChangeText={(text) => setDiscription(text)}
+                    onChangeText={(text) => setDescription(text)}
                 />
             </FormContainer>
 
@@ -86,6 +102,7 @@ const EditEvent = (props) => {
                 </View>
                 <View style={{ marginTop: 200 }}>
                     <Button title={"Save"}/>
+                    <Button title='Delete Event' onPress={createDeleteAlert} />
                 </View>
             </FormContainer>
         </KeyboardAwareScrollView>

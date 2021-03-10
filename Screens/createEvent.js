@@ -85,7 +85,7 @@ const Event = (props) => {
                     placeholder={"Enter Description"}
                     name={"description"}
                     id={"description"}
-                    onChangeText={(text) => setDiscription(text)}
+                    onChangeText={(text) => setDescription(text)}
                 />
             </FormContainer>
 
