@@ -14,8 +14,7 @@ const Register = (props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [gender, setGender] = useState("");
-    const [mode, setMode] = useState('date');
-    const [date, setDate] = useState(new Date(1598051730000));
+    const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(true);
 
     useEffect(() => {
@@ -43,8 +42,13 @@ const Register = (props) => {
             email,
             password,
             gender,
-            birthday: date,
         };
+
+        // Modify the date
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        user.birthday = date;
 
         // Send request to server and await response
         let res = await fetch("https://bussin.blakekjohnson.dev/api/user/register", {
@@ -77,12 +81,10 @@ const Register = (props) => {
         });
     };
 
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
+    const onChange = (event, _) => {
         setShow(Platform.OS === 'ios');
-        setDate(currentDate);
+        setDate(event);
     };
-
 
     return (
         <KeyboardAwareScrollView
@@ -124,14 +126,14 @@ const Register = (props) => {
                     placeholder={"Gender"}
                     name={"gender"}
                     id={"gender"}
-                    onChangeText={(text) => setGender(text.toUpperCase)}
+                    onChangeText={(text) => setGender(text.toUpperCase())}
                 />
             </FormContainer>
             <View style={{ marginTop: 220 }}>
                 {show && (
                     <DatePicker
                         date={date}
-                        mode="time"
+                        mode="date"
                         onChange={onChange}
                     />
                 )}
