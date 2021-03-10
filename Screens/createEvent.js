@@ -14,7 +14,7 @@ LogBox.ignoreLogs(['Warning:']);
 
 const Event = (props) => {
     const [name, setName] = useState("");
-    const [location, setLocation] = useState("");
+    const [description, setDescription] = useState("");
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
     const [show, setShow] = useState(true);
@@ -82,10 +82,10 @@ const Event = (props) => {
                 />
 
                 <Input
-                    placeholder={"Enter Location"}
-                    name={"location"}
-                    id={"location"}
-                    onChangeText={(text) => setLocation(text)}
+                    placeholder={"Enter Description"}
+                    name={"description"}
+                    id={"description"}
+                    onChangeText={(text) => setDiscription(text)}
                 />
             </FormContainer>
 
@@ -125,10 +125,6 @@ const Event = (props) => {
                 </View>
                 <View style={{ marginTop: 200 }}>
                     <Button title={"Create"} onPress={createEvent} />
-                    <Button title={"Back"} onPress={
-                        () => props.navigation.navigate("Event")}>
-                    </Button>
-
                 </View>
             </FormContainer>
         </KeyboardAwareScrollView>
