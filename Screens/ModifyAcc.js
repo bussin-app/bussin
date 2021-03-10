@@ -70,7 +70,7 @@ const ModifyAcc = (props) => {
             enableOnAndroid={true}
         >
 
-            <FormContainer title={"Settings"}>
+            <FormContainer title={"Modify Account"}>
                 <Input
                     placeholder={"Change name"}
                     name={"name"}
