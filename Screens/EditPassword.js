@@ -57,7 +57,7 @@ const EditPassword = (props) => {
             props.navigation.reset({
                 index: 0,
                 routes: [
-                    { name: 'Settings' }
+                    { name: 'User Profile' }
                 ]
             });
         }
