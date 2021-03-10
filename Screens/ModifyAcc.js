@@ -76,7 +76,7 @@ const ModifyAcc = (props) => {
                     name={"name"}
                     id={"name"}
                     value={name}
-                    onChangeText={(text) => setName(text.toLowerCase())}
+                    onChangeText={(text) => setName(text)}
                 />
 
                 <Input
@@ -84,7 +84,7 @@ const ModifyAcc = (props) => {
                     name={"username"}
                     id={"username"}
                     value={username}
-                    onChangeText={(text) => setUsername(text.toLowerCase())}
+                    onChangeText={(text) => setUsername(text)}
                 />
                 <View>
                     <Button title={"Save"} onPress={sendRequest} disabled={waiting} />
