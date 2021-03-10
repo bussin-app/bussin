@@ -8,19 +8,19 @@ const UserProfile = (props) => {
     const [fetched, setFetched] = useState(false);
 
     const createDeleteAlert = () =>
-    Alert.alert(
-      "Delete Account",
-      "You will not be able to recover your account.",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "Delete", onPress: () => console.log("OK Pressed") }
-      ],
-      { cancelable: false }
-    );
+        Alert.alert(
+            "Delete Account",
+            "You will not be able to recover your account.",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "Delete", onPress: () => console.log("OK Pressed") }
+            ],
+            { cancelable: false }
+        );
 
 
     const fetchProfile = async () => {
@@ -34,7 +34,6 @@ const UserProfile = (props) => {
 
         let data = await res.json();
 
-        console.log(data.user);
         setProfile(data.user);
     };
 
@@ -48,15 +47,18 @@ const UserProfile = (props) => {
         });
     };
 
-    useEffect(() => {
-        if (!fetched) {
-            fetchProfile();
-            setFetched(true);
-        }
-    }, [fetched]);
+    const fetchWrapper = async () => {
+        setFetched(false);
+        await fetchProfile();
+        setFetched(true);
+    }
 
-    if (!profile) {
-        return <View><Text>Loading...</Text></View>;
+    useEffect(() => {
+        props.navigation.addListener('focus', fetchWrapper);
+    }, []);
+
+    if (!fetched) {
+        return <View></View>;
     }
 
     return (
@@ -64,9 +66,9 @@ const UserProfile = (props) => {
             <Text>Name: {profile.name}</Text>
             <Text>Username: {profile.username}</Text>
             <Text>Gender: {profile.gender}</Text>
-            <Button title='Modify Account'/>
+            <Button title='Modify Account' onPress={() => props.navigation.navigate('Settings')} />
             <Button title='Log Out' onPress={logOut} />
-            <Button title='Delete Account' onPress = {createDeleteAlert}/>
+            <Button title='Delete Account' onPress={createDeleteAlert} />
         </View>
     )
 }

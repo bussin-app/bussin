@@ -1,33 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Button, Text } from 'react-native';
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const ModifyAcc = (props) => {
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
-    // const [email, setEmail] = useState("");
-    // const [password, setPassword] = useState("");
+    const [accountChanged, setAccountChanged] = useState(false);
+    const [waiting, setWaiting] = useState(false);
 
     const sendRequest = async () => {
+        setWaiting(true);
         // Construct user data for request
         let user = {
-            name,
-            username,
-            // email,
-            // password,
         };
+        if (username != '') user.username = username;
+        if (name != '') user.name = name;
+
+        // Get token
+        let token = await AsyncStorage.getItem('@bussin-token');
+
+        if (!token) return;
 
         // Send request to server and await response
-        let res = await fetch("https://bussin.blakekjohnson.dev/api/user/register", {
-            method: "POST",
+        let res = await fetch("https://bussin.blakekjohnson.dev/api/user", {
+            method: "PATCH",
             headers: {
+                'Authorization': `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                user,
+                update: user,
             })
         });
 
@@ -38,20 +44,24 @@ const ModifyAcc = (props) => {
             return;
         }
 
-        // Convert response to a JSON object
-        let data = await res.json();
-
-        // Output the token that the server response
-        console.log(data.token);
-        props.navigation.navigate("User Profile");
+        setAccountChanged(true);
     };
 
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'ios');
-        setDate(currentDate);
-    };
+    useEffect(() => {
+        props.navigation.addListener('focus', () => {
+            setName("");
+            setUsername("");
+        });
+    }, []);
 
+    useEffect(() => {
+        if (accountChanged) {
+            setWaiting(false);
+            setAccountChanged(false);
+
+            props.navigation.navigate('User Profile');
+        }
+    }, [accountChanged]);
 
     return (
         <KeyboardAwareScrollView
@@ -65,6 +75,7 @@ const ModifyAcc = (props) => {
                     placeholder={"Change name"}
                     name={"name"}
                     id={"name"}
+                    value={name}
                     onChangeText={(text) => setName(text.toLowerCase())}
                 />
 
@@ -72,13 +83,14 @@ const ModifyAcc = (props) => {
                     placeholder={"Change username"}
                     name={"username"}
                     id={"username"}
+                    value={username}
                     onChangeText={(text) => setUsername(text.toLowerCase())}
                 />
                 <View>
-                    <Button title={"Save"} onPress={sendRequest} />
+                    <Button title={"Save"} onPress={sendRequest} disabled={waiting} />
                 </View>
                 <View>
-                    <Button title={"Change Password"} onPress={
+                    <Button title={"Change Password"} disabled={waiting} onPress={
                         () => props.navigation.navigate("EditPassword")}>
                     </Button>
                 </View>
