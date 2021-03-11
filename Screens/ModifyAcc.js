@@ -88,6 +88,7 @@ const ModifyAcc = (props) => {
                 />
                 <View>
                     <Button title={"Save"} onPress={sendRequest} disabled={waiting} />
+                    <Button title={"Upload Photo"}/>
                 </View>
                 <View>
                     <Button title={"Change Password"} disabled={waiting} onPress={
