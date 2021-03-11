@@ -11,6 +11,7 @@ const UserProfile = (props) => {
       <Text>Name: {user.name}</Text>
       <Text>Username: {user.username}</Text>
       <Text>Gender: {user.gender}</Text>
+      <Text>Points: {user.eventPoints}</Text>
     </View>
   );
 
