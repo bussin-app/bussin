@@ -12,6 +12,7 @@ const ViewEvent = (props) => {
   const [time, setTime] = useState('');
   const [date, setDate] = useState('');
   const [eventID, setEventID] = useState('');
+  const [attending, setAttending] = useState(true);
 
   const fetchEventData = async () => {
     let { event } = props.route.params;
@@ -32,11 +33,50 @@ const ViewEvent = (props) => {
     });
     res = await res.json();
     setHost(res.user.name);
+
+    res = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    res = await res.json();
+    setAttending(event.attendees.includes(res.user._id));
   };
 
   useEffect(() => {
     props.navigation.addListener('focus', fetchEventData);
   }, []);
+
+  const attend = async () => {
+    let { event } = props.route.params;
+
+    let token = await AsyncStorage.getItem('@bussin-token');
+    if (!token) return;
+
+    let res = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    res = await res.json();
+
+    res = await fetch('https://bussin.blakekjohnson.dev/api/event/markAttendance', {
+      method: 'PUT',
+      body: JSON.stringify({
+        userID: res.user._id,
+        eventID: event._id,
+      }),
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (res.status != 200) return;
+
+    setAttending(true);
+    setAttendeeCount(attendeeCount + 1);
+  };
 
   return (
     <View>
@@ -45,6 +85,8 @@ const ViewEvent = (props) => {
       <Text>Number of Attendees: {attendeeCount}</Text>
       <Text>Host: {host}</Text>
       <Text>Date: {date}</Text>
+      { attending && <Text>You are already attending this event</Text>}
+      { !attending && <Button title='Attend' onPress={attend} />}
     </View>
   );
 
