@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import UserNavigator from "./UserNavigator";
 import EventNavigator from "./EventNavigator";
 import AuthGlobal from "../Context/store/AuthGlobal";
-import Search from "../Screens/Search";
+import SearchNavigator from "./SearchNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +36,7 @@ const Main = () => {
 
       <Tab.Screen
         name="Search"
-        component={Search}
+        component={SearchNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <Icon name="search" color={color} size={30} />

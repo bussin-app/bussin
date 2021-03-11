@@ -87,8 +87,10 @@ const Search = (props) => {
   };
 
   const getItem = (item) => {
-    // Function for click on an item
-    alert('Id : ' + item.id + ' Name : ' + item.name);
+    if (status == 'events')
+      props.navigation.navigate('ViewEvent', { eventID: item._id });
+    else
+      props.navigation.navigate('viewUserProfile', { userID: item._id });
   };
 
   return (
