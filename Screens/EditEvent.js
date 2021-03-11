@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Button, LogBox, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import FormContainer from "../Shared/Form/FormContainer";
@@ -7,6 +7,7 @@ import NumericInput from 'react-native-numeric-input';
 import DatePicker from "../Shared/DatePicker";
 import TimePicker from "../Shared/TimePicker";
 import { Picker } from '@react-native-community/picker';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EditEvent = (props) => {
     const [name, setName] = useState("");
@@ -16,6 +17,8 @@ const EditEvent = (props) => {
     const [show, setShow] = useState(true);
     const [maxAttendees, setMaxAttendees] = useState(1);
     const [status, setStatus] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [eventID, setEventID] = useState(null);
 
 
     const onDateChange = (event, _) => {
@@ -43,6 +46,69 @@ const EditEvent = (props) => {
             { cancelable: false }
         );
 
+    const updateEvent = async () => {
+        // Construct the date based on time and date
+        let dateData = new Date(date);
+        let timeData = new Date(time);
+        dateData.setHours(timeData.getHours());
+        dateData.setMinutes(timeData.getMinutes());
+        dateData.setSeconds(timeData.getSeconds());
+
+        // Construct data for backend
+        let update = {
+            name,
+            maxAttendees,
+            description,
+            private: (status == 'private'),
+            date: dateData,
+        };
+
+        let token = await AsyncStorage.getItem('@bussin-token');
+        if (!token) return;
+
+        let res;
+        try {
+            res = await fetch(`https://bussin.blakekjohnson.dev/api/event/${eventID}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ update }),
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                }
+            });
+        } catch (e) { console.error(e); return; }
+
+        console.log(res.status);
+
+        props.navigation.navigate('Event');
+    };
+
+    let { event } = props.route.params;
+    useEffect(() => {
+        setLoading(true);
+        setName(event.name);
+        setDescription(event.description);
+        setDate(event.date);
+        setTime(event.date);
+        setMaxAttendees(event.maxAttendees);
+        setStatus(event.private ? "private" : "public");
+        setEventID(event._id);
+    }, [event]);
+
+    useEffect(() => {
+        setLoading(false);
+    }, [eventID]);
+
+    if (loading) {
+        return (
+            <KeyboardAwareScrollView
+                viewIsInsideTabBar={true}
+                extraHeight={200}
+                enableOnAndroid={true}>
+                <Text>Loading</Text>
+            </KeyboardAwareScrollView>
+        );
+    }
 
     return (
         <KeyboardAwareScrollView
@@ -56,6 +122,7 @@ const EditEvent = (props) => {
                     name={"name"}
                     id={"name"}
                     onChangeText={(text) => setName(text)}
+                    value={name}
                 />
 
                 <Input
@@ -63,6 +130,7 @@ const EditEvent = (props) => {
                     name={"description"}
                     id={"description"}
                     onChangeText={(text) => setDescription(text)}
+                    value={description}
                 />
             </FormContainer>
 
@@ -101,7 +169,7 @@ const EditEvent = (props) => {
                     </Picker>
                 </View>
                 <View style={{ marginTop: 200 }}>
-                    <Button title={"Save"}/>
+                    <Button title={"Save"} onPress={updateEvent} />
                     <Button title='Delete Event' onPress={createDeleteAlert} />
                 </View>
             </FormContainer>
