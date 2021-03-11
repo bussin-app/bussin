@@ -88,7 +88,7 @@ const Search = (props) => {
 
   const getItem = (item) => {
     if (status == 'events')
-      props.navigation.navigate('ViewEvent', { eventID: item._id });
+      props.navigation.navigate('ViewEvent', { event: item });
     else
       props.navigation.navigate('viewUserProfile', { userID: item._id });
   };
