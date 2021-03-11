@@ -9,8 +9,8 @@ const ViewEvent = (props) => {
   const [description, setDescription] = useState('');
   const [attendeeCount, setAttendeeCount] = useState('');
   const [host, setHost] = useState('');
-  const [time, setTime] = useState('');
   const [date, setDate] = useState('');
+  const [full, setFull] = useState(false);
   const [eventID, setEventID] = useState('');
   const [attending, setAttending] = useState(true);
 
@@ -40,6 +40,7 @@ const ViewEvent = (props) => {
       }
     });
     res = await res.json();
+    setFull(event.attendees.length >= event.maxAttendees);
     setAttending(event.attendees.includes(res.user._id));
   };
 
@@ -48,8 +49,6 @@ const ViewEvent = (props) => {
   }, []);
 
   const attend = async () => {
-    let { event } = props.route.params;
-
     let token = await AsyncStorage.getItem('@bussin-token');
     if (!token) return;
 
@@ -64,7 +63,7 @@ const ViewEvent = (props) => {
       method: 'PUT',
       body: JSON.stringify({
         userID: res.user._id,
-        eventID: event._id,
+        eventID: eventID,
       }),
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -86,7 +85,8 @@ const ViewEvent = (props) => {
       <Text>Host: {host}</Text>
       <Text>Date: {date}</Text>
       { attending && <Text>You are already attending this event</Text>}
-      { !attending && <Button title='Attend' onPress={attend} />}
+      { full && <Text>This event has reached the max number of attendees</Text>}
+      { !attending && !full && <Button title='Attend' onPress={attend} />}
     </View>
   );
 
