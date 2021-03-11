@@ -41,10 +41,26 @@ const EditEvent = (props) => {
                     onPress: () => console.log("Cancel Pressed"),
                     style: "cancel"
                 },
-                { text: "Delete", onPress: () => console.log("Delete Pressed") }
+                { text: "Delete", onPress: deleteEvent }
             ],
             { cancelable: false }
         );
+
+    const deleteEvent = async () => {
+        let token = await AsyncStorage.getItem('@bussin-token');
+        if (!token) return;
+
+        let res = await fetch(`https://bussin.blakekjohnson.dev/api/event/${eventID}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (res.status != 200) return;
+
+        props.navigation.navigate('Event');
+    };
 
     const updateEvent = async () => {
         // Construct the date based on time and date
