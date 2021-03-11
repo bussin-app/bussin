@@ -3,8 +3,8 @@ import { View, Text, Button } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
-
 import Event from "./Event.js";
+
 
 
 const attendEvent = (props) => {
@@ -67,22 +67,17 @@ const attendEvent = (props) => {
         props.navigation.navigate('Event');
     };
 
+
     return (
         // display the information of the event
         // return a basic UI that shows event ID and event Name for now
         // TODO: add features to display calendar
         // click the button to update to the database & send request to the backend
         <View>
-            {
-                <FormContainer title="attendEvent">
-                    <Text key={index}>{event._id} - {event.name}</Text>
-                </FormContainer>
-            }
-            <Button title={"Attend Event"} onPress={attendEvent} />
+           <Text key={index}>{event._id} - {event.name}</Text>
+           <Button title={"Attend Event"} onPress={attendEvent} />
         </View>
-    )
-
-    
+    )    
 }
 
 export default attendEvent;

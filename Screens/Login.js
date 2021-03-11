@@ -3,7 +3,7 @@ import { View, Text, Button } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
-
+import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = (props) => {
@@ -62,6 +62,49 @@ const Login = (props) => {
     });
   };
 
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      this.setState({ userInfo });
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (f.e. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+};
+
+
+const getCurrentUserInfo = async () => {
+    try {
+      const userInfo = await GoogleSignin.signInSilently();
+      this.setState({ userInfo });
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_REQUIRED) {
+        // user has not signed in yet
+      } else {
+        // some other error
+      }
+    }
+};
+
+const isSignedIn = async () => {
+    const isSignedIn = await GoogleSignin.isSignedIn();
+    this.setState({ isLoginScreenPresented: !isSignedIn });
+};
+
+const getCurrentUser = async () => {
+    const currentUser = await GoogleSignin.getCurrentUser();
+    this.setState({ currentUser });
+};
+
+
   return (
     <KeyboardAwareScrollView
       viewIsInsideTabBar={true}
@@ -87,6 +130,12 @@ const Login = (props) => {
 
         <View>
           <Button title={"Login"} onPress={sendRequest} />
+          <GoogleSigninButton
+                style={{ width: 192, height: 48 }}
+                size={GoogleSigninButton.Size.Wide}
+                color={GoogleSigninButton.Color.Dark}
+                onPress={signIn}
+                disabled={this.state.isSigninInProgress} />
         </View>
         <View>
           <Text>Don't have an account yet?</Text>
