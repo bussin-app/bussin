@@ -57,6 +57,7 @@ static void InitializeFlipper(UIApplication *application) {
   #endif
 
   [super application:application didFinishLaunchingWithOptions:launchOptions];
+  [GMSServices provideAPIKey:@"AIzaSyDboQiWBDqS4tMIrOtl5IyS7PCfKWXr9DQ"]; // add this line using the api key obtained from Google Console
 
   return YES;
 }

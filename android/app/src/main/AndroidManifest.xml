@@ -38,6 +38,9 @@
       android:launchMode="singleTask"
       android:windowSoftInputMode="adjustResize"
       android:theme="@style/Theme.App.SplashScreen"
+
+      <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDboQiWBDqS4tMIrOtl5IyS7PCfKWXr9DQ"/>
+      <uses-library android:name="org.apache.http.legacy" android:required="false"/>
     >
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>

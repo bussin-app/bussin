@@ -36,7 +36,7 @@ const Event = (props) => {
     });
   }, []);
 
-  const createAlert = () =>
+  const createAlert = (event) =>
     Alert.alert(
       "Update Event",
       "Edit or Start this Event?",
@@ -46,8 +46,8 @@ const Event = (props) => {
           onPress: () => console.log("Cancel"),
           style: "cancel"
         },
-        { text: "Edit", onPress: () => props.navigation.navigate("EditEvent") },
-        { text: "Start", onPress: () => console.log("Start")}
+        { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event }) },
+        { text: "Start", onPress: () => console.log("Start") }
       ],
       { cancelable: false }
     );
@@ -58,7 +58,7 @@ const Event = (props) => {
       {
         !loading ? <Text>Loading</Text> :
           events.map((event, index) => (
-            <Text key={index} onPress={createAlert} style={{ fontSize: 20 }}>{event._id} - {event.name}  </Text>
+            <Text key={index} onPress={() => createAlert(event)} style={{ fontSize: 20 }}>{event._id} - {event.name}  </Text>
           ))
       }
       <Button title={"Add Event"} onPress={
