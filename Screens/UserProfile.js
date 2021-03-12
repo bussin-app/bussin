@@ -49,6 +49,17 @@ const UserProfile = (props) => {
             }
         });
 
+        if (res.status != 200) {
+            await AsyncStorage.removeItem('@bussin-token');
+            props.navigation.reset({
+                index: 0,
+                routes: [
+                    { name: 'Login' }
+                ]
+            });
+            return;
+        }
+
         let data = await res.json();
 
         setProfile(data.user);
@@ -80,13 +91,18 @@ const UserProfile = (props) => {
 
     return (
         <View>
-            <Text>Name: {profile.name}</Text>
-            <Text>Username: {profile.username}</Text>
-            <Text>Gender: {profile.gender}</Text>
-            <Text>Points: {profile.eventPoints}</Text>
-            <Button title='Modify Account' onPress={() => props.navigation.navigate('Settings')} />
-            <Button title='Log Out' onPress={logOut} />
-            <Button title='Delete Account' onPress={createDeleteAlert} />
+            {
+                profile &&
+                <>
+                    <Text>Name: {profile.name}</Text>
+                    <Text>Username: {profile.username}</Text>
+                    <Text>Gender: {profile.gender}</Text>
+                    <Text>Points: {profile.eventPoints}</Text>
+                    <Button title='Modify Account' onPress={() => props.navigation.navigate('Settings')} />
+                    <Button title='Log Out' onPress={logOut} />
+                    <Button title='Delete Account' onPress={createDeleteAlert} />
+                </>
+            }
         </View>
     )
 }

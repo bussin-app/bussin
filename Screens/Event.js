@@ -3,19 +3,25 @@ import { View, Text, Button, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Event = (props) => {
+  const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [events, setEvents] = useState([]);
 
   const fetchEvents = async () => {
-    let token = await AsyncStorage.getItem('@bussin-token');
+    let storedToken = await AsyncStorage.getItem('@bussin-token');
 
-    if (!token) return;
+    if (!storedToken) {
+      setLoading(false);
+      setError('To get started login at the user page.');
+      return;
+    }
+    setToken(storedToken);
 
     try {
       let res = await fetch('https://bussin.blakekjohnson.dev/api/event', {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${storedToken}`,
         },
       });
 
@@ -25,6 +31,8 @@ const Event = (props) => {
     } catch (e) {
       setError(e);
     }
+
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -54,16 +62,19 @@ const Event = (props) => {
 
   return (
     <View>
-      { error ? <Text>{error}</Text> : <></>}
+      { error && <Text>{error}</Text>}
       {
-        !loading ? <Text>Loading</Text> :
+        loading ? <Text>Loading</Text> :
           events.map((event, index) => (
             <Text key={index} onPress={() => createAlert(event)} style={{ fontSize: 20 }}>{event._id} - {event.name}  </Text>
           ))
       }
-      <Button title={"Add Event"} onPress={
-        () => props.navigation.navigate("CreateEvent")}>
-      </Button>
+      {
+        token &&
+        <Button title={"Add Event"} onPress={
+          () => props.navigation.navigate("CreateEvent")}>
+        </Button>
+      }
     </View>
   )
 }

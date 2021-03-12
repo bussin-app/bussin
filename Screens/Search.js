@@ -7,19 +7,21 @@ import { Picker } from '@react-native-community/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Search = (props) => {
+  const [token, setToken] = useState(null);
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [status, setStatus] = useState("events");
 
   const fetchData = async () => {
-    let token = await AsyncStorage.getItem('@bussin-token');
-    if (!token) return;
+    let storedToken = await AsyncStorage.getItem('@bussin-token');
+    if (!storedToken) return;
+    setToken(storedToken);
 
     let source = `${status.substr(0, status.length - 1)}/all`;
     let response = await fetch(`https://bussin.blakekjohnson.dev/api/${source}`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${storedToken}`,
       }
     });
 
@@ -31,8 +33,12 @@ const Search = (props) => {
     setMasterDataSource(response.items);
   };
 
+  const focusWrapper = () => {
+    setStatus('events');
+  };
+
   useEffect(() => {
-    props.navigation.addListener('focus', fetchData);
+    props.navigation.addListener('focus', focusWrapper);
   }, []);
 
   useEffect(() => {
@@ -111,6 +117,10 @@ const Search = (props) => {
     else
       props.navigation.navigate('viewUserProfile', { user: item });
   };
+
+  if (!token) {
+    return <View><Text>To get started login at the user page.</Text></View>;
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
