@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // import all the components we are going to use
-import { SafeAreaView, Text, StyleSheet, View, FlatList } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, View, FlatList, StatusBar } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { Picker } from '@react-native-community/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -61,15 +61,34 @@ const Search = (props) => {
       setSearch(text);
     }
   };
-
+  const SPACING = 20;
+  const PIC_SIZE = 70
   const ItemView = ({ item }) => {
     return (
-      // Flat List Item
-      <Text style={styles.itemStyle} onPress={() => getItem(item)}>
-        {item._id}
-        {'.'}
-        {item.name.toUpperCase()}
-      </Text>
+      <View style={{
+        flexDirection: 'column', padding: SPACING, marginBottom: SPACING, backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: 12,
+        shadowColor: "#962eff",
+        shadowOffset: {
+          width: 0,
+          height: 10
+        },
+        shadowOpacity: .3,
+        shadowRadius: 20
+      }}>
+        {/* <Image
+          source={{ url: 'https://api.unsplash.com/photos/random/?query=party&count=' }}
+          style={{ width: PIC_SIZE, height: PIC_SIZ, borderRadius: PIC_SIZE }}
+        /> */}
+        <Text style={{ fontSize: 15, fontFamily: 'Verdana' }} onPress={() => getItem(item)}>
+          {item.name}
+        </Text>
+        <Text style={{ fontSize: 12, fontFamily: 'Verdana' }}>
+          {item.description}
+        </Text>
+        <Text style={{ fontSize: 12, fontFamily: 'Verdana', textAlign: 'right' }}>
+          {item.date}
+        </Text>
+      </View>
     );
   };
 
@@ -118,6 +137,10 @@ const Search = (props) => {
           data={filteredDataSource}
           keyExtractor={(item, index) => index.toString()}
           ItemSeparatorComponent={ItemSeparatorView}
+          contentContainerStyle={{
+            padding: SPACING,
+            paddingTop: StatusBar.currentHeight || 42
+          }}
           renderItem={ItemView}
         />
       </View>
