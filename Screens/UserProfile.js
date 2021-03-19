@@ -99,6 +99,7 @@ const UserProfile = (props) => {
                     <Text>Gender: {profile.gender}</Text>
                     <Text>Points: {profile.eventPoints}</Text>
                     <Button title='Modify Account' onPress={() => props.navigation.navigate('Settings')} />
+                    <Button title='Create an organization' onPress={() => props.navigation.navigate('CreateOrg')} />
                     <Button title='Log Out' onPress={logOut} />
                     <Button title='Delete Account' onPress={createDeleteAlert} />
                 </>
