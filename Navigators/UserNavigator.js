@@ -5,6 +5,7 @@ import Register from '../Screens/Register';
 import Login from '../Screens/Login';
 import UserProfile from '../Screens/UserProfile';
 import ModifyAcc from '../Screens/ModifyAcc';
+import createOrg from '../Screens/CreateOrg';
 import EditPassword from '../Screens/EditPassword';
 
 const Stack = createStackNavigator();
@@ -49,6 +50,13 @@ function MyStack() {
             <Stack.Screen
                 name="EditPassword"
                 component={EditPassword}
+                options={{
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="CreateOrg"
+                component={createOrg}
                 options={{
                     headerShown: false
                 }}
