@@ -76,6 +76,12 @@ const UserProfile = (props) => {
     setFetched(true);
   };
 
+  // TODO: create function to find the past event in data base
+  // and render to the user
+  const findPastEvent = async () => {
+    () => props.navigation.navigate("Event");
+  }
+
   // helper function to create a table to present the past events
   const createPastEventTable = async () => {
     let table = [];
@@ -88,7 +94,12 @@ const UserProfile = (props) => {
     //only showcase the first 5 events
     // TODO: add name field to the pastEvent 
     for (let j = 0; j < len && j < 5; j++) {
-      children.push(<td>{`${profile.pastEvent[j].name}`}</td>);
+      children.push(<td>{`${profile.pastEvent[j].name}`}
+      <Button
+            title="view event"
+            onPress={findPastEvent}
+          />
+      </td>);
     }
     //Create the parent and add the children
     table.push(<tr>{children}</tr>);
