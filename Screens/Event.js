@@ -66,7 +66,7 @@ const Event = (props) => {
       {
         loading ? <Text>Loading</Text> :
           events.map((event, index) => (
-            <Text key={index} onPress={() => createAlert(event)} style={{ fontSize: 20 }}>{event._id} - {event.name}  </Text>
+            <Text key={index} onPress={() => createAlert(event)} style={{ fontSize: 20, color: "#f5f5f5", fontFamily: 'Verdana', textAlign: 'center', backgroundColor: '#B56576'}}>{event.name} - {event.description} </Text>
           ))
       }
       {

@@ -73,7 +73,7 @@ const Search = (props) => {
     return (
       <View style={{
         flexDirection: 'column', padding: SPACING, marginBottom: SPACING, backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: 12,
-        shadowColor: "#962eff",
+        shadowColor:"#355070",
         shadowOffset: {
           width: 0,
           height: 10
@@ -162,7 +162,7 @@ const Search = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: 'black',
   },
   itemStyle: {
     padding: 10,
