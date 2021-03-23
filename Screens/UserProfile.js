@@ -1,59 +1,93 @@
 import React, { useEffect, useState } from 'react';
-import { View, Alert } from 'react-native';
-import { Text, Button, withStyles } from 'react-native-ui-kitten'
-
+import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, Button } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const UserProfile = (props) => {
     const [profile, setProfile] = useState(null);
     const [fetched, setFetched] = useState(false);
-    const themedStyle = withStyles(theme => ({
-        root: {
-          backgroundColor: theme['color-basic-100'],
-          marginTop: 60
-        },
-        header: {
-          alignItems: 'center',
-          paddingTop: 25,
-          paddingBottom: 17
-        },
-        userInfo: {
-          flexDirection: 'row',
-          paddingVertical: 18
-        },
-        bordered: {
-          borderBottomWidth: 1,
-          borderColor: theme['color-basic-400']
-        },
-        section: {
-          flex: 1,
-          alignItems: 'center'
-        },
-        space: {
-          marginBottom: 3,
-          color: theme['color-basic-1000']
-        },
-        separator: {
-          backgroundColor: theme['color-basic-400'],
-          alignSelf: 'center',
-          flexDirection: 'row',
-          flex: 0,
-          width: 1,
-          height: 42
-        },
-        buttons: {
-          flexDirection: 'row',
-          paddingVertical: 8
-        },
-        button: {
-          flex: 1,
-          alignSelf: 'center'
-        },
-        text: {
-          color: theme['color-basic-1000']
-        }
-      }))
 
+
+    const styles = StyleSheet.create({
+      container: {
+          flex: 1,
+          backgroundColor: "#FFF"
+      },
+      text: {
+          fontFamily: "HelveticaNeue",
+          color: "#52575D"
+      },
+      image: {
+          flex: 1,
+          height: undefined,
+          width: undefined
+      },
+      titleBar: {
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginTop: 24,
+          marginHorizontal: 16,
+          marginLeft: 390
+      },
+      subText: {
+          fontSize: 12,
+          color: "#AEB5BC",
+          textTransform: "uppercase",
+          fontWeight: "500"
+      },
+      profileImage: {
+          width: 200,
+          height: 200,
+          borderRadius: 100,
+          overflow: "hidden"
+      },
+      dm: {
+          backgroundColor: "#41444B",
+          position: "absolute",
+          top: 20,
+          width: 40,
+          height: 40,
+          borderRadius: 20,
+          alignItems: "center",
+          justifyContent: "center"
+      },
+      active: {
+          backgroundColor: "#34FFB9",
+          position: "absolute",
+          bottom: 28,
+          left: 10,
+          padding: 4,
+          height: 20,
+          width: 20,
+          borderRadius: 10
+      },
+      add: {
+          backgroundColor: "#41444B",
+          position: "absolute",
+          bottom: 0,
+          right: 0,
+          width: 60,
+          height: 60,
+          borderRadius: 30,
+          alignItems: "center",
+          justifyContent: "center"
+      },
+      infoContainer: {
+          alignSelf: "center",
+          alignItems: "center",
+          marginTop: 16
+      },
+      statsContainer: {
+          flexDirection: "row",
+          alignSelf: "center",
+          marginTop: 32
+      },
+      statsBox: {
+          alignItems: "center",
+          flex: 1
+      }
+      
+    });
 
     const createDeleteAlert = () =>
         Alert.alert(
@@ -134,75 +168,61 @@ const UserProfile = (props) => {
     }, []);
 
     if (!fetched) {
-        return <View></View>;
     }
 
     return (
-        <View style={themedStyle.root}>
-          <View style={[themedStyle.header, themedStyle.bordered]}>
-            <Text category='h6' style={themedStyle.text}>
-              Test User
-            </Text>
-          </View>
-          <View style={[themedStyle.userInfo, themedStyle.bordered]}>
-            <View style={themedStyle.section}>
-              <Text appearance='hint' category='s2'>
-                Points
-              </Text>
-            </View>
-            <View style={themedStyle.section}>
-              <Text category='s1' style={themedStyle.space}>
-                0
-              </Text>
-              <Text appearance='hint' category='s2'>
-                Friends
-              </Text>
-            </View>
-            <View style={themedStyle.section}>
-              <Text category='s1' style={themedStyle.space}>
-                0
-              </Text>
-              <Text appearance='hint' category='s2'>
-                Following
-              </Text>
-            </View>
-          </View>
-          <View style={themedStyle.buttons}>
-          <Button
-              style={themedStyle.button}
-              appearance='ghost'
-              status='danger'
-              onPress={() => props.navigation.navigate('Settings')}>
-              MODIFY ACCOUNT
-            </Button>
-            <Button
-              style={themedStyle.button}
-              appearance='ghost'
-              status='danger'
-              onPress={() => props.navigation.navigate('CreateOrg')}>
-              CREATE ORGANIZATION
-            </Button>
-            <Button
-              style={themedStyle.button}
-              appearance='ghost'
-              status='danger'
-              onPress={logOut}>
-              LOGOUT
-            </Button>
-            <Button
-              style={themedStyle.button}
-              appearance='ghost'
-              status='danger'
-              onPress={createDeleteAlert}>
-              DELETE
-            </Button>
-            <View style={themedStyle.separator} />
-            <Button style={themedStyle.button} appearance='ghost' status='danger'>
-              MESSAGE
-            </Button>
-          </View>
-        </View>
-      )
+    
+      <SafeAreaView style={styles.container}>
+        {profile && <>
+          <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={styles.titleBar}>
+                  <Icon name="ellipsis-v" size={24} color="#52575D" onPress = {() => props.navigation.navigate("Settings")}></Icon>
+              </View>
+              <View style={{ alignSelf: "center" }}>
+                  <View style={styles.profileImage}>
+                      <Image source={require("../Assets/logo1.png")} style={styles.image} resizeMode="center"></Image>
+                  </View>
+                  <View style={styles.dm}>
+                      <Icon name="comment" size={18} color="#DFD8C8"></Icon>
+                  </View>
+                  <View style={styles.active}></View>
+                  <View style={styles.add}>
+                      <Icon name="plus" size={30} color="#DFD8C8" style={{ marginTop: 6, marginLeft: 2 }}></Icon>
+                  </View>
+              </View>
+
+              <View style={styles.infoContainer}>
+                  <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{profile.name}</Text>
+                  <Text style={[styles.text, { color: "#AEB5BC", fontSize: 20 }]}>{profile.username}</Text>
+              </View>
+
+              <View style={styles.statsContainer}>
+                  <View style={styles.statsBox}>
+                      <Text style={[styles.text, { fontSize: 24 }]}>{profile.eventPoints}</Text>
+                      <Text style={[styles.text, styles.subText]}>Bussin Score</Text>
+                  </View>
+                  <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
+                      <Text style={[styles.text, { fontSize: 24 }]}>23</Text>
+                      <Text style={[styles.text, styles.subText]}>Events Hosted</Text>
+                  </View>
+                  <View style={styles.statsBox}>
+                      <Text style={[styles.text, { fontSize: 24 }]}>302</Text>
+                      <Text style={[styles.text, styles.subText]}>Friends</Text>
+                  </View>
+              </View>
+
+              <View style={styles.infoContainer}>
+                    <Button title='Modify Account' onPress={() => props.navigation.navigate('Settings')} />
+                    <Button title='Create an organization' onPress={() => props.navigation.navigate('CreateOrg')} />
+                    <Button title='Log Out' onPress={logOut} />
+                    <Button title='Delete Account' onPress={createDeleteAlert} />
+              </View>
+
+          </ScrollView>
+          </>
+        }
+      </SafeAreaView>
+  );
 }
 
 export default UserProfile;
