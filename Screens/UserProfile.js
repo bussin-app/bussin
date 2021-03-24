@@ -154,8 +154,8 @@ const UserProfile = (props) => {
                       <Text style={[styles.text, styles.subText]}>Events Hosted</Text>
                   </View>
                   <View style={styles.statsBox}>
-                      <Text style={[styles.text, { fontSize: 24 }]}>302</Text>
-                      <Text style={[styles.text, styles.subText]}>Friends</Text>
+                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('FriendList')}>302</Text>
+                      <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('FriendList')}>Friends</Text>
                   </View>
               </View>
 
