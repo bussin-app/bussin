@@ -8,6 +8,7 @@ import UserNavigator from "./UserNavigator";
 import EventNavigator from "./EventNavigator";
 import AuthGlobal from "../Context/store/AuthGlobal";
 import SearchNavigator from "./SearchNavigator";
+import Inbox from "../Screens/Inbox";
 
 const Tab = createBottomTabNavigator();
 
@@ -40,6 +41,16 @@ const Main = () => {
         options={{
           tabBarIcon: ({ color }) => (
             <Icon name="search" color={color} size={30} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Inbox"
+        component={Inbox}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Icon name="inbox" color={color} size={30} />
           ),
         }}
       />

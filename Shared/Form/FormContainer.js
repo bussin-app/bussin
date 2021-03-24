@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 30,
+        fontFamily: 'HelveticaNeue'
     }
 })
 
