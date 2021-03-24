@@ -101,10 +101,16 @@ const addFriendAlert = () =>
             [
                 {
                     text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
+                    onPress: () => { 
+                        console.log("Cancel Pressed");
+                        return false; 
+                    },
                     style: "cancel"
                 },
-                { text: "Confirm", onPress: () => console.log("Confirm Pressed") }
+                { text: "Confirm", onPress: () => { 
+                    console.log("Confirm Pressed");
+                    return true;
+                } }
             ],
             { cancelable: false }
         );
@@ -123,12 +129,12 @@ const UserProfile = (props) => {
    });
    res = await res.json();
    //TODO: Update user fetch link
-   res = await fetch('https://bussin.blakekjohnson.dev/api/event/markAttendance', {
-     method: 'PUT',
+   res = await fetch('https://bussin.blakekjohnson.dev/api/friends/', {
+     method: 'POST',
      body: JSON.stringify({
        //TODO: Update fields
-       userID: res.user._id,
-       eventID: eventID,
+       to: 123, // How to get current user's id?
+       from: res.user._id,
      }),
      headers: {
        'Authorization': `Bearer ${token}`,
