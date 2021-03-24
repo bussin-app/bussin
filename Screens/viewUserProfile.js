@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, Button } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, Alert } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -35,17 +35,22 @@ const styles = StyleSheet.create({
       width: 200,
       height: 200,
       borderRadius: 100,
-      overflow: "hidden"
+      overflow: "hidden",
+      borderWidth: 1,
+      borderColor: "#000000"
   },
   dm: {
-      backgroundColor: "#41444B",
+      backgroundColor: "#FFFFFF",
       position: "absolute",
       top: 20,
       width: 40,
       height: 40,
       borderRadius: 20,
       alignItems: "center",
-      justifyContent: "center"
+      justifyContent: "center",
+      borderWidth: 1,
+      borderColor: "#000000"
+      
   },
   active: {
       backgroundColor: "#34FFB9",
@@ -55,10 +60,12 @@ const styles = StyleSheet.create({
       padding: 4,
       height: 20,
       width: 20,
-      borderRadius: 10
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: "#000000"
   },
   add: {
-      backgroundColor: "#41444B",
+      backgroundColor: "#FFFFFF",
       position: "absolute",
       bottom: 0,
       right: 0,
@@ -66,7 +73,9 @@ const styles = StyleSheet.create({
       height: 60,
       borderRadius: 30,
       alignItems: "center",
-      justifyContent: "center"
+      justifyContent: "center",
+      borderWidth: 1,
+      borderColor: "#000000"
   },
   infoContainer: {
       alignSelf: "center",
@@ -85,6 +94,20 @@ const styles = StyleSheet.create({
   
 });
 
+const addFriendAlert = () =>
+        Alert.alert(
+            "Add Friend",
+            "Do you want to add this user as a friend?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "Confirm", onPress: () => console.log("Confirm Pressed") }
+            ],
+            { cancelable: false }
+        );
 
 const UserProfile = (props) => {
   let { user } = props.route.params;
@@ -128,12 +151,8 @@ const UserProfile = (props) => {
                   <View style={styles.profileImage}>
                       <Image source={require("../Assets/logo1.png")} style={styles.image} resizeMode="center"></Image>
                   </View>
-                  <View style={styles.dm}>
-                      <Icon name="comment" size={18} color="#DFD8C8"></Icon>
-                  </View>
-                  <View style={styles.active}></View>
                   <View style={styles.add}>
-                      <Icon name="plus" size={30} color="#DFD8C8" style={{ marginTop: 6, marginLeft: 2 }}></Icon>
+                      <Icon name="plus" size={30} color="#B92126" style={{ marginTop: 6, marginLeft: 2 }} onPress = {addFriendAlert}></Icon>
                   </View>
               </View>
               <View style={styles.infoContainer}>
