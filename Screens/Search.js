@@ -97,10 +97,10 @@ const Search = (props) => {
           {item.name}
         </Text>
         <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue' }}>
-          {item.description}
+          {item.description || item.username}
         </Text>
         <Text style={{ fontSize: 12, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
-          {item.date}
+          {item.date || item.eventPoints}
         </Text>
       </View>
     );
