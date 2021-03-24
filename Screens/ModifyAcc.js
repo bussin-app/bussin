@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Button, Text } from 'react-native';
+import { View, Button, Text, Alert } from 'react-native';
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -63,6 +63,39 @@ const ModifyAcc = (props) => {
         }
     }, [accountChanged]);
 
+    const createDeleteAlert = () =>
+        Alert.alert(
+            "Delete Account",
+            "You will not be able to recover your account.",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "Delete", onPress: deleteProfile }
+            ],
+            { cancelable: false }
+        );
+
+    const deleteProfile = async () => {
+        let token = await AsyncStorage.getItem('@bussin-token');
+        if (!token) return token;
+
+        let res = await fetch('https://bussin.blakekjohnson.dev/api/user', {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        res = await res.json();
+
+        logOut();
+    };
+
+
     return (
         <KeyboardAwareScrollView
             viewIsInsideTabBar={true}
@@ -93,6 +126,7 @@ const ModifyAcc = (props) => {
                     <Button title={"Change Password"} disabled={waiting} onPress={
                         () => props.navigation.navigate("EditPassword")}>
                     </Button>
+                    <Button title='Delete Account' onPress={createDeleteAlert} />
                 </View>
             </FormContainer>
         </KeyboardAwareScrollView>
