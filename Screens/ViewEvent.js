@@ -80,53 +80,19 @@ const ViewEvent = (props) => {
   };
 
   const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#FFF"
-    },
+    
     text: {
         fontFamily: "HelveticaNeue",
         color: "#52575D"
     },
-    image: {
-        flex: 1,
-        height: undefined,
-        width: undefined
-    },
-    titleBar: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginTop: 24,
-        marginHorizontal: 16,
-        marginLeft: 390
-    },
+
     subText: {
         fontSize: 12,
         color: "#AEB5BC",
         textTransform: "uppercase",
         fontWeight: "500"
     },
-    profileImage: {
-        width: 200,
-        height: 200,
-        borderRadius: 100,
-        overflow: "hidden",
-        borderWidth: 1,
-        borderColor: "#000000"
-    },
-    edit: {
-        backgroundColor: "#FFFFFF",
-        position: "absolute",
-        bottom: 0,
-        right: 0,
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        alignItems: "center",
-        justifyContent: "center",
-        borderWidth: 1,
-        borderColor: "#000000"
-    },
+
     infoContainer: {
         alignSelf: "center",
         alignItems: "center",
