@@ -94,7 +94,10 @@ const styles = StyleSheet.create({
   
 });
 
-const addFriendAlert = () =>
+const UserProfile = (props) => {
+  let { user } = props.route.params;
+
+  const addFriendAlert = () =>
         Alert.alert(
             "Add Friend",
             "Do you want to add this user as a friend?",
@@ -103,20 +106,16 @@ const addFriendAlert = () =>
                     text: "Cancel",
                     onPress: () => { 
                         console.log("Cancel Pressed");
-                        return false; 
                     },
                     style: "cancel"
                 },
                 { text: "Confirm", onPress: () => { 
                     console.log("Confirm Pressed");
-                    return true;
+                    await addFriend();
                 } }
             ],
             { cancelable: false }
         );
-
-const UserProfile = (props) => {
-  let { user } = props.route.params;
   
   const addFriend = async () => {
    let token = await AsyncStorage.getItem('@bussin-token');
@@ -143,9 +142,6 @@ const UserProfile = (props) => {
    });
 
    if (res.status != 200) return;
-   //Make changes accordingly
-   setAttending(true);
-   setAttendeeCount(attendeeCount + 1);
  };
   return (
     <SafeAreaView style={styles.container}>
