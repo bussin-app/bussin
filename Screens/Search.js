@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // import all the components we are going to use
-import { SafeAreaView, Text, StyleSheet, View, FlatList, StatusBar } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, View, FlatList, StatusBar, Button } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { Picker } from '@react-native-community/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -45,6 +45,14 @@ const Search = (props) => {
     fetchData();
   }, [status]);
 
+  const changeStatus = (status) => {
+    if (status == 'events') {
+      setStatus('users');
+    } else {
+      setStatus('events');
+    }
+  }
+
   const searchFilterFunction = (text) => {
     // Check if searched text is not blank
     if (text) {
@@ -85,14 +93,14 @@ const Search = (props) => {
           source={{ url: 'https://api.unsplash.com/photos/random/?query=party&count=' }}
           style={{ width: PIC_SIZE, height: PIC_SIZ, borderRadius: PIC_SIZE }}
         /> */}
-        <Text style={{ fontSize: 15, fontFamily: 'Verdana' }} onPress={() => getItem(item)}>
+        <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
           {item.name}
         </Text>
-        <Text style={{ fontSize: 12, fontFamily: 'Verdana' }}>
-          {item.description}
+        <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue' }}>
+          {item.description || item.username}
         </Text>
-        <Text style={{ fontSize: 12, fontFamily: 'Verdana', textAlign: 'right' }}>
-          {item.date}
+        <Text style={{ fontSize: 12, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
+          {item.date || item.eventPoints}
         </Text>
       </View>
     );
@@ -125,6 +133,7 @@ const Search = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignItems: 'center' }}>
+        <Button title={ (status == 'events')? 'Events' : 'Users' } />
         <Picker
           style={{ height: 50, width: 400 }}
           selectedValue={status}
@@ -142,6 +151,7 @@ const Search = (props) => {
           onClear={(text) => searchFilterFunction('')}
           placeholder="Type Here..."
           value={search}
+          lightTheme={true}
         />
         <FlatList
           data={filteredDataSource}
