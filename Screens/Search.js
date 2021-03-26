@@ -76,7 +76,11 @@ const Search = (props) => {
     }
   };
   const formatDate = (date) => {
-    let dateParts = date.toString();
+    if (date == undefined) {
+      return '';
+    }
+
+    let dateParts = date.split("-");
     let year = dateParts[0];
     let monthNum = dateParts[1];
     let curDate = dateParts[2].substring(0,2);
@@ -118,7 +122,7 @@ const Search = (props) => {
           {item.description || item.username}
         </Text>
         <Text style={{ fontSize: 12, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
-          {(item.date) || item.eventPoints}
+          {formatDate(item.date) || item.eventPoints}
         </Text>
       </View>
     );
