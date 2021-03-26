@@ -19,6 +19,7 @@ const Event = (props) => {
     const [time, setTime] = useState(new Date());
     const [show, setShow] = useState(true);
     const [maxAttendees, setMaxAttendees] = useState(1);
+    const [orgName, setOrgName] = useState("");
     const [status, setStatus] = useState("");
 
 
@@ -81,12 +82,17 @@ const Event = (props) => {
                     id={"name"}
                     onChangeText={(text) => setName(text)}
                 />
-
                 <Input
                     placeholder={"Enter Description"}
                     name={"description"}
                     id={"description"}
                     onChangeText={(text) => setDescription(text)}
+                />                
+                <Input
+                    placeholder={"Optional: Organization Name"}
+                    name={"orgName"}
+                    id={"orgName"}
+                    onChangeText={(text) => setOrgName(text)}
                 />
             </FormContainer>
 

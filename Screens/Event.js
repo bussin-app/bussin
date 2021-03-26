@@ -111,7 +111,7 @@ const Event = (props) => {
             <View>
               <Text key={index} onPress={() => createAlert(event)} style={{ fontSize: 20, color: '#4B4B4B', fontFamily: 'Verdana', textAlign: 'left', backgroundColor: '#f5f5f5', borderColor: '#4CAF50', paddingLeft: 30, paddingTop: 5}}>{event.name}</Text>
               <Text key={index} onPress={() => createAlert(event)} style={{ fontSize: 15, color: '#888888', fontFamily: 'Verdana', textAlign: 'left', backgroundColor: '#f5f5f5', paddingVertical: 5, paddingLeft: 33}}>{event.description}</Text>
-              <Text key={index} onPress={() => createAlert(event)} style={{ fontSize: 15, color: '#6D597A', fontFamily: 'Verdana', textAlign: 'left', backgroundColor: '#f5f5f5', paddingVertical: -1, paddingLeft: 33}}>{(formatDate(event.date))} </Text>
+              <Text key={index} onPress={() => createAlert(event)} style={{ fontSize: 15, color: '#6D597A', fontFamily: 'Verdana', textAlign: 'left', backgroundColor: '#f5f5f5', paddingBottom: 20, paddingLeft: 33}}>{(formatDate(event.date))} </Text>
             </View>
           ))
       }
