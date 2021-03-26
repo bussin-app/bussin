@@ -75,6 +75,28 @@ const Search = (props) => {
       setSearch(text);
     }
   };
+  const formatDate = (date) => {
+    let dateParts = date.toString();
+    let year = dateParts[0];
+    let monthNum = dateParts[1];
+    let curDate = dateParts[2].substring(0,2);
+    var month = new Array();
+    month[0] = "Jan";
+    month[1] = "Feb";
+    month[2] = "Mar";
+    month[3] = "Apr";
+    month[4] = "May";
+    month[5] = "Jun";
+    month[6] = "Jul";
+    month[7] = "Aug";
+    month[8] = "Sep";
+    month[9] = "Oct";
+    month[10] = "Nov";
+    month[11] = "Dec";
+    let formattedString = curDate + " " + month[monthNum - 1] + ", " + year;
+    return formattedString;
+  }
+
   const SPACING = 20;
   const PIC_SIZE = 70
   const ItemView = ({ item }) => {
@@ -89,10 +111,6 @@ const Search = (props) => {
         shadowOpacity: .3,
         shadowRadius: 20
       }}>
-        {/* <Image
-          source={{ url: 'https://api.unsplash.com/photos/random/?query=party&count=' }}
-          style={{ width: PIC_SIZE, height: PIC_SIZ, borderRadius: PIC_SIZE }}
-        /> */}
         <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
           {item.name}
         </Text>
@@ -100,7 +118,7 @@ const Search = (props) => {
           {item.description || item.username}
         </Text>
         <Text style={{ fontSize: 12, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
-          {item.date || item.eventPoints}
+          {(item.date) || item.eventPoints}
         </Text>
       </View>
     );

@@ -59,14 +59,36 @@ const Event = (props) => {
       ],
       { cancelable: false }
     );
+    
+    const formatDate = (date) => {
+      let dateParts = date.split("-");
+      let year = dateParts[0];
+      let monthNum = dateParts[1];
+      let curDate = dateParts[2].substring(0,2);
+      var month = new Array();
+      month[0] = "Jan";
+      month[1] = "Feb";
+      month[2] = "Mar";
+      month[3] = "Apr";
+      month[4] = "May";
+      month[5] = "Jun";
+      month[6] = "Jul";
+      month[7] = "Aug";
+      month[8] = "Sep";
+      month[9] = "Oct";
+      month[10] = "Nov";
+      month[11] = "Dec";
+      let formattedString = curDate + " " + month[monthNum - 1] + ", " + year;
+      return formattedString;
+    }
 
   return (
-    <View>
+    <View style={{ backgroundColor: '#f5f5f5' }}>
       { error && <Text>{error}</Text>}
       {
         loading ? <Text>Loading</Text> :
           events.map((event, index) => (
-            <Text key={index} onPress={() => createAlert(event)} style={{ fontSize: 20, color: "#f5f5f5", fontFamily: 'Verdana', textAlign: 'center', backgroundColor: '#B56576'}}>{event.name} - {event.description} </Text>
+            <Text key={index} onPress={() => createAlert(event)} style={{ fontSize: 20, color: 'black', fontFamily: 'Verdana', textAlign: 'left', backgroundColor: '#f5f5f5', border: '1px solid', borderColor: '#4CAF50', paddingLeft: 30}}>{event.name}  •  {formatDate(event.date)} </Text>
           ))
       }
       {
