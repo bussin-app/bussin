@@ -109,10 +109,7 @@ const UserProfile = (props) => {
                     },
                     style: "cancel"
                 },
-                { text: "Confirm", onPress: () => { 
-                    console.log("Confirm Pressed");
-                    // await addFriend();
-                } }
+                { text: "Confirm", onPress: addFriend }
             ],
             { cancelable: false }
         );
