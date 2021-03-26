@@ -84,7 +84,7 @@ const CreateOrg = (props) => {
                     onChangeText={(text) => setName(text)}
                 />
                 <View>
-                    <Button title={"Next"} onPress={sendRequest} disabled={waiting} />
+                    <Button title={"Next"}  style={{backgroundColor: '#555555'}} onPress={sendRequest} disabled={waiting} />
                 </View>
             </FormContainer>
         </KeyboardAwareScrollView>

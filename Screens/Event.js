@@ -59,14 +59,60 @@ const Event = (props) => {
       ],
       { cancelable: false }
     );
+    
+    const formatDate = (date) => {
+      let dateParts = date.split("-");
+      let year = dateParts[0];
+      let monthNum = dateParts[1];
+      let curDate = dateParts[2].substring(0,2);
+      var month = new Array();
+      month[0] = "Jan";
+      month[1] = "Feb";
+      month[2] = "Mar";
+      month[3] = "Apr";
+      month[4] = "May";
+      month[5] = "Jun";
+      month[6] = "Jul";
+      month[7] = "Aug";
+      month[8] = "Sep";
+      month[9] = "Oct";
+      month[10] = "Nov";
+      month[11] = "Dec";
+      let time = date.split(':');
+      let hours = time[0].substring(time[0].length - 2);
+      let minutes = time[1];
+
+      // calculate
+      let timeValue;
+
+      if (hours > 0 && hours <= 12) {
+        timeValue = hours;
+      } else if (hours > 12) {
+        timeValue = "" + (hours - 12);
+      } else if (hours == 0) {
+        timeValue = "12";
+      }
+      
+      timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+      timeValue += (hours >= 12) ? " pm" : " am";  // get AM/PM
+
+      let formattedString = curDate + " " + month[monthNum - 1] + ", " + year + " " + timeValue;
+      return formattedString;
+    }
 
   return (
-    <View>
+    <View style={{ backgroundColor: '#f5f5f5' }}>
+      <Text style={{ fontSize: 20, color: '#4B4B4B', fontFamily: 'Verdana', textAlign: 'center', backgroundColor: '#f5f5f5', borderColor: '#4CAF50', paddingVertical: 5}}
+        >My Events</Text>
       { error && <Text>{error}</Text>}
       {
         loading ? <Text>Loading</Text> :
           events.map((event, index) => (
-            <Text key={index} onPress={() => createAlert(event)} style={{ fontSize: 20 }}>{event._id} - {event.name}  </Text>
+            <View>
+              <Text key={index} onPress={() => createAlert(event)} style={{ fontSize: 20, color: '#4B4B4B', fontFamily: 'Verdana', textAlign: 'left', backgroundColor: '#f5f5f5', borderColor: '#4CAF50', paddingLeft: 30, paddingTop: 5}}>{event.name}</Text>
+              <Text key={index} onPress={() => createAlert(event)} style={{ fontSize: 15, color: '#888888', fontFamily: 'Verdana', textAlign: 'left', backgroundColor: '#f5f5f5', paddingVertical: 5, paddingLeft: 33}}>{event.description}</Text>
+              <Text key={index} onPress={() => createAlert(event)} style={{ fontSize: 15, color: '#6D597A', fontFamily: 'Verdana', textAlign: 'left', backgroundColor: '#f5f5f5', paddingBottom: 20, paddingLeft: 33}}>{(formatDate(event.date))} </Text>
+            </View>
           ))
       }
       {

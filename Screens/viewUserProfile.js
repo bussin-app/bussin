@@ -94,23 +94,28 @@ const styles = StyleSheet.create({
   
 });
 
-const addFriendAlert = () =>
+const UserProfile = (props) => {
+  let { user } = props.route.params;
+
+  const addFriendAlert = () =>
         Alert.alert(
             "Add Friend",
             "Do you want to add this user as a friend?",
             [
                 {
                     text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
+                    onPress: () => { 
+                        console.log("Cancel Pressed");
+                    },
                     style: "cancel"
                 },
-                { text: "Confirm", onPress: () => console.log("Confirm Pressed") }
+                { text: "Confirm", onPress: () => { 
+                    console.log("Confirm Pressed");
+                    // await addFriend();
+                } }
             ],
             { cancelable: false }
         );
-
-const UserProfile = (props) => {
-  let { user } = props.route.params;
   
   const addFriend = async () => {
    let token = await AsyncStorage.getItem('@bussin-token');
@@ -123,12 +128,12 @@ const UserProfile = (props) => {
    });
    res = await res.json();
    //TODO: Update user fetch link
-   res = await fetch('https://bussin.blakekjohnson.dev/api/event/markAttendance', {
-     method: 'PUT',
+   res = await fetch('https://bussin.blakekjohnson.dev/api/friends/', {
+     method: 'POST',
      body: JSON.stringify({
        //TODO: Update fields
-       userID: res.user._id,
-       eventID: eventID,
+       to: 123, // How to get current user's id?
+       from: res.user._id,
      }),
      headers: {
        'Authorization': `Bearer ${token}`,
@@ -137,9 +142,6 @@ const UserProfile = (props) => {
    });
 
    if (res.status != 200) return;
-   //Make changes accordingly
-   setAttending(true);
-   setAttendeeCount(attendeeCount + 1);
  };
   return (
     <SafeAreaView style={styles.container}>
