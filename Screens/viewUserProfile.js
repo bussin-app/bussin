@@ -129,7 +129,7 @@ const UserProfile = (props) => {
      method: 'POST',
      body: JSON.stringify({
        //TODO: Update fields
-       to: 123, // How to get current user's id?
+       to: user._id, // How to get current user's id?
        from: res.user._id,
      }),
      headers: {
