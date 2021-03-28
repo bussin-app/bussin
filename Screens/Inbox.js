@@ -13,16 +13,11 @@ const Inbox = (props) => {
     if (!storedToken) return;
     setToken(storedToken);
 
-    let { user } = props.route.params;
-
     let response = await fetch("https://bussin.blakekjohnson.dev/api/friends/friendInbox", {
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
+              'Authorization': `Bearer ${storedToken}`,
             },
-            body: JSON.stringify({
-                user,
-            })
     });
 
     // Convert response to JSON

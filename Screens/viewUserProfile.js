@@ -124,12 +124,10 @@ const UserProfile = (props) => {
      }
    });
    res = await res.json();
-   //TODO: Update user fetch link
    res = await fetch('https://bussin.blakekjohnson.dev/api/friends/', {
      method: 'POST',
      body: JSON.stringify({
-       //TODO: Update fields
-       to: user._id, // How to get current user's id?
+       to: user._id, 
        from: res.user._id,
      }),
      headers: {
@@ -137,7 +135,7 @@ const UserProfile = (props) => {
        'Content-Type': 'application/json'
      }
    });
-
+   res = await res.json();
    if (res.status != 200) return;
  };
   return (
