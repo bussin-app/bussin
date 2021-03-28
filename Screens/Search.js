@@ -160,6 +160,7 @@ const Search = (props) => {
           style={{ height: 50, width: 400 }}
           selectedValue={status}
           onValueChange={(itemValue, itemIndex) => setStatus(itemValue)}
+          font = "HelveticaNueu"
         >
           <Picker.Item label="Events" value="events" />
           <Picker.Item label="Users" value="users" />
