@@ -183,7 +183,7 @@ const UserProfile = (props) => {
                       <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('FriendList')}>Friends</Text>
                   </View>
                   <View style={styles.statsBox}>
-                      <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('PastEvent')}>Event Attended</Text>
+                      <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('PastEvent')}>Events Attended</Text>
                   </View>
               </View>
 
