@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import CreateEvent from '../Screens/createEvent';
 import Event from '../Screens/Event';
 import EditEvent from '../Screens/EditEvent';
+import FriendList from '../Screens/FriendList';
 
 const Stack = createStackNavigator();
 
@@ -31,6 +32,14 @@ function MyStack() {
             <Stack.Screen
                 name="EditEvent"
                 component={EditEvent}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen
+                name="FriendList"
+                component={FriendList}
                 options={{
                     headerShown: false
                 }}
