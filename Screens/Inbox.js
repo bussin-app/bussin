@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Inbox = (props) => {
   const [token, setToken] = useState(null);
   const [requests, setRequests] = useState([]);
+  const [filter, setFilter] = useState(['friends']);
 
  
 
@@ -54,10 +55,19 @@ const Inbox = (props) => {
     });
   }, []);
 
+  const changeFilter = (filter) => {
+    if (filter == 'friends') {
+      setFilter('invites');
+    } else {
+      setFilter('friends');
+    }
+  }
+
   const SPACING = 20;
   const PIC_SIZE = 70
   const ItemView = ({ item }) => {
     return (
+      <SafeAreaView>
       <View style={{
         width: 350, padding: SPACING, marginBottom: SPACING, backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: 12,
         shadowColor:"#355070",
@@ -83,6 +93,7 @@ const Inbox = (props) => {
         </View>
         
       </View>
+      </SafeAreaView>
     );
   };
 
@@ -109,6 +120,9 @@ const Inbox = (props) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ alignItems: 'center' }}>
+        <Button title={ (filter == 'friends')? 'Friend Requests' : 'Invites' }  onPress = {() => changeFilter(filter)} />
+      </View>
       <View style={{ alignItems: 'center' }}>
         <FlatList
           data={requests}
