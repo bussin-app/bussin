@@ -175,15 +175,12 @@ const UserProfile = (props) => {
                       <Text style={[styles.text, styles.subText]}>Bussin Score</Text>
                   </View>
                   <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-                      <Text style={[styles.text, { fontSize: 24 }]}>23</Text>
-                      <Text style={[styles.text, styles.subText]}>Events Hosted</Text>
+                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('PastEvent')}>23</Text>
+                      <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('PastEvent')} >Events Hosted</Text>
                   </View>
                   <View style={styles.statsBox}>
                       <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('FriendList')}>302</Text>
                       <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('FriendList')}>Friends</Text>
-                  </View>
-                  <View style={styles.statsBox}>
-                      <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('PastEvent')}>Events Attended</Text>
                   </View>
               </View>
 
