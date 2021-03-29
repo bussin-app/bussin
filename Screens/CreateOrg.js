@@ -1,71 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import { View, Button, Text } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, Button, LogBox } from 'react-native';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import NumericInput from 'react-native-numeric-input';
+import DatePicker from "../Shared/DatePicker";
+import TimePicker from "../Shared/TimePicker";
+import { Picker } from '@react-native-community/picker';
 
-const CreateOrg = (props) => {
-    const [name, setName] = useState("");
-    const [waiting, setWaiting] = useState(false);
-    //const [passwordChanged, setPasswordChanged] = useState(false);
-    const [error, setError] = useState(null);
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-    const sendRequest = async () => {
-        setWaiting(true);
-        setError(null);
+LogBox.ignoreLogs(['Warning:']);
 
-        // Construct user data for request
+const Organization = (props) => {
+    const [orgName, setName] = useState("");
+
+
+    const createOrg = async () => {
+        // Construct data for backend
         let body = {
-            name,
+            orgName
         };
 
+        // Send the request
         let token = await AsyncStorage.getItem('@bussin-token');
-        if (!token) return;
-
-        // Send request to server and await response
-        let res = await fetch("https://bussin.blakekjohnson.dev/api/user/passwordReset", {
-            method: "POST",
+        let res = await fetch('https://bussin.blakekjohnson.dev/api/organization/', {
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
                 'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(body)
+            body: JSON.stringify({
+                Organization: body
+            }),
         });
 
-        // Reject if status is anything other than 200
-        if (res.status !== 200) {
-            let data = await res.json();
-            setError(data.msg);
-            setWaiting(false);
-            return;
-        }
+        // Accept the response
+        res = await res.json();
+        console.log(res);
 
-        // Convert response to a JSON object
-        let data = await res.json();
-
-        //setPasswordChanged(true);
+        //props.navigation.navigate('Organization');
     };
-
-    // useEffect(() => {
-    //     if (passwordChanged) {
-    //         setWaiting(false);
-    //         setPasswordChanged(false);
-
-    //         props.navigation.reset({
-    //             index: 0,
-    //             routes: [
-    //                 { name: 'User Profile' }
-    //             ]
-    //         });
-    //     }
-    // }, [passwordChanged]);
-
-    useEffect(() => {
-        props.navigation.addListener('focus', () => {
-            setName("");
-        });
-    }, []);
 
     return (
         <KeyboardAwareScrollView
@@ -73,22 +48,19 @@ const CreateOrg = (props) => {
             extraHeight={200}
             enableOnAndroid={true}
         >
-
             <FormContainer title={"Create Organization"}>
-                {error ? <Text>{error}</Text> : <></>}
-                <Input
-                    placeholder={"name"}
-                    name={"name"}
-                    id={"name"}
-                    value={name}
-                    onChangeText={(text) => setName(text)}
-                />
-                <View>
-                    <Button title={"Next"}  style={{backgroundColor: '#555555'}} onPress={sendRequest} disabled={waiting} />
-                </View>
+            <Input 
+                placeholder={"name"} 
+                name={"name"} id={"orgName"} 
+                value={orgName} 
+                onChangeText={(text) => setName(text)} 
+            />
+            <View style={{}}>
+                <Button title={"Create"} onPress={createOrg} />
+            </View>
             </FormContainer>
         </KeyboardAwareScrollView>
     )
 }
 
-export default CreateOrg;
+export default Organization;
