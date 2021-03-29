@@ -36,7 +36,7 @@ const Inbox = (props) => {
        request: {
           to: item.to._id, 
           from: item.from._id,
-          status: status
+          response: status
        } 
      }),
      headers: {
