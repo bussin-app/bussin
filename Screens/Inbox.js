@@ -33,11 +33,11 @@ const Inbox = (props) => {
     res = await fetch('https://bussin.blakekjohnson.dev/api/friends/friendRespond', {
      method: 'DELETE',
      body: JSON.stringify({
-         
-            to: item.to._id, 
-            from: item.from._id,
-            status: status
-        
+       request: {
+          to: item.to._id, 
+          from: item.from._id,
+          status: status
+       } 
      }),
      headers: {
        'Authorization': `Bearer ${token}`,
