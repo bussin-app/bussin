@@ -78,7 +78,7 @@ const Inbox = (props) => {
         shadowOpacity: .3,
         shadowRadius: 20
       }}>
-        <Text style={{ fontWeight: "200", fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+        <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
           Friend Request From:
         </Text>
         <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
