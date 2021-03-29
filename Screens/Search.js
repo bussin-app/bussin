@@ -153,18 +153,9 @@ const Search = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignItems: 'center' }}>
-        <Button title={ (status == 'events')? 'Events' : 'Users' } />
-        <Picker
-          style={{ height: 50, width: 400 }}
-          selectedValue={status}
-          onValueChange={(itemValue, itemIndex) => setStatus(itemValue)}
-          font = "HelveticaNueu"
-        >
-          <Picker.Item label="Events" value="events" />
-          <Picker.Item label="Users" value="users" />
-        </Picker>
+        <Button title={ (status == 'events')? 'Events' : 'Users' } onPress = {() => changeStatus(status)} />
       </View>
-      <View style={{ marginTop: 160 }}>
+      <View>
         <SearchBar
           round
           searchIcon={{ size: 24 }}

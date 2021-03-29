@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, Text, StyleSheet, View, FlatList, StatusBar } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, View, FlatList, StatusBar, Button} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Inbox = (props) => {
@@ -24,13 +24,12 @@ const Inbox = (props) => {
     response = await response.json();
 
     // Set data sources
-    setRequests(response.items);
-    
+    setRequests(response);
   };
 
   useEffect(() => {
     props.navigation.addListener('focus', () => {
-      fetchRequests();
+    fetchRequests();
     });
   }, []);
 
@@ -39,7 +38,7 @@ const Inbox = (props) => {
   const ItemView = ({ item }) => {
     return (
       <View style={{
-        flexDirection: 'column', padding: SPACING, marginBottom: SPACING, backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: 12,
+        width: 350, padding: SPACING, marginBottom: SPACING, backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: 12,
         shadowColor:"#355070",
         shadowOffset: {
           width: 0,
@@ -48,15 +47,20 @@ const Inbox = (props) => {
         shadowOpacity: .3,
         shadowRadius: 20
       }}>
+        <Text style={{ fontWeight: "200", fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+          Friend Request From:
+        </Text>
         <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-          {item.name}
+          {item.from.name}
         </Text>
         <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue' }}>
-          {item.username}
+          {item.from.username}
         </Text>
-        <Text style={{ fontSize: 12, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
-          {item.id}
-        </Text>
+        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+          <Button title={"Accept"} onPress={() =>console.log("Accept")}></Button>
+          <Button title={"Deny"} onPress={() => console.log("Deny")}></Button>
+        </View>
+        
       </View>
     );
   };
