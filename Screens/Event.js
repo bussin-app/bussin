@@ -44,8 +44,9 @@ const Event = (props) => {
     });
   }, []);
 
-  const createAlert = (event) =>
-    Alert.alert(
+  const createAlert = (event) => {
+    if (event.private) {
+      Alert.alert(
       "Update Event",
       "Edit or Start this Event?",
       [
@@ -59,7 +60,27 @@ const Event = (props) => {
         { text: "Start", onPress: () => console.log("Start") }
       ],
       { cancelable: false }
-    );
+      );
+    } else {
+      Alert.alert(
+        "Update Event",
+        "Edit or Start this Event?",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel"),
+            style: "cancel"
+          },
+          { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event }) },
+          { text: "Start", onPress: () => console.log("Start") }
+        ],
+        { cancelable: false }
+      );
+    }
+  }
+    
+  
+    
     
     const formatDate = (date) => {
       let dateParts = date.split("-");
