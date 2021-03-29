@@ -27,6 +27,27 @@ const Inbox = (props) => {
     setRequests(response);
   };
 
+  const replyRequest = async (status, item) => {
+    console.log("Respond");
+    res = await fetch('https://bussin.blakekjohnson.dev/api/friends/friendRespond', {
+     method: 'DELETE',
+     body: JSON.stringify({
+         
+            to: item.to._id, 
+            from: item.from._id,
+            status: status
+        
+     }),
+     headers: {
+       'Authorization': `Bearer ${token}`,
+       'Content-Type': 'application/json'
+     }
+    });
+     res = await res.json();
+     console.log(res);
+
+  };
+
   useEffect(() => {
     props.navigation.addListener('focus', () => {
     fetchRequests();
@@ -57,8 +78,8 @@ const Inbox = (props) => {
           {item.from.username}
         </Text>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-          <Button title={"Accept"} onPress={() =>console.log("Accept")}></Button>
-          <Button title={"Deny"} onPress={() => console.log("Deny")}></Button>
+          <Button title={"Accept"} onPress={() => replyRequest(0, item)}></Button>
+          <Button title={"Deny"} onPress={() => replyRequest(1, item)}></Button>
         </View>
         
       </View>
