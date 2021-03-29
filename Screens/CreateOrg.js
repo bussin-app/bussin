@@ -13,13 +13,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 LogBox.ignoreLogs(['Warning:']);
 
 const Organization = (props) => {
-    const [orgName, setName] = useState("");
-
+    const [name, setName] = useState("");
 
     const createOrg = async () => {
         // Construct data for backend
-        let body = {
-            orgName
+        let OrgData = {
+            name
         };
 
         // Send the request
@@ -31,7 +30,7 @@ const Organization = (props) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                Organization: body
+                organization: OrgData
             }),
         });
 
@@ -51,8 +50,8 @@ const Organization = (props) => {
             <FormContainer title={"Create Organization"}>
             <Input 
                 placeholder={"name"} 
-                name={"name"} id={"orgName"} 
-                value={orgName} 
+                name={"name"} id={"name"} 
+                value={name} 
                 onChangeText={(text) => setName(text)} 
             />
             <View style={{}}>
