@@ -117,18 +117,20 @@ const UserProfile = (props) => {
   const addFriend = async () => {
    let token = await AsyncStorage.getItem('@bussin-token');
    if (!token) return;
-
    let res = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
      headers: {
        'Authorization': `Bearer ${token}`
      }
    });
    res = await res.json();
+
    res = await fetch('https://bussin.blakekjohnson.dev/api/friends/', {
      method: 'POST',
      body: JSON.stringify({
-       to: user._id, 
-       from: res.user._id,
+         request: {
+            to: user._id, 
+            from: res.user._id,
+         }
      }),
      headers: {
        'Authorization': `Bearer ${token}`,
