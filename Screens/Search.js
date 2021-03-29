@@ -46,9 +46,9 @@ const Search = (props) => {
   const changeStatus = (status) => {
     if (status == 'events') {
       setStatus('users');
-    } else {
+    } else if (status == 'users') {
       setStatus('events');
-    }
+    } 
   }
 
   const searchFilterFunction = (text) => {
@@ -95,7 +95,7 @@ const Search = (props) => {
     month[9] = "Oct";
     month[10] = "Nov";
     month[11] = "Dec";
-    let formattedString = curDate + " " + month[monthNum - 1] + ", " + year;
+    let formattedString =month[monthNum - 1] + " " + curDate + ", " + year;
     return formattedString;
   }
 
@@ -113,13 +113,13 @@ const Search = (props) => {
         shadowOpacity: .3,
         shadowRadius: 20
       }}>
-        <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+        <Text style={{ fontSize: 25, fontFamily: 'HelveticaNeue', fontWeight: "200" }} onPress={() => getItem(item)}>
           {item.name}
         </Text>
-        <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue' }}>
+        <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }}>
           {item.description || item.username}
         </Text>
-        <Text style={{ fontSize: 12, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
+        <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
           {formatDate(item.date) || item.eventPoints}
         </Text>
       </View>

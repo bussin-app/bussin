@@ -169,9 +169,14 @@ const UserProfile = (props) => {
                       <Text style={[styles.text, styles.subText]}>Events Hosted</Text>
                   </View>
                   <View style={styles.statsBox}>
-                      <Text style={[styles.text, { fontSize: 24 }]}>302</Text>
+                      <Text style={[styles.text, { fontSize: 24, borderRightWidth: 1 }]}>{user.friends.length}</Text>
                       <Text style={[styles.text, styles.subText]}>Friends</Text>
                   </View>
+                  <View style={styles.statsBox}>
+                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('FriendList')}>{user.organizations.length}</Text>
+                      <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('FriendList')}>Organizations</Text>
+                  </View>
+
               </View>
           </ScrollView>
           </>

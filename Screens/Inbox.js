@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Inbox = (props) => {
   const [token, setToken] = useState(null);
   const [requests, setRequests] = useState([]);
+  const [filter, setFilter] = useState(['friends']);
 
  
 
@@ -27,16 +28,46 @@ const Inbox = (props) => {
     setRequests(response);
   };
 
+  const replyRequest = async (status, item) => {
+    console.log("Respond");
+    res = await fetch('https://bussin.blakekjohnson.dev/api/friends/friendRespond', {
+     method: 'DELETE',
+     body: JSON.stringify({
+         
+            to: item.to._id, 
+            from: item.from._id,
+            status: status
+        
+     }),
+     headers: {
+       'Authorization': `Bearer ${token}`,
+       'Content-Type': 'application/json'
+     }
+    });
+     res = await res.json();
+     console.log(res);
+
+  };
+
   useEffect(() => {
     props.navigation.addListener('focus', () => {
     fetchRequests();
     });
   }, []);
 
+  const changeFilter = (filter) => {
+    if (filter == 'friends') {
+      setFilter('invites');
+    } else {
+      setFilter('friends');
+    }
+  }
+
   const SPACING = 20;
   const PIC_SIZE = 70
   const ItemView = ({ item }) => {
     return (
+      <SafeAreaView>
       <View style={{
         width: 350, padding: SPACING, marginBottom: SPACING, backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: 12,
         shadowColor:"#355070",
@@ -47,7 +78,7 @@ const Inbox = (props) => {
         shadowOpacity: .3,
         shadowRadius: 20
       }}>
-        <Text style={{ fontWeight: "200", fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+        <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
           Friend Request From:
         </Text>
         <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
@@ -57,11 +88,12 @@ const Inbox = (props) => {
           {item.from.username}
         </Text>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-          <Button title={"Accept"} onPress={() =>console.log("Accept")}></Button>
-          <Button title={"Deny"} onPress={() => console.log("Deny")}></Button>
+          <Button title={"Accept"} onPress={() => replyRequest(0, item)}></Button>
+          <Button title={"Deny"} onPress={() => replyRequest(1, item)}></Button>
         </View>
         
       </View>
+      </SafeAreaView>
     );
   };
 
@@ -88,6 +120,9 @@ const Inbox = (props) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ alignItems: 'center' }}>
+        <Button title={ (filter == 'friends')? 'Friend Requests' : 'Invites' }  onPress = {() => changeFilter(filter)} />
+      </View>
       <View style={{ alignItems: 'center' }}>
         <FlatList
           data={requests}
