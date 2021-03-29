@@ -46,9 +46,9 @@ const Search = (props) => {
   const changeStatus = (status) => {
     if (status == 'events') {
       setStatus('users');
-    } else {
+    } else if (status == 'users') {
       setStatus('events');
-    }
+    } 
   }
 
   const searchFilterFunction = (text) => {
