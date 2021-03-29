@@ -123,6 +123,31 @@ const UserProfile = (props) => {
     if (!fetched) {
     }
 
+    // helper function to create a table to present the past events
+    const createPastEventTable = async () => {
+    let table = [];
+
+    let children = [];
+    // TODO: create function to put all the past events in the Profile
+    // using fetchProfile
+    var len = profile.pastEvent.length;
+    //Inner loop to create children
+    //only showcase the first 5 events
+    // TODO: add name field to the pastEvent 
+    for (let j = 0; j < len && j < 5; j++) {
+      children.push(<td>{`${profile.pastEvent[j].name}`}
+      <Button
+            title="view event"
+            onPress={findPastEvent}
+          />
+      </td>);
+    }
+    //Create the parent and add the children
+    table.push(<tr>{children}</tr>);
+
+    return table;
+    };
+
     return (
     
       <SafeAreaView style={styles.container}>
@@ -150,8 +175,8 @@ const UserProfile = (props) => {
                       <Text style={[styles.text, styles.subText]}>Bussin Score</Text>
                   </View>
                   <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-                      <Text style={[styles.text, { fontSize: 24 }]}>23</Text>
-                      <Text style={[styles.text, styles.subText]}>Events Hosted</Text>
+                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('PastEvent')}>23</Text>
+                      <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('PastEvent')} >Events Hosted</Text>
                   </View>
                   <View style={[styles.statsBox, {borderColor: "#DFD8C8", borderRightWidth: 1}]}>
                       <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('FriendList')}>{profile.friends.length}</Text>
