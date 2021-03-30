@@ -3,10 +3,6 @@ import { View, Text, Button, LogBox } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
-import NumericInput from 'react-native-numeric-input';
-import DatePicker from "../Shared/DatePicker";
-import TimePicker from "../Shared/TimePicker";
-import { Picker } from '@react-native-community/picker';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -16,6 +12,7 @@ const Organization = (props) => {
     const [name, setName] = useState("");
 
     const createOrg = async () => {
+        console.log("creating org");
         // Construct data for backend
         let OrgData = {
             name
@@ -33,12 +30,12 @@ const Organization = (props) => {
                 organization: OrgData
             }),
         });
-
+        console.log("done org");
         // Accept the response
         res = await res.json();
         console.log(res);
 
-        //props.navigation.navigate('Organization');
+        props.navigation.navigate('Organization');
     };
 
     return (
