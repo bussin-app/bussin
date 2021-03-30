@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, SafeAreaView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PastEvent = (props) => {
   const [token, setToken] = useState(null);
