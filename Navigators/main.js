@@ -50,7 +50,7 @@ const Main = () => {
         component={Map}
         options={{
           tabBarIcon: ({ color }) => (
-            <Icon name="map" color={color} size={30} />
+            <Icon name="globe" color={color} size={30} />
           ),
         }}
       />

@@ -1,14 +1,14 @@
 import React from 'react';
-import { StyleSheet, Image, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Image, View, SafeAreaView, Text } from 'react-native';
 
 const Header = () => {
   return (
     <SafeAreaView style={styles.header}>
-        <Image 
-            source = {require("../Assets/logo1.png")}
+          <Image 
+            source = {require("../Assets/logo2.png")}
             resizeMode='contain'
-            style={{height: 50}}
-        />
+            style={styles.image}
+          /> 
     </SafeAreaView>
   )
   }
@@ -22,6 +22,15 @@ const Header = () => {
         padding: 20,
         marginTop:20
       },
+
+      image: {
+        width: 50,
+        height: 50,
+        borderRadius: 45,
+        overflow: "hidden",
+        borderWidth: 1,
+        borderColor: "#000000"
+      }
     });
 
 export default Header;

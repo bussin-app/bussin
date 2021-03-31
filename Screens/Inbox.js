@@ -29,12 +29,14 @@ const Inbox = (props) => {
   };
 
   const replyRequest = async (status, item) => {
-    console.log("Respond");
-    res = await fetch('https://bussin.blakekjohnson.dev/api/friends/friendRespond', {
+    console.log(item.to);
+    console.log(item.from._id);
+    console.log(status);
+    let res = await fetch('https://bussin.blakekjohnson.dev/api/friends/friendRespond', {
      method: 'DELETE',
      body: JSON.stringify({
        request: {
-          to: item.to._id, 
+          to: item.to, 
           from: item.from._id,
           response: status
        } 
@@ -88,8 +90,8 @@ const Inbox = (props) => {
           {item.from.username}
         </Text>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-          <Button title={"Accept"} onPress={() => replyRequest(0, item)}></Button>
-          <Button title={"Deny"} onPress={() => replyRequest(1, item)}></Button>
+          <Button title={"Accept"} onPress={() => replyRequest(1, item)}></Button>
+          <Button title={"Deny"} onPress={() => replyRequest(2, item)}></Button>
         </View>
         
       </View>
