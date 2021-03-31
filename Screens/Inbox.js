@@ -90,8 +90,8 @@ const Inbox = (props) => {
           {item.from.username}
         </Text>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-          <Button title={"Accept"} onPress={() => replyRequest(0, item)}></Button>
-          <Button title={"Deny"} onPress={() => replyRequest(1, item)}></Button>
+          <Button title={"Accept"} onPress={() => replyRequest(1, item)}></Button>
+          <Button title={"Deny"} onPress={() => replyRequest(2, item)}></Button>
         </View>
         
       </View>
