@@ -9,6 +9,7 @@ import EventNavigator from "./EventNavigator";
 import AuthGlobal from "../Context/store/AuthGlobal";
 import SearchNavigator from "./SearchNavigator";
 import Inbox from "../Screens/Inbox";
+import Map from "../Screens/map"
 
 const Tab = createBottomTabNavigator();
 
@@ -44,6 +45,15 @@ const Main = () => {
           ),
         }}
       />
+      <Tab.Screen
+        name="map"
+        component={Map}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Icon name="map" color={color} size={30} />
+          ),
+        }}
+      />
 
       <Tab.Screen
         name="Inbox"
@@ -54,6 +64,8 @@ const Main = () => {
           ),
         }}
       />
+
+      
 
       <Tab.Screen
         name="Events"
