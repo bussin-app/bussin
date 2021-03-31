@@ -45,6 +45,15 @@ const Main = () => {
           ),
         }}
       />
+      <Tab.Screen
+        name="map"
+        component={Map}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Icon name="map" color={color} size={30} />
+          ),
+        }}
+      />
 
       <Tab.Screen
         name="Inbox"
@@ -56,15 +65,7 @@ const Main = () => {
         }}
       />
 
-      <Tab.Screen
-        name="map"
-        component={Map}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Icon name="inbox" color={color} size={30} />
-          ),
-        }}
-      />
+      
 
       <Tab.Screen
         name="Events"
