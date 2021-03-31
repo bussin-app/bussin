@@ -183,13 +183,14 @@ const UserProfile = (props) => {
                       <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('FriendList')}>Friends</Text>
                   </View>
                   <View style={styles.statsBox}>
-                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('FriendList')}>{profile.organizations.length}</Text>
-                      <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('FriendList')}>Organizations</Text>
+                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('Organization')}>{profile.organizations.length}</Text>
+                      <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('Organization')}>Organizations</Text>
                   </View>
               </View>
 
               <View style={styles.infoContainer}>
                     <Button title='Create an Organization' onPress={() => props.navigation.navigate('CreateOrg')} />
+                    <Button title='Edit an Organization' onPress={() => props.navigation.navigate('EditOrg')} />
                     <Button title='Log Out' onPress={logOut} />
               </View>
 

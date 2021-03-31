@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Button, Alert, SafeAreaView, FlatList, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Event = (props) => {
+const Organization = (props) => {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [events, setEvents] = useState([]);
+  const [organizations, setOrganizations] = useState([]);
 
-  const fetchEvents = async () => {
+  const fetchOrganization = async () => {
     let storedToken = await AsyncStorage.getItem('@bussin-token');
 
     if (!storedToken) {
@@ -27,7 +27,7 @@ const Event = (props) => {
 
       res = await res.json();
 
-      setEvents(res.events);
+      setOrganizations(res.organizations);
     } catch (e) {
       setError(e);
     }
@@ -39,86 +39,26 @@ const Event = (props) => {
     props.navigation.addListener('focus', () => {
       setLoading(true);
       setError(null);
-      setEvents([]);
-      fetchEvents();
+      setOrganizations([]);
+      fetchOrganization();
     });
   }, []);
 
-  const createAlert = (event) => {
-    if (event.private) {
+  const createAlert = (organization) => {
       Alert.alert(
-      "Update Event",
-      "Edit or Start this Event?",
+      "Update Organization",
+      "",
       [
         {
           text: "Cancel",
           onPress: () => console.log("Cancel"),
           style: "cancel"
         },
-        { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event }) },
-        { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList")},
-        { text: "Start", onPress: () => console.log("Start") }
+        { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { organization }) }
       ],
       { cancelable: false }
       );
-    } else {
-      Alert.alert(
-        "Update Event",
-        "Edit or Start this Event?",
-        [
-          {
-            text: "Cancel",
-            onPress: () => console.log("Cancel"),
-            style: "cancel"
-          },
-          { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event }) },
-          { text: "Start", onPress: () => console.log("Start") }
-        ],
-        { cancelable: false }
-      );
-    }
   }
-       
-    const formatDate = (date) => {
-      let dateParts = date.split("-");
-      let year = dateParts[0];
-      let monthNum = dateParts[1];
-      let curDate = dateParts[2].substring(0,2);
-      var month = new Array();
-      month[0] = "Jan";
-      month[1] = "Feb";
-      month[2] = "Mar";
-      month[3] = "Apr";
-      month[4] = "May";
-      month[5] = "Jun";
-      month[6] = "Jul";
-      month[7] = "Aug";
-      month[8] = "Sep";
-      month[9] = "Oct";
-      month[10] = "Nov";
-      month[11] = "Dec";
-      let time = date.split(':');
-      let hours = time[0].substring(time[0].length - 2);
-      let minutes = time[1];
-
-      // calculate
-      let timeValue;
-
-      if (hours > 0 && hours <= 12) {
-        timeValue = hours;
-      } else if (hours > 12) {
-        timeValue = "" + (hours - 12);
-      } else if (hours == 0) {
-        timeValue = "12";
-      }
-      
-      timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
-      timeValue += (hours >= 12) ? " pm" : " am";  // get AM/PM
-
-      let formattedString = timeValue + " on " + month[monthNum - 1] + " " + curDate + ", " + year;
-      return formattedString;
-    }
-
 
     const SPACING = 20;
     const ItemView = ({ item }) => {
@@ -135,12 +75,6 @@ const Event = (props) => {
         }}>
           <Text style={{ fontSize: 25, fontFamily: 'HelveticaNeue', fontWeight: "200" }} onPress={() => getItem(item)}>
             {item.name}
-          </Text>
-          <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }}>
-            {item.description}
-          </Text>
-          <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
-            {formatDate(item.date)}
           </Text>
         </View>
       );
@@ -170,14 +104,14 @@ const Event = (props) => {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={{ alignItems: 'center' }}>
-          <Text style={{ fontFamily: "HelveticaNeue", fontSize: 36, marginTop: 5, fontWeight: "200"}}>My Events</Text>
+          <Text style={{ fontFamily: "HelveticaNeue", fontSize: 36, marginTop: 5, fontWeight: "200"}}>My Organizations</Text>
         </View>
         { error && <Text>{error}</Text>}
       {
         loading ? <Text>Loading</Text> :
         <View>
           <FlatList
-            data={events}
+            data={organizations}
             keyExtractor={(item, index) => index.toString()}
             ItemSeparatorComponent={ItemSeparatorView}
             contentContainerStyle={{
@@ -191,9 +125,7 @@ const Event = (props) => {
       {
           token &&
           <View>
-            <Button title={"Add Event"} onPress={
-              () => props.navigation.navigate("CreateEvent")}>
-            </Button>
+            
           </View>
           
       }
@@ -202,4 +134,4 @@ const Event = (props) => {
     );
 }
 
-export default Event;
+export default Organization;

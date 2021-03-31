@@ -5,10 +5,12 @@ import Register from "../Screens/Register";
 import Login from "../Screens/Login";
 import UserProfile from "../Screens/UserProfile";
 import ModifyAcc from "../Screens/ModifyAcc";
-import createOrg from "../Screens/CreateOrg";
+import CreateOrg from "../Screens/CreateOrg";
 import EditPassword from "../Screens/EditPassword";
 import FriendList from "../Screens/FriendList";
+import Organization from "../Screens/Organization";
 import pastEvent from "../Screens/pastEvent";
+import EditOrg from "../Screens/EditOrg";
 
 const Stack = createStackNavigator();
 
@@ -56,15 +58,32 @@ function MyStack() {
       />
       <Stack.Screen
         name="CreateOrg"
-        component={createOrg}
+        component={CreateOrg}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      
+        <Stack.Screen
+            name="EditOrg"
+            component={EditOrg}
+            options={{
+                headerShown: false
+            }}
+        />
+
+      <Stack.Screen
+        name="FriendList"
+        component={FriendList}
         options={{
           headerShown: false,
         }}
       />
 
       <Stack.Screen
-        name="FriendList"
-        component={FriendList}
+        name="Organization"
+        component={Organization}
         options={{
           headerShown: false,
         }}
