@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Button, LogBox } from 'react-native';
+import { View, Alert, Button, LogBox } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
@@ -11,8 +11,15 @@ LogBox.ignoreLogs(['Warning:']);
 const Organization = (props) => {
     const [name, setName] = useState("");
 
+    const createAlert = () =>
+        Alert.alert(
+            "Your Organization has been created!",
+            [
+                { text: "Done" }
+            ],
+            { cancelable: true }
+        );
     const createOrg = async () => {
-        console.log("creating org");
         // Construct data for backend
         let OrgData = {
             name
@@ -30,12 +37,12 @@ const Organization = (props) => {
                 organization: OrgData
             }),
         });
-        console.log("done org");
+        
         // Accept the response
         res = await res.json();
+        createAlert;
         console.log(res);
-
-        props.navigation.navigate('Organization');
+        props.navigation.navigate('User Profile');
     };
 
     return (

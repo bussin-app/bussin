@@ -78,10 +78,7 @@ const Event = (props) => {
       );
     }
   }
-    
-  
-    
-    
+       
     const formatDate = (date) => {
       let dateParts = date.split("-");
       let year = dateParts[0];

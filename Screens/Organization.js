@@ -6,9 +6,9 @@ const Organization = (props) => {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [organization, setOrganization] = useState([]);
+  const [organizations, setOrganizations] = useState([]);
 
-  const fetchOrganizations = async () => {
+  const fetchOrganization = async () => {
     let storedToken = await AsyncStorage.getItem('@bussin-token');
 
     if (!storedToken) {
@@ -19,7 +19,7 @@ const Organization = (props) => {
     setToken(storedToken);
 
     try {
-      let res = await fetch('https://bussin.blakekjohnson.dev/api/organization', {
+      let res = await fetch('https://bussin.blakekjohnson.dev/api/event', {
         headers: {
           'Authorization': `Bearer ${storedToken}`,
         },
@@ -27,7 +27,7 @@ const Organization = (props) => {
 
       res = await res.json();
 
-      setOrganization(res.organization);
+      setOrganizations(res.organizations);
     } catch (e) {
       setError(e);
     }
@@ -40,40 +40,24 @@ const Organization = (props) => {
       setLoading(true);
       setError(null);
       setOrganizations([]);
-      fetchOrganizations();
+      fetchOrganization();
     });
   }, []);
 
   const createAlert = (organization) => {
-    if (organization.following) {
       Alert.alert(
       "Update Organization",
-      "Edit this Organization?",
+      "",
       [
         {
-          text: "Remove",
-          onPress: () => console.log("Delete"),
-          style: "Remove"
-        }
+          text: "Cancel",
+          onPress: () => console.log("Cancel"),
+          style: "cancel"
+        },
+        { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { organization }) }
       ],
       { cancelable: false }
       );
-    } else {
-      Alert.alert(
-        "Update organization",
-        "Edit or invite?",
-        [
-          {
-            text: "Cancel",
-            onPress: () => console.log("Cancel"),
-            style: "cancel"
-          },
-          { text: "Edit", onPress: () => props.navigation.navigate("EditOrg", { organization }) },
-          { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList")},
-        ],
-        { cancelable: false }
-      );
-    }
   }
 
     const SPACING = 20;
@@ -90,7 +74,7 @@ const Organization = (props) => {
           shadowRadius: 20
         }}>
           <Text style={{ fontSize: 25, fontFamily: 'HelveticaNeue', fontWeight: "200" }} onPress={() => getItem(item)}>
-            {organization.name}
+            {item.name}
           </Text>
         </View>
       );
@@ -120,15 +104,15 @@ const Organization = (props) => {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={{ alignItems: 'center' }}>
-          <Text style={{ fontFamily: "HelveticaNeue", fontSize: 36, marginTop: 5, fontWeight: "200"}}>My organizations</Text>
+          <Text style={{ fontFamily: "HelveticaNeue", fontSize: 36, marginTop: 5, fontWeight: "200"}}>My Organizations</Text>
         </View>
         { error && <Text>{error}</Text>}
       {
         loading ? <Text>Loading</Text> :
         <View>
           <FlatList
-            data={evitements}
-            keyExtractor={(organization, index) => index.toString()}
+            data={organizations}
+            keyExtractor={(item, index) => index.toString()}
             ItemSeparatorComponent={ItemSeparatorView}
             contentContainerStyle={{
               padding: SPACING,
@@ -141,11 +125,11 @@ const Organization = (props) => {
       {
           token &&
           <View>
-            <Button title={"Add Organzation"} onPress={
-              () => props.navigation.navigate("CreateOrg")}>
-            </Button>
+            
           </View>
+          
       }
+      
       </SafeAreaView>
     );
 }
