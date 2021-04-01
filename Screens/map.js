@@ -4,6 +4,7 @@ import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ISO_8601 } from "moment";
 
 
 const map = (props) => {
@@ -404,6 +405,7 @@ const map = (props) => {
       );
 
       res = await res.json();
+      
 
       setEvents(res.events);
     } catch (e) {
@@ -423,8 +425,11 @@ const map = (props) => {
         longitude: -86.91,
         latitudeDelta: 0.05,
         longitudeDelta: 0.05,
-      }}
-    />
+      }} 
+    >
+    <Marker coordinate={{ latitude: 40.43, longitude: -86.91}}
+    pinColor = 'green' />
+    </MapView>
   );
 };
 
