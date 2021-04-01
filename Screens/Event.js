@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, Text, StyleSheet, View, FlatList, StatusBar, Button } from 'react-native';
-import { SearchBar } from 'react-native-elements';
-import { Picker } from '@react-native-community/picker';
+import { SafeAreaView, Text, StyleSheet, View, FlatList, StatusBar, Button, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Event = (props) => {
@@ -15,7 +13,7 @@ const Event = (props) => {
     if (!storedToken) return;
     setToken(storedToken);
 
-    let source = `${status.substr(0, status.length - 1)}/all`;
+    let source = `${status.substr(0, status.length - 1)}/`;
     let response = await fetch(`https://bussin.blakekjohnson.dev/api/${source}`, {
       headers: {
         'Authorization': `Bearer ${storedToken}`,
@@ -39,8 +37,24 @@ const Event = (props) => {
   }, []);
 
 
-  const createAlert = (event) => {
-    if (event.private) {
+  const createAlert = (item) => {
+    if (status == 'organizations') {
+        Alert.alert(
+        "Update Organization",
+        "Edit or Invite This Organization",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel"),
+            style: "cancel"
+          },
+          { text: "Edit", onPress: () => props.navigation.navigate("EditOrg", { item }) },
+          { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "organization", item})}
+        ],
+        { cancelable: false }
+        );
+    } else {
+      if (item.private) {
       Alert.alert(
       "Update Event",
       "Edit or Start this Event?",
@@ -50,8 +64,8 @@ const Event = (props) => {
           onPress: () => console.log("Cancel"),
           style: "cancel"
         },
-        { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event }) },
-        { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "events", item: event})},
+        { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { item }) },
+        { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "events", item })},
         { text: "Start", onPress: () => console.log("Start") }
       ],
       { cancelable: false }
@@ -66,13 +80,14 @@ const Event = (props) => {
             onPress: () => console.log("Cancel"),
             style: "cancel"
           },
-          { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event }) },
+          { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { item }) },
           { text: "Start", onPress: () => console.log("Start") }
         ],
         { cancelable: false }
       );
     }
   }
+}
 
   useEffect(() => {
     fetchData();
@@ -126,7 +141,7 @@ const Event = (props) => {
         shadowOpacity: .3,
         shadowRadius: 20
       }}>
-        <Text style={{ fontSize: 25, fontWeight: "200" }} onPress={() => getItem(item)}>
+        <Text style={{ fontSize: 25, fontWeight: "200" }} onPress={() => createAlert(item)}>
           {item.name}
         </Text>
         <Text style={{ fontSize: 20 }}>

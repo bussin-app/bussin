@@ -36,9 +36,9 @@ const EditOrg = (props) => {
             extraHeight={200}
             enableOnAndroid={true}
         >
-            <FormContainer title={"Edit Event"}>
+            <FormContainer title={"Edit Organization"}>
                 <Input
-                    placeholder={"Enter Name of Event"}
+                    placeholder={"Enter Name of Organization"}
                     name={"name"}
                     id={"name"}
                     onChangeText={(text) => setName(text)}
