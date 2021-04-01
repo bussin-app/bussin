@@ -123,7 +123,7 @@ const Inbox = (props) => {
         shadowRadius: 20
       }}>
         <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-          Friend Request From:
+        { (filter == 'invites')? 'Event Invite From:' : 'Friend Request From:' }
         </Text>
         <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
           {item.from.name}
