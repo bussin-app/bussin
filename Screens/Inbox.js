@@ -124,11 +124,12 @@ const Inbox = (props) => {
         shadowRadius: 20
       }}>
         <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-        { (title == 'invites')? 'Event Invite From:' : 'Friend Request From:' }
+        { (title == 'invites')? 'Invite To:' : 'Friend Request From:' }
         </Text>
         <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
           {item.from.name}
         </Text>
+        { title === 'invites' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }}>From:</Text>}
         <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue' }}>
           {item.from.username}
         </Text>
