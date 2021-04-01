@@ -64,7 +64,7 @@ const Event = (props) => {
           onPress: () => console.log("Cancel"),
           style: "cancel"
         },
-        { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { item }) },
+        { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event: item }) },
         { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "events", item })},
         { text: "Start", onPress: () => console.log("Start") }
       ],
@@ -80,7 +80,7 @@ const Event = (props) => {
             onPress: () => console.log("Cancel"),
             style: "cancel"
           },
-          { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { item }) },
+          { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event: item }) },
           { text: "Start", onPress: () => console.log("Start") }
         ],
         { cancelable: false }
