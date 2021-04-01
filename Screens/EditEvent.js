@@ -81,7 +81,7 @@ const EditEvent = (props) => {
 
         let token = await AsyncStorage.getItem('@bussin-token');
         if (!token) return;
-
+dele
         let res;
         try {
             res = await fetch(`https://bussin.blakekjohnson.dev/api/event/${eventID}`, {

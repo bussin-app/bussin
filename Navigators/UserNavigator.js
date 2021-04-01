@@ -8,9 +8,7 @@ import ModifyAcc from "../Screens/ModifyAcc";
 import CreateOrg from "../Screens/CreateOrg";
 import EditPassword from "../Screens/EditPassword";
 import FriendList from "../Screens/FriendList";
-import Organization from "../Screens/Organization";
 import pastEvent from "../Screens/pastEvent";
-import EditOrg from "../Screens/EditOrg";
 
 const Stack = createStackNavigator();
 
@@ -64,15 +62,6 @@ function MyStack() {
         }}
       />
 
-      
-        <Stack.Screen
-            name="EditOrg"
-            component={EditOrg}
-            options={{
-                headerShown: false
-            }}
-        />
-
       <Stack.Screen
         name="FriendList"
         component={FriendList}
@@ -81,13 +70,6 @@ function MyStack() {
         }}
       />
 
-      <Stack.Screen
-        name="Organization"
-        component={Organization}
-        options={{
-          headerShown: false,
-        }}
-      />
 
       <Stack.Screen
         name="PastEvent"

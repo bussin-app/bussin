@@ -190,7 +190,6 @@ const UserProfile = (props) => {
 
               <View style={styles.infoContainer}>
                     <Button title='Create an Organization' onPress={() => props.navigation.navigate('CreateOrg')} />
-                    <Button title='Edit an Organization' onPress={() => props.navigation.navigate('EditOrg')} />
                     <Button title='Log Out' onPress={logOut} />
               </View>
 
