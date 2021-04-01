@@ -6,6 +6,7 @@ const Inbox = (props) => {
   const [token, setToken] = useState(null);
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState(['friends']);
+  const [title, setTitle] = useState(['friends']);
 
  
 
@@ -123,7 +124,7 @@ const Inbox = (props) => {
         shadowRadius: 20
       }}>
         <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-          Friend Request From:
+        { (title == 'invites')? 'Event Invite From:' : 'Friend Request From:' }
         </Text>
         <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
           {item.from.name}
