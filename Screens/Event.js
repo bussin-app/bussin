@@ -41,7 +41,7 @@ const Event = (props) => {
     if (status == 'organizations') {
         Alert.alert(
         "Update Organization",
-        "Edit or Invite This Organization",
+        "Edit or Invite to Organization",
         [
           {
             text: "Cancel",

@@ -34,6 +34,7 @@ const Inbox = (props) => {
     if (!storedToken) return;
     setToken(storedToken);
 
+    console.log('Before the fetch');
     let response = await fetch("https://bussin.blakekjohnson.dev/api/invites/inviteInbox", {
             method: "GET",
             headers: {
@@ -43,6 +44,7 @@ const Inbox = (props) => {
 
     // Convert response to JSON
     response = await response.json();
+    console.log(response);
 
     // Set data sources
     setData(response);
@@ -101,10 +103,10 @@ const Inbox = (props) => {
   const changeFilter = (filter) => {
     if (filter == 'friends') {
       setFilter('invites');
-      fetchRequests();
+      fetchInvites();
     } else {
       setFilter('friends');
-      fetchInvites();
+      fetchRequests();
     }
   }
 
@@ -124,14 +126,14 @@ const Inbox = (props) => {
         shadowRadius: 20
       }}>
         <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-        { (title == 'invites')? 'Invite To:' : 'Friend Request From:' }
+        { (filter == 'invites')? 'Event Invite From:' : 'Friend Request From:' }
         </Text>
         <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-          {item.from.name}
+          {item.from ? item.from.name : ''}
         </Text>
         { title === 'invites' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }}>From:</Text>}
         <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue' }}>
-          {item.from.username}
+          {item.from ? item.from.username : ''}
         </Text>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <Button title={"Accept"} onPress={() => replyRequest(1, item)}></Button>
@@ -167,7 +169,7 @@ const Inbox = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignItems: 'center' }}>
-        <Button title={ (filter == 'friends')? 'Invites' : 'Friend Request' }  onPress = {() => changeFilter(filter)} />
+        <Button title={ (filter != 'friends')? 'Invites' : 'Friend Request' }  onPress = {() => changeFilter(filter)} />
       </View>
       <View style={{ alignItems: 'center' }}>
         <FlatList

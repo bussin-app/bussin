@@ -24,10 +24,12 @@ const EditOrg = (props) => {
 
     const deleteEvent = async () => {
         // Deletion linking
+        props.navigation.navigate('Event');
     };
 
     const updateEvent = async () => {
         // Construct data for backend
+        props.navigation.navigate('Event');
     };
 
     return (

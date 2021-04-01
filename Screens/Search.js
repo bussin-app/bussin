@@ -46,9 +46,14 @@ const Search = (props) => {
   const changeStatus = (status) => {
     if (status == 'events') {
       setStatus('users');
+      return;
     } else if (status == 'users') {
+      setStatus('organizations');
+      return;
+    } else if (status == 'organizations') {
       setStatus('events');
-    } 
+      return;
+    }
   }
 
   const searchFilterFunction = (text) => {
@@ -100,7 +105,6 @@ const Search = (props) => {
   }
 
   const SPACING = 20;
-  const PIC_SIZE = 70
   const ItemView = ({ item }) => {
     return (
       <View style={{
@@ -117,10 +121,10 @@ const Search = (props) => {
           {item.name}
         </Text>
         <Text style={{ fontSize: 20 }}>
-          {item.description || item.username}
+          {item.description || item.username || ""}
         </Text>
         <Text style={{ fontSize: 15, textAlign: 'right' }}>
-          {formatDate(item.date) || item.eventPoints}
+          {formatDate(item.date) || item.eventPoints || ""}
         </Text>
       </View>
     );
@@ -142,8 +146,10 @@ const Search = (props) => {
   const getItem = (item) => {
     if (status == 'events')
       props.navigation.navigate('ViewEvent', { event: item });
-    else
+    else if ((status == 'users'))
       props.navigation.navigate('viewUserProfile', { user: item });
+    else
+      props.navigation.navigate('ViewOrg', { organization: item });
   };
 
   if (!token) {
@@ -153,7 +159,9 @@ const Search = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignItems: 'center' }}>
-        <Button title={ (status == 'events')? 'Events' : 'Users' } onPress = {() => changeStatus(status)} />
+        <Button title={ (status == 'events')?"Events":
+        ((status == 'users')?"Users":"Organizations"
+        )} onPress = {() => changeStatus(status)} />
       </View>
       <View>
         <SearchBar
