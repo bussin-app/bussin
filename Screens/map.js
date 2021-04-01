@@ -395,11 +395,16 @@ const map = (props) => {
         {
           headers: {
             Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "application/json"
           },
+          method: 'PUT',
+          body: JSON.stringify({ lat: location.latitude, long: location.longitude, dist: 50 }),
         }
+
       );
 
       res = await res.json();
+      console.log(res);
 
       setEvents(res.events);
     } catch (e) {
