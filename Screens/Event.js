@@ -72,6 +72,7 @@ const Event = (props) => {
         { cancelable: false }
       );
     }
+  }
 
   useEffect(() => {
     fetchData();
