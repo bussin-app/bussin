@@ -38,6 +38,41 @@ const Event = (props) => {
     props.navigation.addListener('focus', focusWrapper);
   }, []);
 
+
+  const createAlert = (event) => {
+    if (event.private) {
+      Alert.alert(
+      "Update Event",
+      "Edit or Start this Event?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel"),
+          style: "cancel"
+        },
+        { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event }) },
+        { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "events", item: event})},
+        { text: "Start", onPress: () => console.log("Start") }
+      ],
+      { cancelable: false }
+      );
+    } else {
+      Alert.alert(
+        "Update Event",
+        "Edit or Start this Event?",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel"),
+            style: "cancel"
+          },
+          { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event }) },
+          { text: "Start", onPress: () => console.log("Start") }
+        ],
+        { cancelable: false }
+      );
+    }
+
   useEffect(() => {
     fetchData();
   }, [status]);
@@ -48,6 +83,7 @@ const Event = (props) => {
     } else if (status == 'organizations') {
       setStatus('events');
     } 
+
   }
 
   const formatDate = (date) => {

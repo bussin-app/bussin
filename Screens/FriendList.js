@@ -5,11 +5,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const FriendList = (props) => {
   const [token, setToken] = useState(null);
   const [friends, setFriends] = useState([]);
+  const [sortedFriends, setSortedFriends] = useState([]);
+  const [sorted, setSorted] = useState('false');
+  const [source, setSource] = useState('friends');
+  const [data, setData] = useState([]);
 
 
  
 
-  const fetchFriends = async (mode) => {
+  const fetchFriends = async () => {
     let storedToken = await AsyncStorage.getItem('@bussin-token');
     if (!storedToken) return;
     setToken(storedToken);
@@ -23,16 +27,87 @@ const FriendList = (props) => {
 
     // Convert response to JSON
     response = await response.json();
-
     // Set data source
     setFriends(response);
+    setSortedFriends(response.sort((a, b) => a.name - b.name));
+    setData(response);
   };
+
+  const removeFriend = async (item) => {
+    let storedToken = await AsyncStorage.getItem('@bussin-token');
+    if (!storedToken) return;
+    setToken(storedToken);
+    let response = await fetch("https://bussin.blakekjohnson.dev/api/friends/removeFriend", {
+            method: "PUT",
+            body: JSON.stringify({
+              friendID: item._id
+            }),
+            headers: {
+              'Authorization': `Bearer ${storedToken}`,
+              'Content-Type': 'application/json',
+            },
+    });
+
+    // Convert response to JSON
+    response = await response.json();
+    fetchFriends();
+  };
+
+  const createInvite = async (type, user) => {
+    let storedToken = await AsyncStorage.getItem('@bussin-token');
+    if (!storedToken) return;
+    setToken(storedToken);
+    let { item } = props.route.params;
+
+    let res = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
+     headers: {
+       'Authorization': `Bearer ${token}`
+     }
+    });
+    res = await res.json();
+
+    let response = await fetch("https://bussin.blakekjohnson.dev/api/invites/", {
+            method: "POST",
+            body: JSON.stringify({
+              invite: {
+                  to: user._id, 
+                  from: res.user._id,
+                  type: type,
+                  foreignID: item._id
+               }
+            }),
+            headers: {
+              'Authorization': `Bearer ${storedToken}`,
+              'Content-Type': 'application/json',
+            },
+    });
+
+    // Convert response to JSON
+    response = await response.json();
+    console.log(response);
+    // Set data source
+  
+  };
+
 
   useEffect(() => {
     props.navigation.addListener('focus', () => {
-    fetchFriends(0);
+    let { type } = props.route.params;
+    setSource(type);
+    fetchFriends();
     });
+
   }, []);
+
+  const changeSort = () => {
+    if (sorted == 'true') {
+      setSorted('false');
+      setData(friends);
+    } else {
+      setSorted('true');
+      setData(sortedFriends);
+    } 
+  }
 
   const SPACING = 20;
   const PIC_SIZE = 70
@@ -59,7 +134,9 @@ const FriendList = (props) => {
         <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
           {item.eventPoints}
         </Text>
-        
+        { source === 'friends' && <Button title = {"Remove"} onPress={() => removeFriend(item)}/>}
+        { source === 'orgs' && <Button title = {"Invite"} onPress={() => createInvite('Organization', item)}/>}
+        { source === 'events' && <Button title = {"Invite"} onPress={() => createInvite('Event', item)}/>}
       </View>
       </SafeAreaView>
     );
@@ -86,13 +163,14 @@ const FriendList = (props) => {
     return <View><Text>To get started login at the user page.</Text></View>;
   }
 
-  return (
+  
+    return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignItems: 'center' }}>
         <Text>Friends</Text>
-        <Button title={"Sort Alphabetically"}  onPress = {() => fetchFriends(1)} />
+        <Button title={ (sorted == 'true')? 'Sort Alphabetically' : 'Sort Oldest First' }  onPress = {() => changeSort()} />
         <FlatList
-          data={friends}
+          data={data}
           keyExtractor={(item, index) => index.toString()}
           ItemSeparatorComponent={ItemSeparatorView}
           contentContainerStyle={{
@@ -104,6 +182,7 @@ const FriendList = (props) => {
       </View>
     </SafeAreaView>
   );
+  
 };
 
 const styles = StyleSheet.create({
