@@ -166,7 +166,7 @@ const Inbox = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignItems: 'center' }}>
-        <Button title={ (filter == 'friends')? 'Friend Requests' : 'Invites' }  onPress = {() => changeFilter(filter)} />
+        <Button title={ (filter == 'friends')? 'Invites' : 'Friend Request' }  onPress = {() => changeFilter(filter)} />
       </View>
       <View style={{ alignItems: 'center' }}>
         <FlatList
