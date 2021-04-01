@@ -104,7 +104,7 @@ const Search = (props) => {
   const ItemView = ({ item }) => {
     return (
       <View style={{
-        flexDirection: 'column', padding: SPACING, marginBottom: SPACING, backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: 12,
+        flexDirection: 'column', padding: SPACING, marginBottom: SPACING, fontFamily: 'HelveticaNeue', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: 12,
         shadowColor:"#355070",
         shadowOffset: {
           width: 0,
@@ -113,13 +113,13 @@ const Search = (props) => {
         shadowOpacity: .3,
         shadowRadius: 20
       }}>
-        <Text style={{ fontSize: 25, fontFamily: 'HelveticaNeue', fontWeight: "200" }} onPress={() => getItem(item)}>
+        <Text style={{ fontSize: 25, fontWeight: "200" }} onPress={() => getItem(item)}>
           {item.name}
         </Text>
-        <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }}>
+        <Text style={{ fontSize: 20 }}>
           {item.description || item.username}
         </Text>
-        <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
+        <Text style={{ fontSize: 15, textAlign: 'right' }}>
           {formatDate(item.date) || item.eventPoints}
         </Text>
       </View>

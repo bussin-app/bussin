@@ -19,7 +19,7 @@ const Organization = (props) => {
     setToken(storedToken);
 
     try {
-      let res = await fetch('https://bussin.blakekjohnson.dev/api/event', {
+      let res = await fetch('https://bussin.blakekjohnson.dev/api/organization', {
         headers: {
           'Authorization': `Bearer ${storedToken}`,
         },
