@@ -404,7 +404,6 @@ const map = (props) => {
       );
 
       res = await res.json();
-      console.log(res);
 
       setEvents(res.events);
     } catch (e) {
