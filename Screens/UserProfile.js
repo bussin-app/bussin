@@ -179,8 +179,8 @@ const UserProfile = (props) => {
                       <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('PastEvent')} >Events Hosted</Text>
                   </View>
                   <View style={[styles.statsBox, {borderColor: "#DFD8C8", borderRightWidth: 1}]}>
-                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('FriendList')}>{profile.friends.length}</Text>
-                      <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('FriendList')}>Friends</Text>
+                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('FriendList', {type: 'friends'})}>{profile.friends.length}</Text>
+                      <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('FriendList', {type: 'friends'})}>Friends</Text>
                   </View>
                   <View style={styles.statsBox}>
                       <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('Organization')}>{profile.organizations.length}</Text>

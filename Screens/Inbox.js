@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Inbox = (props) => {
   const [token, setToken] = useState(null);
-  const [requests, setRequests] = useState([]);
+  const [data, setData] = useState([]);
   const [filter, setFilter] = useState(['friends']);
 
  
@@ -25,13 +25,31 @@ const Inbox = (props) => {
     response = await response.json();
 
     // Set data sources
-    setRequests(response);
+    setData(response);
   };
 
+  const fetchInvites = async () => {
+    let storedToken = await AsyncStorage.getItem('@bussin-token');
+    if (!storedToken) return;
+    setToken(storedToken);
+
+    let response = await fetch("https://bussin.blakekjohnson.dev/api/invites/inviteInbox", {
+            method: "GET",
+            headers: {
+              'Authorization': `Bearer ${storedToken}`,
+            },
+    });
+
+    // Convert response to JSON
+    response = await response.json();
+
+    // Set data sources
+    setData(response);
+  };
+
+  
+
   const replyRequest = async (status, item) => {
-    console.log(item.to);
-    console.log(item.from._id);
-    console.log(status);
     let res = await fetch('https://bussin.blakekjohnson.dev/api/friends/friendRespond', {
      method: 'DELETE',
      body: JSON.stringify({
@@ -39,6 +57,28 @@ const Inbox = (props) => {
           to: item.to, 
           from: item.from._id,
           response: status
+       } 
+     }),
+     headers: {
+       'Authorization': `Bearer ${token}`,
+       'Content-Type': 'application/json'
+     }
+    });
+     res = await res.json();
+     console.log(res);
+
+  };
+
+  const replyInvites = async (status, item) => {
+    let res = await fetch('https://bussin.blakekjohnson.dev/api/friends/friendRespond', {
+     method: 'DELETE',
+     body: JSON.stringify({
+       request: {
+          to: item.to, 
+          from: item.from._id,
+          type: item.type,
+          response: status,
+          id: item._id
        } 
      }),
      headers: {
@@ -60,8 +100,10 @@ const Inbox = (props) => {
   const changeFilter = (filter) => {
     if (filter == 'friends') {
       setFilter('invites');
+      fetchRequests();
     } else {
       setFilter('friends');
+      fetchInvites();
     }
   }
 
@@ -127,7 +169,7 @@ const Inbox = (props) => {
       </View>
       <View style={{ alignItems: 'center' }}>
         <FlatList
-          data={requests}
+          data={data}
           keyExtractor={(item, index) => index.toString()}
           ItemSeparatorComponent={ItemSeparatorView}
           contentContainerStyle={{

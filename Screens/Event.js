@@ -56,7 +56,7 @@ const Event = (props) => {
           style: "cancel"
         },
         { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event }) },
-        { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList")},
+        { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "events", item: event})},
         { text: "Start", onPress: () => console.log("Start") }
       ],
       { cancelable: false }
