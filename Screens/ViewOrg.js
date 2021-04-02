@@ -6,7 +6,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ViewOrg = (props) => {
   const [name, setName] = useState('');
-  //const [host, setHost] = useState('');
+  const [host, setHost] = useState('');
+  const [followingCount, setFollowingCount] = useState('');
+  const [following, setFollowing] = useState(true);
 
   const fetchOrgData = async () => {
     let { organization } = props.route.params;
@@ -14,15 +16,7 @@ const ViewOrg = (props) => {
 
     let token = await AsyncStorage.getItem('@bussin-token');
     if (!token) return;
-
-    let res = await fetch(`https://bussin.blakekjohnson.dev/api/user/${organization.host}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      }
-    });
-    res = await res.json();
-    setHost(res.user.name);
-    console.log(res.user.name);
+    //setHost(organization.host.ref.name);
 
     res = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
       headers: {
@@ -30,7 +24,7 @@ const ViewOrg = (props) => {
       }
     });
     res = await res.json();
-    setAttending(organization.attendees.includes(res.user._id));
+    setFollowing(organization.following.includes(res.user._id));
   };
 
   const follow = async () => {
@@ -44,8 +38,10 @@ const ViewOrg = (props) => {
         'Content-Type': 'application/json',
       }
     });
-    
+    // add stuff to fill up the follower list
     res = await res.json();
+    setFollowing(true);
+    setFollowingCount(followingCount + 1);
   };
 
   useEffect(() => {
@@ -87,6 +83,10 @@ const ViewOrg = (props) => {
   <SafeAreaView>
         <View style={styles.infoContainer}>
       <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{name}</Text>
+    </View>
+    <View style={[styles.infoContainer, {alignContent: 'start'}]}>
+      <Text style={[styles.text, { fontSize: 20}]}>Host: {host}</Text>
+      <Button style={[styles.text, { fontSize: 20}]} title='Follow' onPress={follow} />
     </View>
   </SafeAreaView>
   );
