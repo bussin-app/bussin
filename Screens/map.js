@@ -380,7 +380,6 @@ const map = (props) => {
   // TODO: link the backend and get a
   // list of events to display
   const getNearbyEvents = async () => {
-    console.log(location);
     let storedToken = await AsyncStorage.getItem("@bussin-token");
     
     if (!storedToken) {
@@ -392,22 +391,19 @@ const map = (props) => {
 
     try {
       let res = await fetch(
-        "https://bussin.blakekjohnson.dev/api/event/nearby",
+        "https://bussin.blakekjohnson.dev/api/event/altNearby",
         {
           headers: {
             Authorization: `Bearer ${storedToken}`,
             "Content-Type": "application/json"
           },
           method: 'PUT',
-          body: JSON.stringify({ lat: location.latitude, long: location.longitude, dist: 50 }),
+          body: JSON.stringify({ lat: location.latitude, long: location.longitude, dist: 3000000000 }),
         }
-
       );
-
       res = await res.json();
-      
-
-      setEvents(res.events);
+      setEvents(res.items);
+      console.log(this.events);
     } catch (e) {
       setError(e);
     }
@@ -429,6 +425,7 @@ const map = (props) => {
     >
     <Marker coordinate={{ latitude: 40.43, longitude: -86.91}}
     pinColor = 'green' />
+
     </MapView>
   );
 };
