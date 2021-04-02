@@ -26,8 +26,9 @@ const ViewOrg = (props) => {
       }
     });
     res = await res.json();
-    setFollowing(res.user.followedOrganizations.includes(organization._id));
-  
+    setFollowing(res.user.followedOrganizations
+      .map((organization) => organization._id)
+      .includes(organization._id));
   };
 
   const follow = async () => {
@@ -54,6 +55,7 @@ const ViewOrg = (props) => {
     // add stuff to fill up the follower list
     setFollowing(true);
     setFollowingCount(followingCount + 1);
+    console.log(followingCount);
   };
 
   const unfollow = async () => {

@@ -10,6 +10,7 @@ import CreateOrg from "../Screens/CreateOrg";
 import EditPassword from "../Screens/EditPassword";
 import FriendList from "../Screens/FriendList";
 import pastEvent from "../Screens/pastEvent";
+import ViewOrg from "../Screens/ViewOrg";
 
 const Stack = createStackNavigator();
 
@@ -33,6 +34,14 @@ function MyStack() {
       />
 
       <Stack.Screen
+        name="ViewOrg"
+        component={ViewOrg}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+    <Stack.Screen
         name="User Profile"
         component={UserProfile}
         options={{

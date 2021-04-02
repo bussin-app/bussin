@@ -26,7 +26,6 @@ const OrgFollowing = (props) => {
       });
 
       res = await res.json();
-      console.log(res);
 
       setOrganizations(res.user.followedOrganizations);
     } catch (e) {
@@ -47,7 +46,7 @@ const OrgFollowing = (props) => {
 
   const createAlert = (organization) => {
       Alert.alert(
-      "Update Organization",
+      "View Organization",
       "",
       [
         {
