@@ -143,7 +143,6 @@ const UserProfile = (props) => {
           setIsFriend(true);
           return;
       }
-      console.log(user);
       setEnabled(true);
   }
 

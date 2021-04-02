@@ -30,7 +30,6 @@ const Event = (props) => {
 
     // Convert response to JSON
     response = await response.json();
-    console.log(status);
     
     // Set data sources
     setFilteredDataSource(response.items);
