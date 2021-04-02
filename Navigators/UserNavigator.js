@@ -11,6 +11,7 @@ import EditPassword from "../Screens/EditPassword";
 import FriendList from "../Screens/FriendList";
 import pastEvent from "../Screens/pastEvent";
 import ViewOrg from "../Screens/ViewOrg";
+import viewUserProfile from '../Screens/viewUserProfile';
 
 const Stack = createStackNavigator();
 
@@ -41,7 +42,7 @@ function MyStack() {
         }}
       />
 
-    <Stack.Screen
+      <Stack.Screen
         name="User Profile"
         component={UserProfile}
         options={{
@@ -49,7 +50,7 @@ function MyStack() {
         }}
       />
 
-    <Stack.Screen
+      <Stack.Screen
         name="OrgFollowing"
         component={OrgFollowing}
         options={{
@@ -88,6 +89,13 @@ function MyStack() {
         }}
       />
 
+      <Stack.Screen
+        name="viewUserProfile"
+        component={viewUserProfile}
+        options={{
+          headerShown: false
+        }}
+      />
 
       <Stack.Screen
         name="PastEvent"
