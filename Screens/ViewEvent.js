@@ -28,15 +28,10 @@ const ViewEvent = (props) => {
     let token = await AsyncStorage.getItem('@bussin-token');
     if (!token) return;
 
-    let res = await fetch(`https://bussin.blakekjohnson.dev/api/user/:${event.host}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      }
-    });
-    res = await res.json();
-    setHost(res.user.name);
+    
+    setHost(event.host);
 
-    res = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
+    let res = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
