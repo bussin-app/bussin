@@ -35,7 +35,6 @@ const Inbox = (props) => {
     if (!storedToken) return;
     setToken(storedToken);
 
-    console.log('Before the fetch');
     let response = await fetch("https://bussin.blakekjohnson.dev/api/invites/inviteInbox", {
       method: "GET",
       headers: {
@@ -45,7 +44,6 @@ const Inbox = (props) => {
 
     // Convert response to JSON
     response = await response.json();
-    console.log(response);
 
     // Set data sources
     setData(response);
@@ -56,6 +54,7 @@ const Inbox = (props) => {
   const replyRequest = async (status, item) => {
     if (filter == 'friends') {
       let res = await fetch('https://bussin.blakekjohnson.dev/api/friends/friendRespond', {
+
         method: 'DELETE',
         body: JSON.stringify({
           request: {
@@ -70,7 +69,6 @@ const Inbox = (props) => {
         }
       });
       res = await res.json();
-      console.log(res);
 
     } else {
       let res = await fetch('https://bussin.blakekjohnson.dev/api/invites/respond', {
@@ -102,13 +100,13 @@ const Inbox = (props) => {
     });
   }, []);
 
-  const changeFilter = (filter) => {
+  const changeFilter = async (filter) => {
     if (filter == 'friends') {
       setFilter('invites');
-      fetchInvites();
+      await fetchInvites();
     } else {
       setFilter('friends');
-      fetchRequests();
+      await fetchRequests();
     }
   }
 
@@ -117,21 +115,24 @@ const Inbox = (props) => {
   const ItemView = ({ item }) => {
     return (
       <SafeAreaView>
-        <View style={{
-          width: 350, padding: SPACING, marginBottom: SPACING, backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: 12,
-          shadowColor: "#355070",
-          shadowOffset: {
-            width: 0,
-            height: 10
-          },
-          shadowOpacity: .3,
-          shadowRadius: 20
-        }}>
-          <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-            {(filter == 'invites') ? 'Event Invite From:' : 'Friend Request From:'}
-          </Text>
-          <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-            {item.from.name}  ({item.from.username})
+      <View style={{
+        width: 350, padding: SPACING, marginBottom: SPACING, backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: 12,
+        shadowColor:"#355070",
+        shadowOffset: {
+          width: 0,
+          height: 10
+        },
+        shadowOpacity: .3,
+        shadowRadius: 20
+      }}>
+        { filter == 'request' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+        Friend Request From</Text>}
+        {filter == 'request' && item.type == 'organizations' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+        Organization Invite From</Text>}
+        {filter == 'request' && item.type == 'event' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+        Event Invite From</Text>}
+        <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+          {item.from.name}  ({item.from.username})
         </Text>
           {filter == 'invites' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }}>To:</Text>}
           {filter == 'invites' && <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }}>{item.foreignID.name}</Text>}

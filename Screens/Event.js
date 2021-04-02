@@ -6,15 +6,23 @@ const Event = (props) => {
   const [token, setToken] = useState(null);
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
-  const [status, setStatus] = useState("events");
+  const [status, setStatus] = useState("host_events");
 
   const fetchData = async () => {
     let storedToken = await AsyncStorage.getItem('@bussin-token');
     if (!storedToken) return;
     setToken(storedToken);
 
-    let source = `${status.substr(0, status.length - 1)}/`;
-    let response = await fetch(`https://bussin.blakekjohnson.dev/api/${source}`, {
+    let source;
+    if (status == 'host_events') {
+      source = 'https://bussin.blakekjohnson.dev/api/event/';
+    } else if (status == 'attend_events') {
+      source = 'https://bussin.blakekjohnson.dev/api/event/attend';
+    } else {
+      source = 'https://bussin.blakekjohnson.dev/api/organization/';
+    }
+    
+    let response = await fetch(source, {
       headers: {
         'Authorization': `Bearer ${storedToken}`,
       }
@@ -29,7 +37,7 @@ const Event = (props) => {
   };
 
   const focusWrapper = () => {
-    setStatus('events');
+    setStatus('host_events');
   };
 
   useEffect(() => {
@@ -49,11 +57,11 @@ const Event = (props) => {
             style: "cancel"
           },
           { text: "Edit", onPress: () => props.navigation.navigate("EditOrg", { item }) },
-          { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "organization", item})}
+          { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "orgs", item})}
         ],
         { cancelable: false }
         );
-    } else {
+    } else if (status == 'host_events') {
       if (item.private) {
       Alert.alert(
       "Update Event",
@@ -94,11 +102,16 @@ const Event = (props) => {
   }, [status]);
 
   const changeStatus = (status) => {
-    if (status == 'events') {
+    if (status == 'host_events') {
+      setStatus('attend_events');
+      fetchData();
+    } else if (status == 'attend_events') {
       setStatus('organizations');
-    } else if (status == 'organizations') {
-      setStatus('events');
-    } 
+      fetchData();
+    } else {
+      setStatus('host_events');
+      fetchData();
+    }
 
   }
 
@@ -171,10 +184,14 @@ const Event = (props) => {
   };
 
   const getItem = (item) => {
-    if (status == 'events')
+    if (status == 'host_events')
       props.navigation.navigate('ViewEvent', { event: item });
-    else
+    else if ( status == 'organizations') {
       props.navigation.navigate('ViewOrg', { organization: item });
+    } else {
+      props.navigation.navigate('ViewEvent', { event: item });
+    }
+      
   };
 
   if (!token) {
@@ -184,7 +201,9 @@ const Event = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignItems: 'center' }}>
-        <Button title={ (status == 'events')? 'Events' : 'Organizations' } onPress = {() => changeStatus(status)} />
+      <Button title={ (status == 'host_events')?"My Hosted Events":
+        ((status == 'attend_events')?"My Attending Events":"My Organizations"
+        )} onPress = {() => changeStatus(status)} />
       </View>
       <View>
         <FlatList
@@ -199,7 +218,8 @@ const Event = (props) => {
         />
       </View>
       <View>
-      <Button title='Create an Event' onPress={() => props.navigation.navigate('CreateEvent')} />
+      { status == 'host_events' && <Button title='Create an Event' onPress={() => props.navigation.navigate('CreateEvent')} />}
+      { status == 'organizations' && <Button title='Create an Organization' onPress={() => props.navigation.navigate('CreateOrg')} />}
       </View>
     </SafeAreaView>
   );
