@@ -29,7 +29,7 @@ const ViewEvent = (props) => {
     if (!token) return;
 
     
-    setHost(event.host);
+    setHost(event.host.ref.name);
 
     let res = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
       headers: {
