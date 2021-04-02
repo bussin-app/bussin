@@ -14,6 +14,7 @@ const ViewOrg = (props) => {
     let { organization } = props.route.params;
     setName(organization.name);
     setFollowingCount(organization.followers || 0);
+    setHost(organization.owner.name);
 
     let token = await AsyncStorage.getItem('@bussin-token');
     if (!token) return;
