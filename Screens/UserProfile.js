@@ -6,6 +6,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 const UserProfile = (props) => {
     const [profile, setProfile] = useState(null);
     const [fetched, setFetched] = useState(false);
+    const [numPast, setNumPast] = useState('');
 
 
     const styles = StyleSheet.create({
@@ -95,6 +96,16 @@ const UserProfile = (props) => {
             return;
         }
 
+        let response = await fetch('https://bussin.blakekjohnson.dev/api/event/past', {
+            headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+        });
+
+        response = await response.json();
+
+        setNumPast(response.events.length);
+
         let data = await res.json();
 
         setProfile(data.user);
@@ -175,7 +186,7 @@ const UserProfile = (props) => {
                       <Text style={[styles.text, styles.subText]}>Bussin Score</Text>
                   </View>
                   <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('PastEvent')}>23</Text>
+                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('PastEvent')}>{numPast}</Text>
                       <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('PastEvent')} >Past Events</Text>
                   </View>
                   <View style={[styles.statsBox, {borderColor: "#DFD8C8", borderRightWidth: 1}]}>
