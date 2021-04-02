@@ -96,6 +96,8 @@ const styles = StyleSheet.create({
 
 const UserProfile = (props) => {
     let [enabled, setEnabled] = useState(false);
+    let [isFriend, setIsFriend] = useState(false);
+
   let { user } = props.route.params;
 
   const addFriendAlert = () => {
@@ -172,7 +174,8 @@ const UserProfile = (props) => {
                       <Image source={require("../Assets/logo1.png")} style={styles.image} resizeMode="center"></Image>
                   </View>
                   <View style={styles.add}>
-                      <Icon name="plus" size={30} color="#B92126" style={{ marginTop: 6, marginLeft: 2 }} onPress = {addFriendAlert}></Icon>
+                     { !isFriend && <Icon name="plus" size={30} color="#B92126" style={{ marginTop: 6, marginLeft: 2 }} onPress = {addFriendAlert}></Icon>} 
+                     { isFriend && <Icon name="check" size={30} color="#059033" style={{ marginTop: 6, marginLeft: 2 }}></Icon>}
                   </View>
               </View>
               <View style={styles.infoContainer}>
