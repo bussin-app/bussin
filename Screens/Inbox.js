@@ -78,7 +78,7 @@ const Inbox = (props) => {
             from: item.from._id,
             type: item.type,
             response: status,
-            id: item._id
+            _id: item._id
         } 
         }),
         headers: {
