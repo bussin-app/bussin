@@ -28,7 +28,6 @@ const PastEvent = (props) => {
       res = await res.json();
 
       setEvents(res.events);
-      console.log(res.events);
     } catch (e) {
       setError(e);
     }
@@ -61,6 +60,10 @@ const PastEvent = (props) => {
     let formattedString =month[monthNum - 1] + " " + curDate + ", " + year;
     return formattedString;
   }
+
+  const getItem = (item) => {
+    props.navigation.navigate('ViewEvent', { event: item });
+  };
 
   const SPACING = 20;
   const ItemSeparatorView = () => {
