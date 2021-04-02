@@ -46,8 +46,15 @@ const Event = (props) => {
             maxAttendees,
             description,
             private: (status == 'private'),
-            date: dateData,
+            date: dateData
         };
+
+        let body = {
+            event: eventData
+        };
+        if (orgName.length > 0) {
+            body.organizationName = orgName;
+        }
 
         // Send the request
         let token = await AsyncStorage.getItem('@bussin-token');
@@ -57,14 +64,11 @@ const Event = (props) => {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                event: eventData
-            }),
+            body: JSON.stringify(body),
         });
 
         // Accept the response
         res = await res.json();
-        console.log(res);
 
         props.navigation.navigate('Event');
     };

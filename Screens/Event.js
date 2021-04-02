@@ -135,13 +135,10 @@ const Event = (props) => {
   const changeStatus = (status) => {
     if (status == 'host_events') {
       setStatus('attend_events');
-      fetchData();
     } else if (status == 'attend_events') {
       setStatus('organizations');
-      fetchData();
     } else {
       setStatus('host_events');
-      fetchData();
     }
 
   }

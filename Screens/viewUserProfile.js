@@ -173,8 +173,13 @@ const UserProfile = (props) => {
        'Content-Type': 'application/json'
      }
    });
+   if (res.status != 200) {
+       res = await res.json();
+       console.log(res);
+       return;
+   }
    res = await res.json();
-   if (res.status != 200) return;
+   console.log(res);
  };
   return (
     <SafeAreaView style={styles.container}>
