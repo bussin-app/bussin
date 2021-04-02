@@ -95,9 +95,14 @@ const styles = StyleSheet.create({
 });
 
 const UserProfile = (props) => {
+    let [enabled, setEnabled] = useState(false);
   let { user } = props.route.params;
 
-  const addFriendAlert = () =>
+  const addFriendAlert = () => {
+      if (!enabled) {
+          Alert.alert("Add Friend", "You cannot add yourself as a friend.");
+          return;
+      }
         Alert.alert(
             "Add Friend",
             "Do you want to add this user as a friend?",
@@ -109,10 +114,26 @@ const UserProfile = (props) => {
                     },
                     style: "cancel"
                 },
-                { text: "Confirm", onPress: addFriend }
+                { text: "Confirm", onPress: () => addFriend() }
             ],
             { cancelable: false }
         );
+  }
+ 
+  const updateEnabled = async () => {
+      let token = await AsyncStorage.getItem('@bussin-token');
+      if (!token) return;
+
+      let res = await fetch('https://bussin.blakekjohnson.dev/api/user', {
+          headers: { 'Authorization': `Bearer ${token}`, },
+      });
+      res = await res.json();
+      setEnabled(res.user._id != user._id);
+  }
+
+  useEffect(() => {
+      updateEnabled();
+  }, [user]);
   
   const addFriend = async () => {
    let token = await AsyncStorage.getItem('@bussin-token');

@@ -8,12 +8,14 @@ const ViewOrg = (props) => {
   const [name, setName] = useState('');
   const [host, setHost] = useState('');
   const [followingCount, setFollowingCount] = useState('');
+  const [memberCount, setMemberCount] = useState('');
   const [following, setFollowing] = useState(true);
 
   const fetchOrgData = async () => {
     let { organization } = props.route.params;
     setName(organization.name);
     setFollowingCount(organization.followers || 0);
+    setMemberCount(organization.members.length || 0);
     setHost(organization.owner.name);
 
     let token = await AsyncStorage.getItem('@bussin-token');
@@ -125,6 +127,10 @@ const ViewOrg = (props) => {
         <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{name}</Text>
       </View>
       <View style={styles.statsContainer}>
+        <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
+          <Text style={[styles.text, { fontSize: 24 }]}>{memberCount}</Text>
+          <Text style={[styles.text, styles.subText]}>Members</Text>
+        </View>
         <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
           <Text style={[styles.text, { fontSize: 24 }]}>{followingCount}</Text>
           <Text style={[styles.text, styles.subText]}>Followers</Text>

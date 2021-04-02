@@ -39,10 +39,10 @@ const EditOrg = (props) => {
                 'Authorization': `Bearer ${token}`
             }
         });
+        if (res.status == 200)
+            props.navigation.navigate('Event');
         res = await res.json();
-        console.log(res);
-        // Deletion linking
-        props.navigation.navigate('Event');
+        setError(res.msg);
     };
 
     const updateOrg = async () => {

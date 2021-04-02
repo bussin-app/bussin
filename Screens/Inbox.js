@@ -96,7 +96,11 @@ const Inbox = (props) => {
 
   useEffect(() => {
     props.navigation.addListener('focus', () => {
-      fetchRequests();
+      if (filter == 'friends') {
+        fetchRequests();
+      } else {
+        fetchInvites();
+      }
     });
   }, []);
 
@@ -115,24 +119,24 @@ const Inbox = (props) => {
   const ItemView = ({ item }) => {
     return (
       <SafeAreaView>
-      <View style={{
-        width: 350, padding: SPACING, marginBottom: SPACING, backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: 12,
-        shadowColor:"#355070",
-        shadowOffset: {
-          width: 0,
-          height: 10
-        },
-        shadowOpacity: .3,
-        shadowRadius: 20
-      }}>
-        { filter == 'request' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-        Friend Request From</Text>}
-        {filter == 'request' && item.type == 'organizations' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-        Organization Invite From</Text>}
-        {filter == 'request' && item.type == 'event' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-        Event Invite From</Text>}
-        <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-          {item.from.name}  ({item.from.username})
+        <View style={{
+          width: 350, padding: SPACING, marginBottom: SPACING, backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: 12,
+          shadowColor: "#355070",
+          shadowOffset: {
+            width: 0,
+            height: 10
+          },
+          shadowOpacity: .3,
+          shadowRadius: 20
+        }}>
+          {filter == 'request' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+            Friend Request From</Text>}
+          {filter == 'request' && item.type == 'organizations' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+            Organization Invite From</Text>}
+          {filter == 'request' && item.type == 'event' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+            Event Invite From</Text>}
+          <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+            {item.from.name}  ({item.from.username})
         </Text>
           {filter == 'invites' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }}>To:</Text>}
           {filter == 'invites' && <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }}>{item.foreignID.name}</Text>}
