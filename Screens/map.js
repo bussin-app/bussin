@@ -13,6 +13,7 @@ const map = (props) => {
   const [error, setError] = useState(null);
   const [events, setEvents] = useState([]);
   const [location, setLocation] = useState({});
+  const [markers, makeMarkers] = useState([]);
   useEffect(() => {
     props.navigation.addListener("focus", async () => {
       setLoading(true);
@@ -41,6 +42,9 @@ const map = (props) => {
     let newLocation = await Location.getCurrentPositionAsync({});
     setLocation(newLocation.coords);
   };
+
+  
+
 
   const mapStyle = [
     {
@@ -377,6 +381,17 @@ const map = (props) => {
     },
   ];
 
+
+
+  mapMarkers (() => {
+    return this.state.events.map((event) => <Marker
+      key={event.id}
+      coordinate={{ latitude: event.location.latitude, longitude: event.location.longitude }}
+      title={event.name}
+      description={event.date}
+    />)
+  });
+
   // TODO: link the backend and get a
   // list of events to display
   const getNearbyEvents = async () => {
@@ -403,7 +418,6 @@ const map = (props) => {
       );
       res = await res.json();
       setEvents(res.items);
-      console.log(this.events);
     } catch (e) {
       setError(e);
     }
@@ -425,8 +439,10 @@ const map = (props) => {
     >
     <Marker coordinate={{ latitude: 40.43, longitude: -86.91}}
     pinColor = 'green' />
+    {this.mapMarkers()}
 
     </MapView>
+   
   );
 };
 

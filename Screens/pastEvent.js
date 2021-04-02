@@ -29,6 +29,7 @@ const PastEvent = (props) => {
       res = await res.json();
 
       setEvents(res.events);
+      console.log(res.events);
     } catch (e) {
       setError(e);
     }
