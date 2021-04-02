@@ -383,14 +383,21 @@ const map = (props) => {
 
 
 
-  mapMarkers (() => {
-    return this.state.events.map((event) => <Marker
+  const mapMarkers = () => {
+    if(!events){
+      return<></>;
+    }
+    return( 
+      <>
+      {events.map((event) => <Marker
       key={event.id}
       coordinate={{ latitude: event.location.latitude, longitude: event.location.longitude }}
       title={event.name}
       description={event.date}
-    />)
-  });
+    />)}
+    </>
+    );
+  }
 
   // TODO: link the backend and get a
   // list of events to display
@@ -439,7 +446,7 @@ const map = (props) => {
     >
     <Marker coordinate={{ latitude: 40.43, longitude: -86.91}}
     pinColor = 'green' />
-    {this.mapMarkers()}
+    {mapMarkers()}
 
     </MapView>
    
