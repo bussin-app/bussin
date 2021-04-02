@@ -20,6 +20,7 @@ const Event = (props) => {
     const [show, setShow] = useState(true);
     const [maxAttendees, setMaxAttendees] = useState(1);
     const [orgName, setOrgName] = useState("");
+    const [eventAddress, setEventAddress] = useState("");
     const [status, setStatus] = useState("");
 
 
@@ -52,9 +53,17 @@ const Event = (props) => {
         let body = {
             event: eventData
         };
+
         if (orgName.length > 0) {
             body.organizationName = orgName;
         }
+
+        console.log('ADDDRESSS SS S :', eventAddress);
+        if (eventAddress.length > 0) {
+            body.address = eventAddress;
+        }
+
+        console.log(body);
 
         // Send the request
         let token = await AsyncStorage.getItem('@bussin-token');
@@ -97,6 +106,12 @@ const Event = (props) => {
                     name={"orgName"}
                     id={"orgName"}
                     onChangeText={(text) => setOrgName(text)}
+                />
+                <Input
+                    placeholder={"Optional: Address"}
+                    name={"eventAddress"}
+                    id={"eventAddress"}
+                    onChange={(text) => setEventAddress(text)}
                 />
             </FormContainer>
 

@@ -26,7 +26,7 @@ const map = (props) => {
   }, []);
 
   useEffect(() => {
-    if(location) {
+    if (location) {
       getNearbyEvents();
     }
     else {
@@ -43,7 +43,7 @@ const map = (props) => {
     setLocation(newLocation.coords);
   };
 
-  
+
 
 
   const mapStyle = [
@@ -384,18 +384,22 @@ const map = (props) => {
 
 
   const mapMarkers = () => {
-    if(!events){
-      return<></>;
+    if (!events) {
+      return <></>;
     }
-    return( 
+    console.log(events);
+    return (
       <>
-      {events.map((event) => <Marker
-      key={event.id}
-      coordinate={{ latitude: event.location.latitude, longitude: event.location.longitude }}
-      title={event.name}
-      description={event.date}
-    />)}
-    </>
+        {
+          events.map((event) =>
+            <Marker
+              key={event.id}
+              coordinate={{ latitude: event.location.coordinates[0], longitude: event.location.coordinates[1] }}
+              title={event.name}
+              description={event.date}
+            />
+          )}
+      </>
     );
   }
 
@@ -403,7 +407,7 @@ const map = (props) => {
   // list of events to display
   const getNearbyEvents = async () => {
     let storedToken = await AsyncStorage.getItem("@bussin-token");
-    
+
     if (!storedToken) {
       setLoading(false);
       setError("To get started login at the user page.");
@@ -443,18 +447,18 @@ const map = (props) => {
         longitude: -86.91,
         latitudeDelta: 0.05,
         longitudeDelta: 0.05,
-      }} 
+      }}
     >
       {
         location &&
         <Marker coordinate={{ latitude: location.latitude, longitude: location.longitude }} pinColor='green' />
       }
-    {/*<Marker coordinate={{ latitude: 40.43, longitude: -86.91}}
+      {/*<Marker coordinate={{ latitude: 40.43, longitude: -86.91}}
     pinColor = 'green' />*/}
-    {mapMarkers()}
+      {mapMarkers()}
 
     </MapView>
-   
+
   );
 };
 
