@@ -13,7 +13,7 @@ const ViewOrg = (props) => {
   const fetchOrgData = async () => {
     let { organization } = props.route.params;
     setName(organization.name);
-    setFollowingCount(organization.attendees || 0);
+    setFollowingCount(organization.followers || 0);
 
     let token = await AsyncStorage.getItem('@bussin-token');
     if (!token) return;
@@ -26,6 +26,7 @@ const ViewOrg = (props) => {
     });
     res = await res.json();
     setFollowing(res.user.followedOrganizations.includes(organization._id));
+  
   };
 
   const follow = async () => {
