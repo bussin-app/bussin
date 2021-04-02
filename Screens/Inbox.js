@@ -123,9 +123,12 @@ const Inbox = (props) => {
         shadowOpacity: .3,
         shadowRadius: 20
       }}>
-        <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-        { (filter == 'invites')? 'Event Invite From:' : 'Friend Request From:' }
-        </Text>
+        { filter == 'request' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+        Friend Request From</Text>}
+        {filter == 'request' && item.type == 'organizations' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+        Organization Invite From</Text>}
+        {filter == 'request' && item.type == 'event' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+        Event Invite From</Text>}
         <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
           {item.from.name}  ({item.from.username})
         </Text>

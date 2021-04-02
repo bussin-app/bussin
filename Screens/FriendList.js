@@ -28,9 +28,14 @@ const FriendList = (props) => {
     // Convert response to JSON
     response = await response.json();
     // Set data source
-    setFriends(response);
-    setSortedFriends(response.sort((a, b) => a.name - b.name));
-    setData(response);
+    
+    let unsortedArray = [...response];
+    let sortedArray = response.sort((a, b) => { 
+      return a.name.localeCompare(b.name);
+    });
+    setFriends(unsortedArray);
+    setSortedFriends(sortedArray);
+    setData(unsortedArray);
   };
 
   const removeFriend = async (item) => {
