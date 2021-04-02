@@ -119,7 +119,7 @@ const FriendList = (props) => {
                     onPress: () => console.log("Cancel Pressed"),
                     style: "cancel"
                 },
-                { text: "Delete", onPress: removeFriend(item) }
+                { text: "Delete", onPress: () => removeFriend(item) }
             ],
             { cancelable: false }
         );
