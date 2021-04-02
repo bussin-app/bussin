@@ -130,11 +130,11 @@ const Inbox = (props) => {
           shadowRadius: 20
         }}>
           {filter == 'friends' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-            Friend Request From</Text>}
+            Friend Request From:</Text>}
           {filter == 'invites' && item.type == 'organizations' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-            Organization Invite From</Text>}
+            Organization Invite From:</Text>}
           {filter == 'invites' && item.type == 'event' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-            Event Invite From</Text>}
+            Event Invite From:</Text>}
           <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
             {item.from.name}  ({item.from.username})
         </Text>
