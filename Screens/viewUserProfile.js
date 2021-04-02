@@ -187,7 +187,7 @@ const UserProfile = (props) => {
                   </View>
                   <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
                       <Text style={[styles.text, { fontSize: 24 }]}>23</Text>
-                      <Text style={[styles.text, styles.subText]}>Events Hosted</Text>
+                      <Text style={[styles.text, styles.subText]}>Events Attended</Text>
                   </View>
                   <View style={[styles.statsBox, { borderColor: "#DFD8C8",  borderRightWidth: 1 }]}>
                       <Text style={[styles.text, { fontSize: 24 }]}>{user.friends.length}</Text>
