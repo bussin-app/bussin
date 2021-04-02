@@ -131,7 +131,8 @@ const Event = (props) => {
   const SPACING = 20;
   const ItemView = ({ item }) => {
     return (
-      <View style={{
+      <SafeAreaView>
+        <View style={{
         flexDirection: 'column', padding: SPACING, marginBottom: SPACING, fontFamily: 'HelveticaNeue', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: 12,
         shadowColor:"#355070",
         shadowOffset: {
@@ -151,6 +152,8 @@ const Event = (props) => {
           {formatDate(item.date) || ""}
         </Text>
       </View>
+      </SafeAreaView>
+      
     );
   };
 
@@ -194,6 +197,9 @@ const Event = (props) => {
           }}
           renderItem={ItemView}
         />
+      </View>
+      <View>
+      <Button title='Create an Event' onPress={() => props.navigation.navigate('CreateEvent')} />
       </View>
     </SafeAreaView>
   );

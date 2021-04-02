@@ -7,6 +7,7 @@ const Inbox = (props) => {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState(['friends']);
   const [title, setTitle] = useState(['friends']);
+  
 
  
 
@@ -53,7 +54,8 @@ const Inbox = (props) => {
   
 
   const replyRequest = async (status, item) => {
-    let res = await fetch('https://bussin.blakekjohnson.dev/api/friends/friendRespond', {
+    if (filter == 'friends') {
+      let res = await fetch('https://bussin.blakekjohnson.dev/api/friends/friendRespond', {
      method: 'DELETE',
      body: JSON.stringify({
        request: {
@@ -70,28 +72,27 @@ const Inbox = (props) => {
      res = await res.json();
      console.log(res);
 
-  };
-
-  const replyInvites = async (status, item) => {
-    let res = await fetch('https://bussin.blakekjohnson.dev/api/friends/friendRespond', {
-     method: 'DELETE',
-     body: JSON.stringify({
-       request: {
-          to: item.to, 
-          from: item.from._id,
-          type: item.type,
-          response: status,
-          id: item._id
-       } 
-     }),
-     headers: {
-       'Authorization': `Bearer ${token}`,
-       'Content-Type': 'application/json'
-     }
-    });
+    } else {
+      let res = await fetch('https://bussin.blakekjohnson.dev/api/invites/respond', {
+        method: 'DELETE',
+        body: JSON.stringify({
+        invite: {
+            to: item.to, 
+            from: item.from._id,
+            type: item.type,
+            response: status,
+            id: item._id
+        } 
+        }),
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
      res = await res.json();
      console.log(res);
-
+    }
+    
   };
 
   useEffect(() => {
@@ -129,11 +130,10 @@ const Inbox = (props) => {
         { (filter == 'invites')? 'Event Invite From:' : 'Friend Request From:' }
         </Text>
         <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
-          {item.from ? item.from.name : ''}
+          {item.from.name}  ({item.from.username})
         </Text>
-        <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue' }}>
-          {item.from ? item.from.username : ''}
-        </Text>
+        { filter == 'invites' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }}>To:</Text>}
+        { filter == 'invites' && <Text style={{  fontSize: 20, fontFamily: 'HelveticaNeue' }}>{item.foreignID.name}</Text>}
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <Button title={"Accept"} onPress={() => replyRequest(1, item)}></Button>
           <Button title={"Deny"} onPress={() => replyRequest(2, item)}></Button>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, Text, StyleSheet, View, FlatList, StatusBar, Button } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, View, FlatList, StatusBar, Button, Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FriendList = (props) => {
@@ -109,6 +109,21 @@ const FriendList = (props) => {
     } 
   }
 
+  const createDeleteAlert = (item) =>
+        Alert.alert(
+            "Delete Friend",
+            "You will have to send another request to be friends.",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "Delete", onPress: () => removeFriend(item) }
+            ],
+            { cancelable: false }
+        );
+
   const SPACING = 20;
   const PIC_SIZE = 70
   const ItemView = ({ item }) => {
@@ -128,13 +143,15 @@ const FriendList = (props) => {
         <Text style={{ fontSize: 25, fontFamily: 'HelveticaNeue', fontWeight: "200" }} onPress={() => getItem(item)}>
           {item.name}
         </Text>
-        <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }}>
+        <View style={{ alignContents: "row"}}>
+          <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }}>
           {item.username}
-        </Text>
-        <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
+          </Text>
+          <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
           {item.eventPoints}
-        </Text>
-        { source === 'friends' && <Button title = {"Remove"} onPress={() => removeFriend(item)}/>}
+          </Text>
+        </View>
+        { source === 'friends' && <Button title = {"Remove"} onPress={() => createDeleteAlert(item)}/>}
         { source === 'orgs' && <Button title = {"Invite"} onPress={() => createInvite('Organization', item)}/>}
         { source === 'events' && <Button title = {"Invite"} onPress={() => createInvite('Event', item)}/>}
       </View>
@@ -167,7 +184,7 @@ const FriendList = (props) => {
     return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignItems: 'center' }}>
-        <Text>Friends</Text>
+        <Text style={{ fontSize: 30, fontFamily: 'HelveticaNeue', fontWeight: "200" }}>Friends</Text>
         <Button title={ (sorted == 'true')? 'Sort Alphabetically' : 'Sort Oldest First' }  onPress = {() => changeSort()} />
         <FlatList
           data={data}
