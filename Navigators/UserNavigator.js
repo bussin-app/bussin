@@ -5,6 +5,7 @@ import Register from "../Screens/Register";
 import Login from "../Screens/Login";
 import UserProfile from "../Screens/UserProfile";
 import ModifyAcc from "../Screens/ModifyAcc";
+import OrgFollowing from "../Screens/OrgFollowing";
 import CreateOrg from "../Screens/CreateOrg";
 import EditPassword from "../Screens/EditPassword";
 import FriendList from "../Screens/FriendList";
@@ -34,6 +35,14 @@ function MyStack() {
       <Stack.Screen
         name="User Profile"
         component={UserProfile}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+    <Stack.Screen
+        name="OrgFollowing"
+        component={OrgFollowing}
         options={{
           headerShown: false,
         }}
