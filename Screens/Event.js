@@ -95,6 +95,20 @@ const Event = (props) => {
         { cancelable: false }
       );
     }
+  } else if (status  == 'attend_events') {
+    Alert.alert(
+      "View Event",
+      "View this Event?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel"),
+          style: "cancel"
+        },
+        { text: "View", onPress: () => props.navigation.navigate("ViewEvent", { event: item }) },
+      ],
+      { cancelable: false }
+    );
   }
 }
 
@@ -105,10 +119,13 @@ const Event = (props) => {
   const changeStatus = (status) => {
     if (status == 'host_events') {
       setStatus('attend_events');
+      fetchData();
     } else if (status == 'attend_events') {
       setStatus('organizations');
+      fetchData();
     } else {
       setStatus('host_events');
+      fetchData();
     }
 
   }
@@ -156,10 +173,10 @@ const Event = (props) => {
         <Text style={{ fontSize: 25, fontWeight: "200" }} onPress={() => createAlert(item)}>
           {item.name}
         </Text>
-        <Text style={{ fontSize: 20 }}>
+        <Text style={{ fontSize: 20 }} onPress={() => createAlert(item)}>
           {item.description || ""}
         </Text>
-        <Text style={{ fontSize: 15, textAlign: 'right' }}>
+        <Text style={{ fontSize: 15, textAlign: 'right' }} onPress={() => createAlert(item)}>
           {formatDate(item.date) || ""}
         </Text>
       </View>
