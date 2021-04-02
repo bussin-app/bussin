@@ -36,6 +36,23 @@ const Event = (props) => {
     setMasterDataSource(response.items);
   };
 
+  const startEvent = async (item) => {
+    // Construct the date based on time and date
+    let token = await AsyncStorage.getItem('@bussin-token');
+    if (!token) return;
+    let res;
+    try {
+        res = await fetch(`https://bussin.blakekjohnson.dev/api/event/${item._id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ update: { past: true } }),
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        });
+    } catch (e) { console.error(e); return; }
+};
+
   const focusWrapper = () => {
     fetchData();
   };
@@ -74,7 +91,7 @@ const Event = (props) => {
         },
         { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event: item }) },
         { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "events", item })},
-        { text: "Start", onPress: () => console.log("Start") }
+        { text: "Start", onPress: () => startEvent(item)}
       ],
       { cancelable: false }
       );
@@ -89,7 +106,7 @@ const Event = (props) => {
             style: "cancel"
           },
           { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event: item }) },
-          { text: "Start", onPress: () => console.log("Start") }
+          { text: "Start", onPress: () => startEvent(item) }
         ],
         { cancelable: false }
       );

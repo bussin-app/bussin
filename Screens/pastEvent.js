@@ -36,6 +36,33 @@ const PastEvent = (props) => {
     setLoading(false);
   };
 
+  const formatDate = (date) => {
+    if (date == undefined) {
+      return '';
+    }
+
+    let dateParts = date.split("-");
+    let year = dateParts[0];
+    let monthNum = dateParts[1];
+    let curDate = dateParts[2].substring(0,2);
+    var month = new Array();
+    month[0] = "Jan";
+    month[1] = "Feb";
+    month[2] = "Mar";
+    month[3] = "Apr";
+    month[4] = "May";
+    month[5] = "Jun";
+    month[6] = "Jul";
+    month[7] = "Aug";
+    month[8] = "Sep";
+    month[9] = "Oct";
+    month[10] = "Nov";
+    month[11] = "Dec";
+    let formattedString =month[monthNum - 1] + " " + curDate + ", " + year;
+    return formattedString;
+  }
+
+  const SPACING = 20;
   const ItemSeparatorView = () => {
     return (
       // Flat List Item Separator
@@ -90,7 +117,7 @@ const PastEvent = (props) => {
 
     <SafeAreaView style={{ flex: 1 }}>
         <View style={{ alignItems: 'center' }}>
-          <Text style={{ fontFamily: "HelveticaNeue", fontSize: 36, marginTop: 5, fontWeight: "200"}}>My Events</Text>
+          <Text style={{ fontFamily: "HelveticaNeue", fontSize: 36, marginTop: 5, fontWeight: "200"}}>My Past Events</Text>
         </View>
         { error && <Text>{error}</Text>}
       {
