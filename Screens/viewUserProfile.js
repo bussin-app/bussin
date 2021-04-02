@@ -96,11 +96,12 @@ const styles = StyleSheet.create({
 
 const UserProfile = (props) => {
     let [enabled, setEnabled] = useState(false);
+    let [disabledMessage, setDisabledMessage] = useState('');
   let { user } = props.route.params;
 
   const addFriendAlert = () => {
       if (!enabled) {
-          Alert.alert("Add Friend", "You cannot add yourself as a friend.");
+          Alert.alert("Add Friend", disabledMessage);
           return;
       }
         Alert.alert(
@@ -128,7 +129,19 @@ const UserProfile = (props) => {
           headers: { 'Authorization': `Bearer ${token}`, },
       });
       res = await res.json();
-      setEnabled(res.user._id != user._id);
+
+      if (res.user._id == user._id) {
+          setEnabled(false);
+          setDisabledMessage('Cannot add self as friend.');
+          return;
+      }
+      if (user.friends.includes(res.user._id)) {
+          setEnabled(false);
+          setDisabledMessage('User is already friends.');
+          return;
+      }
+      console.log(user);
+      setEnabled(true);
   }
 
   useEffect(() => {
