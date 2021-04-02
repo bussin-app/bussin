@@ -89,7 +89,7 @@ const Login = (props) => {
           <Button title={"Login"} onPress={sendRequest} />
         </View>
         <View>
-          <Text>Don't have an account yet?</Text>
+          <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue' }} >Don't have an account yet?</Text>
           <Button title={"Register"} onPress={
             () => props.navigation.navigate("Register")
           }></Button>
