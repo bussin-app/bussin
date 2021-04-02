@@ -28,9 +28,14 @@ const FriendList = (props) => {
     // Convert response to JSON
     response = await response.json();
     // Set data source
-    setFriends(response);
-    setSortedFriends(response.sort((a, b) => a.name - b.name));
-    setData(response);
+    
+    let unsortedArray = [...response];
+    let sortedArray = response.sort((a, b) => { 
+      return a.name.localeCompare(b.name);
+    });
+    setFriends(unsortedArray);
+    setSortedFriends(sortedArray);
+    setData(unsortedArray);
   };
 
   const removeFriend = async (item) => {
@@ -152,8 +157,8 @@ const FriendList = (props) => {
           </Text>
         </View>
         { source === 'friends' && <Button title = {"Remove"} onPress={() => createDeleteAlert(item)}/>}
-        { source === 'orgs' && <Button title = {"Invite"} onPress={() => createInvite('Organization', item)}/>}
-        { source === 'events' && <Button title = {"Invite"} onPress={() => createInvite('Event', item)}/>}
+        { source === 'orgs' && <Button title = {"Invite"} onPress={() => createInvite('organization', item)}/>}
+        { source === 'events' && <Button title = {"Invite"} onPress={() => createInvite('event', item)}/>}
       </View>
       </SafeAreaView>
     );

@@ -13,6 +13,7 @@ const ViewOrg = (props) => {
   const fetchOrgData = async () => {
     let { organization } = props.route.params;
     setName(organization.name);
+    setFollowingCount(organization.followers || 0);
 
     let token = await AsyncStorage.getItem('@bussin-token');
     if (!token) return;
@@ -25,6 +26,7 @@ const ViewOrg = (props) => {
     });
     res = await res.json();
     setFollowing(res.user.followedOrganizations.includes(organization._id));
+  
   };
 
   const follow = async () => {
@@ -119,8 +121,17 @@ const ViewOrg = (props) => {
       <View style={styles.infoContainer}>
         <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{name}</Text>
       </View>
+      <View style={styles.statsContainer}>
+        <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
+          <Text style={[styles.text, { fontSize: 24 }]}>{followingCount}</Text>
+          <Text style={[styles.text, styles.subText]}>Followers</Text>
+        </View>
+        <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
+          <Text style={[styles.text, { fontSize: 24 }]}>{host}</Text>
+          <Text style={[styles.text, styles.subText]}>Hosted by</Text>
+        </View>
+      </View>
       <View style={[styles.infoContainer, { alignContent: 'start' }]}>
-        <Text style={[styles.text, { fontSize: 20 }]}>Host: {host}</Text>
         {
           !following &&
           <Button style={[styles.text, { fontSize: 20 }]} title='Follow' onPress={follow} disabled={following} />
