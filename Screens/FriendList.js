@@ -152,8 +152,8 @@ const FriendList = (props) => {
           </Text>
         </View>
         { source === 'friends' && <Button title = {"Remove"} onPress={() => createDeleteAlert(item)}/>}
-        { source === 'orgs' && <Button title = {"Invite"} onPress={() => createInvite('Organization', item)}/>}
-        { source === 'events' && <Button title = {"Invite"} onPress={() => createInvite('Event', item)}/>}
+        { source === 'orgs' && <Button title = {"Invite"} onPress={() => createInvite('organization', item)}/>}
+        { source === 'events' && <Button title = {"Invite"} onPress={() => createInvite('event', item)}/>}
       </View>
       </SafeAreaView>
     );

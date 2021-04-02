@@ -35,7 +35,6 @@ const Inbox = (props) => {
     if (!storedToken) return;
     setToken(storedToken);
 
-    console.log('Before the fetch');
     let response = await fetch("https://bussin.blakekjohnson.dev/api/invites/inviteInbox", {
             method: "GET",
             headers: {
@@ -45,7 +44,6 @@ const Inbox = (props) => {
 
     // Convert response to JSON
     response = await response.json();
-    console.log(response);
 
     // Set data sources
     setData(response);
@@ -70,7 +68,6 @@ const Inbox = (props) => {
      }
     });
      res = await res.json();
-     console.log(res);
 
     } else {
       let res = await fetch('https://bussin.blakekjohnson.dev/api/invites/respond', {
@@ -101,13 +98,13 @@ const Inbox = (props) => {
     });
   }, []);
 
-  const changeFilter = (filter) => {
+  const changeFilter = async (filter) => {
     if (filter == 'friends') {
       setFilter('invites');
-      fetchInvites();
+      await fetchInvites();
     } else {
       setFilter('friends');
-      fetchRequests();
+      await fetchRequests();
     }
   }
 
