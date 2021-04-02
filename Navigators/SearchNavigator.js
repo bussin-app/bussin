@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Search from "../Screens/Search";
 import viewUserProfile from "../Screens/viewUserProfile";
 import ViewEvent from "../Screens/ViewEvent";
+import ViewOrg from "../Screens/ViewOrg";
 
 const Stack = createStackNavigator();
 
@@ -31,6 +32,14 @@ function MyStack() {
             <Stack.Screen
                 name="ViewEvent"
                 component={ViewEvent}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen
+                name="ViewOrg"
+                component={ViewOrg}
                 options={{
                     headerShown: false
                 }}
