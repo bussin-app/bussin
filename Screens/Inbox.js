@@ -131,6 +131,7 @@ const Inbox = (props) => {
         <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
           {item.from ? item.from.name : ''}
         </Text>
+        { title === 'invites' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }}>From:</Text>}
         <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue' }}>
           {item.from ? item.from.username : ''}
         </Text>
