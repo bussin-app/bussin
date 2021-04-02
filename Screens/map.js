@@ -432,6 +432,7 @@ const map = (props) => {
     setLoading(false);
   };
 
+
   return (
     <MapView
       style={{ flex: 1 }}
@@ -444,8 +445,12 @@ const map = (props) => {
         longitudeDelta: 0.05,
       }} 
     >
-    <Marker coordinate={{ latitude: 40.43, longitude: -86.91}}
-    pinColor = 'green' />
+      {
+        location &&
+        <Marker coordinate={{ latitude: location.latitude, longitude: location.longitude }} pinColor='green' />
+      }
+    {/*<Marker coordinate={{ latitude: 40.43, longitude: -86.91}}
+    pinColor = 'green' />*/}
     {mapMarkers()}
 
     </MapView>
