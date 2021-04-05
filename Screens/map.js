@@ -394,6 +394,7 @@ const map = (props) => {
       coordinate={{ latitude: event.location.latitude, longitude: event.location.longitude }}
       title={event.name}
       description={event.date}
+      pinColor = 'red'
     />)}
     </>
     );
@@ -449,8 +450,7 @@ const map = (props) => {
         location &&
         <Marker coordinate={{ latitude: location.latitude, longitude: location.longitude }} pinColor='green' />
       }
-    {/*<Marker coordinate={{ latitude: 40.43, longitude: -86.91}}
-    pinColor = 'green' />*/}
+    
     {mapMarkers()}
 
     </MapView>
