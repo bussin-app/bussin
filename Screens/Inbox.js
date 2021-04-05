@@ -89,7 +89,6 @@ const Inbox = (props) => {
         }
       });
       res = await res.json();
-      console.log(res);
     }
 
   };

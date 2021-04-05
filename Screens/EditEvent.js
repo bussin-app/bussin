@@ -174,7 +174,8 @@ const EditEvent = (props) => {
                     <NumericInput
                         onChange={value => setMaxAttendees(value)}
                         value={maxAttendees}
-                        rounded borderColor={'#B92126'} />
+                        rounded borderColor={'#B92126'} 
+                        minValue={'1'}/>
                     <Picker
                         style={{ height: 50, width: 300 }}
                         selectedValue={status}
