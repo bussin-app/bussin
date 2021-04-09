@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Button, Text, Alert } from 'react-native';
+import { View, Button, Text, Alert, TouchableOpacity} from 'react-native';
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ImagePicker from 'react-native-image-picker';
+
 
 
 const ModifyAcc = (props) => {
@@ -11,6 +13,34 @@ const ModifyAcc = (props) => {
     const [username, setUsername] = useState("");
     const [accountChanged, setAccountChanged] = useState(false);
     const [waiting, setWaiting] = useState(false);
+    const [imageSource, setImageSource] = useState(null);
+
+  function selectImage() {
+    let options = {
+      title: 'You can choose one image',
+      maxWidth: 256,
+      maxHeight: 256,
+      storageOptions: {
+        skipBackup: true
+      }
+    };
+
+    ImagePicker.showImagePicker(options, response => {
+      console.log({ response });
+
+      if (response.didCancel) {
+        console.log('User cancelled photo picker');
+        Alert.alert('You did not select any image');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        let source = { uri: response.uri };
+        console.log({ source });
+      }
+    });
+  }
 
     const sendRequest = async () => {
         setWaiting(true);
@@ -127,6 +157,7 @@ const ModifyAcc = (props) => {
                         () => props.navigation.navigate("EditPassword")}>
                     </Button>
                     <Button title='Delete Account' onPress={createDeleteAlert} />
+                    <Button title='Upload Profile Picture' onPress={selectImage()} />
                 </View>
             </FormContainer>
         </KeyboardAwareScrollView>
