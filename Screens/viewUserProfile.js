@@ -77,6 +77,19 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       borderColor: "#000000"
   },
+  ban: {
+    backgroundColor: "#FFFFFF",
+    position: "absolute",
+    bottom: 0,
+    right: 135,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#000000"
+},
   infoContainer: {
       alignSelf: "center",
       alignItems: "center",
@@ -121,6 +134,29 @@ const UserProfile = (props) => {
             ],
             { cancelable: false }
         );
+  }
+
+  const createReportAlert = () => {
+    Alert.alert(
+        "Report or Block User",
+        "Do you want to report or block this user?",
+        [
+            {
+                text: "Cancel",
+                onPress: () => { 
+                    console.log("Cancel Pressed");
+                },
+                style: "cancel"
+            },
+            { text: "Block", onPress: () => { 
+                console.log("Block Pressed");
+            } },
+            { text: "Report and Block", onPress: () => { 
+                console.log("Report Pressed");
+            } }
+        ],
+        { cancelable: false }
+    );
   }
  
   const updateEnabled = async () => {
@@ -190,6 +226,9 @@ const UserProfile = (props) => {
               <View style={{ alignSelf: "center" }}>
                   <View style={styles.profileImage}>
                       <Image source={require("../Assets/logo1.png")} style={styles.image} resizeMode="center"></Image>
+                  </View>
+                  <View style={styles.ban}>
+                     <Icon name = 'ban' size = {30} onPress = {createReportAlert}></Icon>
                   </View>
                   <View style={styles.add}>
                      { !isFriend && <Icon name="plus" size={30} color="#B92126" style={{ marginTop: 6, marginLeft: 2 }} onPress = {addFriendAlert}></Icon>} 
