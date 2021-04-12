@@ -114,11 +114,14 @@ const ModifyAcc = (props) => {
           allowsEditing: true,
           aspect: [4, 3],
           quality: 1,
+          // for sending image to s3 bucket
+          // base64: true
         });
     
         console.log(result);
     
         if (!result.cancelled) {
+        //modify to result.base64
           setImage(result.uri);
         }
       };
