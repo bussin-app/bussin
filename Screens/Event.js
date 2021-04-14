@@ -233,6 +233,11 @@ const Event = (props) => {
         ((status == 'attend_events')?"My Attending Events":"My Organizations"
         )} onPress = {() => changeStatus(status)} />
       </View>
+      <View style={{ textAlign: 'left' }}>
+      <Button title={ (status == 'host_events')?"Sort":
+        ((status == 'attend_events')?"Sort":" "
+        )} onPress = {() => console.log("Sort Alphabetically(Need to add)")} />
+      </View>
       <View>
         <FlatList
           data={filteredDataSource}
