@@ -168,7 +168,7 @@ const UserProfile = (props) => {
               </View>
               <View style={{ alignSelf: "center" }}>
                   <View style={styles.profileImage}>
-                      <Image source={require("../Assets/logo1.png")} style={styles.image} resizeMode="center"></Image>
+                      <Image source={{ uri: profile.profilePhoto }} style={styles.image} resizeMode="center"></Image>
                   </View>
                   <View style={styles.edit}>
                       <Icon name="pencil" size={30} color="#B92126" style={{ marginTop: 4, marginLeft: 2 }} onPress = {() => props.navigation.navigate("Settings")}></Icon>
