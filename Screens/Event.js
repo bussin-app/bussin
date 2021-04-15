@@ -53,6 +53,28 @@ const Event = (props) => {
     } catch (e) { console.error(e); return; }
 };
 
+  const sendReminder = async (item) => {
+    let attendees = item.attendees;
+    
+    for(let attendee of attendees) {
+      console.log(attendee);
+      let response = await fetch("https://bussin.blakekjohnson.dev/api/reminder/", {
+            method: "POST",
+            body: JSON.stringify({
+              reminder: {
+                  to: item._id, 
+                  from: attendee._id,
+                  eventID: item._id,
+                  description: "testing"
+               }
+            }),
+    });
+    }
+    
+  }
+
+  
+
   const focusWrapper = () => {
     fetchData();
   };
@@ -91,6 +113,7 @@ const Event = (props) => {
         },
         { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event: item }) },
         { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "events", item })},
+        { text: "send reminder", onPress: () => sendReminder(item)},
         { text: "Start", onPress: () => startEvent(item)}
       ],
       { cancelable: false }
@@ -106,6 +129,7 @@ const Event = (props) => {
             style: "cancel"
           },
           { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event: item }) },
+          { text: "send reminder", onPress: () => sendReminder(item)},
           { text: "Start", onPress: () => startEvent(item) }
         ],
         { cancelable: false }
