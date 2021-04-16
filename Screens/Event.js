@@ -69,6 +69,8 @@ const Event = (props) => {
                }
             }),
     });
+    console.log(response.body);
+
     }
     
   }

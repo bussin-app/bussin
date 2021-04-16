@@ -205,11 +205,11 @@ const Inbox = (props) => {
         {filter == 'friends' && 
           <Button title = 'Friend Request' onPress={() => changeFilter(filter)} />
         }
-        {filter == 'Invites' && 
-          <Button title = 'Invites' onPress={() => changeFilter(filter)} />
+        {filter == 'invites' && 
+          <Button title = 'invites' onPress={() => changeFilter(filter)} />
         }
-        {filter == 'Reminders' && 
-          <Button title = 'Reminders' onPress={() => changeFilter(filter)} />
+        {filter == 'reminders' && 
+          <Button title = 'reminders' onPress={() => changeFilter(filter)} />
         }
         </View>
       <View style={{ alignItems: 'center' }}>
