@@ -5,7 +5,6 @@ import Search from "../Screens/Search";
 import viewUserProfile from "../Screens/viewUserProfile";
 import ViewEvent from "../Screens/ViewEvent";
 import ViewOrg from "../Screens/ViewOrg";
-import Report from "../Screens/Report";
 
 const Stack = createStackNavigator();
 
@@ -45,14 +44,6 @@ function MyStack() {
                     headerShown: false
                 }}
             />
-
-            <Stack.Screen
-                name="Report"
-                component={Report}
-                options={{
-                    headerShown: false
-                }}
-            /> 
         </Stack.Navigator>
     )
 };
