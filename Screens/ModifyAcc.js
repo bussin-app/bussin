@@ -27,6 +27,22 @@ const ModifyAcc = (props) => {
 
         if (!token) return;
 
+        // If there is an image provided then upload as new profile photo
+        if (image) {
+            let res = await fetch("https://bussin.blakekjohnson.dev/api/photo", {
+                method: "POST",
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    data: image,
+                }),
+            });
+
+            console.log(res.status);
+        }
+
         // Send request to server and await response
         let res = await fetch("https://bussin.blakekjohnson.dev/api/user", {
             method: "PATCH",
@@ -113,13 +129,12 @@ const ModifyAcc = (props) => {
           mediaTypes: ImagePicker.MediaTypeOptions.All,
           allowsEditing: true,
           aspect: [4, 3],
-          quality: 1,
+          quality: 0.0625,
+          base64: true,
         });
     
-        console.log(result);
-    
         if (!result.cancelled) {
-          setImage(result.uri);
+          setImage(`data:image/jpeg;base64,${result.base64}`);
         }
       };
 

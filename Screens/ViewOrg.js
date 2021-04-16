@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, StyleSheet, SafeAreaView } from "react-native";
+import { View, Text, Alert, Button, StyleSheet, SafeAreaView } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -84,6 +84,20 @@ const ViewOrg = (props) => {
     // add stuff to fill up the follower list
     setFollowing(false);
     setFollowingCount(followingCount - 1);
+    // Alert for "leaving"
+    Alert.alert(
+      "Leave organization?",
+      "",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel"),
+          style: "cancel"
+        },
+        { text: "Leave", onPress: () => props.navigation.navigate("User Profile", { organization }) }
+      ],
+      { cancelable: false }
+      );
   };
 
   useEffect(() => {
