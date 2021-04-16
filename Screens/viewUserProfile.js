@@ -152,7 +152,7 @@ const UserProfile = (props) => {
                 console.log("Block Pressed");
             } },
             { text: "Report and Block", onPress: () => { 
-                console.log("Report Pressed");
+                props.navigation.navigate('Report', { user });
             } }
         ],
         { cancelable: false }
