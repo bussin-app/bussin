@@ -225,7 +225,7 @@ const UserProfile = (props) => {
               </View>
               <View style={{ alignSelf: "center" }}>
                   <View style={styles.profileImage}>
-                      <Image source={require("../Assets/logo1.png")} style={styles.image} resizeMode="center"></Image>
+                      <Image source={user.profilePhoto} style={styles.image} resizeMode="center"></Image>
                   </View>
                   <View style={styles.ban}>
                      <Icon name = 'ban' size = {30} onPress = {createReportAlert}></Icon>
