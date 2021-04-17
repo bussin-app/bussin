@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { SafeAreaView, Text, StyleSheet, View, FlatList, StatusBar, Button, Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const FriendList = (props) => {
+const OrgMemberList = (props) => {
   const [token, setToken] = useState(null);
-  const [friends, setFriends] = useState([]);
-  const [sortedFriends, setSortedFriends] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [sortedMembers, setSortedMembers] = useState([]);
   const [sorted, setSorted] = useState('false');
-  const [source, setSource] = useState('friends');
+  const [source, setSource] = useState('members');
   const [data, setData] = useState([]); 
 
-  const fetchFriends = async () => {
+  const fetchOrgs = async () => {
     let storedToken = await AsyncStorage.getItem('@bussin-token');
     if (!storedToken) return;
     setToken(storedToken);
 
-    let response = await fetch("https://bussin.blakekjohnson.dev/api/friends/fetch", {
+    let response = await fetch("https://bussin.blakekjohnson.dev/api/organization/members", {
             method: "GET",
             headers: {
               'Authorization': `Bearer ${storedToken}`,
@@ -30,104 +30,40 @@ const FriendList = (props) => {
     let sortedArray = response.sort((a, b) => { 
       return a.name.localeCompare(b.name);
     });
-    setFriends(unsortedArray);
-    setSortedFriends(sortedArray);
+    setMembers(unsortedArray);
+    setSortedMembers(sortedArray);
     setData(unsortedArray);
   };
 
-  const removeFriend = async (item) => {
-    let storedToken = await AsyncStorage.getItem('@bussin-token');
-    if (!storedToken) return;
-    setToken(storedToken);
-    let response = await fetch("https://bussin.blakekjohnson.dev/api/friends/removeFriend", {
-            method: "PUT",
-            body: JSON.stringify({
-              friendID: item._id
-            }),
-            headers: {
-              'Authorization': `Bearer ${storedToken}`,
-              'Content-Type': 'application/json',
-            },
-    });
-
-    // Convert response to JSON
-    response = await response.json();
-    fetchFriends();
+  const removeMember = async (item) => {
+    // Add backend connection
   };
-
-  const createInvite = async (type, user) => {
-    let storedToken = await AsyncStorage.getItem('@bussin-token');
-    if (!storedToken) return;
-    setToken(storedToken);
-    let { item } = props.route.params;
-
-    let res = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
-     headers: {
-       'Authorization': `Bearer ${token}`
-     }
-    });
-    res = await res.json();
-
-    let response = await fetch("https://bussin.blakekjohnson.dev/api/invites/", {
-            method: "POST",
-            body: JSON.stringify({
-              invite: {
-                  to: user._id, 
-                  from: res.user._id,
-                  type: type,
-                  foreignID: item._id
-               }
-            }),
-            headers: {
-              'Authorization': `Bearer ${storedToken}`,
-              'Content-Type': 'application/json',
-            },
-    });
-
-    // Convert response to JSON
-    response = await response.json();
-    console.log(response);
-    // Set data source
-  
-  };
-
 
   useEffect(() => {
     props.navigation.addListener('focus', () => {
     let { type } = props.route.params;
     setSource(type);
-    fetchFriends();
+    fetchOrgs();
     });
 
   }, []);
 
-  const changeSort = () => {
-    if (sorted == 'true') {
-      setSorted('false');
-      setData(friends);
-    } else {
-      setSorted('true');
-      setData(sortedFriends);
-    } 
-  }
-
-  const createDeleteAlert = (item) =>
+  const createRemoveAlert = (item) =>
         Alert.alert(
-            "Delete Friend",
-            "You will have to send another request to be friends.",
+            "Remove member",
+            "",
             [
                 {
                     text: "Cancel",
                     onPress: () => console.log("Cancel Pressed"),
                     style: "cancel"
                 },
-                { text: "Delete", onPress: () => removeFriend(item) }
+                { text: "Remove", onPress: () => removeMember(item) }
             ],
             { cancelable: false }
         );
 
   const SPACING = 20;
-  const PIC_SIZE = 70
   const ItemView = ({ item }) => {
     return (
       <SafeAreaView>
@@ -153,10 +89,8 @@ const FriendList = (props) => {
           {item.eventPoints}
           </Text>
         </View>
-        { source === 'friends' && <Button title = {"Remove"} onPress={() => createDeleteAlert(item)}/>}
-        { source === 'orgs' && <Button title = {"Invite"} onPress={() => createInvite('organization', item)}/>}
-        { source === 'events' && <Button title = {"Invite"} onPress={() => createInvite('event', item)}/>}
-      </View>
+            <Button title = {"Delete"} onPress={() => createRemoveAlert(item)}/>
+        </View>
       </SafeAreaView>
     );
   };
@@ -182,11 +116,10 @@ const FriendList = (props) => {
     return <View><Text>To get started login at the user page.</Text></View>;
   }
 
-  
     return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignItems: 'center' }}>
-        <Text style={{ fontSize: 30, fontFamily: 'HelveticaNeue', fontWeight: "200" }}>Friends</Text>
+        <Text style={{ fontSize: 30, fontFamily: 'HelveticaNeue', fontWeight: "200" }}>Your Members</Text>
         <Button title={ (sorted == 'true')? 'Sort Alphabetically' : 'Sort Oldest First' }  onPress = {() => changeSort()} />
         <FlatList
           data={data}
@@ -204,13 +137,4 @@ const FriendList = (props) => {
   
 };
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'black',
-  },
-  itemStyle: {
-    padding: 10,
-  },
-});
-
-export default FriendList;
+export default OrgMemberList;
