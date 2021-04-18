@@ -15,11 +15,15 @@ const OrgMemberList = (props) => {
     if (!storedToken) return;
     setToken(storedToken);
 
-    let response = await fetch("https://bussin.blakekjohnson.dev/api/organization/members", {
-            method: "GET",
+    let response = await fetch("https://bussin.blakekjohnson.dev/api/organization/getUsers", {
+            method: "PUT",
             headers: {
               'Authorization': `Bearer ${storedToken}`,
+              'Content-Type': 'application/json',
             },
+            body: {
+              orgID: props.orgID, // PUT ORGANIZATION ID HERE
+            }
     });
 
     // Convert response to JSON
@@ -37,6 +41,26 @@ const OrgMemberList = (props) => {
 
   const removeMember = async (item) => {
     // Add backend connection
+    let storedToken = await AsyncStorage.getItem('@bussin-token');
+    if (!storedToken) return;
+    setToken(storedToken);
+
+    let response = await fetch("https://bussin.blakekjohnson.dev/api/organization/deleteUser", {
+            method: "PUT",
+            headers: {
+              'Authorization': `Bearer ${storedToken}`,
+              'Content-Type': 'application/json',
+            },
+            body: {
+              orgID: props.orgID, // PUT ORGANIZATION ID HERE
+              delUserID: item._id,
+            }
+    });
+
+    if (response.status != 200) {
+      return;
+    }
+
   };
 
   useEffect(() => {
