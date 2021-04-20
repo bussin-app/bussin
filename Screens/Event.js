@@ -53,8 +53,6 @@ const Event = (props) => {
     } catch (e) { console.error(e); return; }
 };
 
-<<<<<<< Updated upstream
-=======
   const sendReminder = async (item) => {
     let attendees = item.attendees;
     let storedToken = await AsyncStorage.getItem('@bussin-token');
@@ -86,7 +84,6 @@ const Event = (props) => {
 
   
 
->>>>>>> Stashed changes
   const focusWrapper = () => {
     fetchData();
   };
