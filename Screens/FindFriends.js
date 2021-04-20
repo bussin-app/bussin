@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { View, Button, Text } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, Button } from 'react-native';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import DatePicker from "../Shared/DatePicker";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Picker } from '@react-native-community/picker';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const FindFriends = (props) => {
 
+const FindFriends = () => {
 
     return (
         <KeyboardAwareScrollView
@@ -15,7 +15,8 @@ const FindFriends = (props) => {
             extraHeight={200}
             enableOnAndroid={true}
         >
-            <FormContainer title={"Register"}></FormContainer>
+            <FormContainer title={"Find Friends"}>
+            </FormContainer>
         </KeyboardAwareScrollView>
     )
 }

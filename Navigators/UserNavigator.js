@@ -126,7 +126,7 @@ function MyStack() {
 
       <Stack.Screen
         name="FindFriends"
-        components={FindFriends}
+        component={FindFriends}
         options={{
           headerShown: false,
         }}
