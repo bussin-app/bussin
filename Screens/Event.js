@@ -53,6 +53,40 @@ const Event = (props) => {
     } catch (e) { console.error(e); return; }
 };
 
+<<<<<<< Updated upstream
+=======
+  const sendReminder = async (item) => {
+    let attendees = item.attendees;
+    let storedToken = await AsyncStorage.getItem('@bussin-token');
+    if (!storedToken) return;
+    setToken(storedToken);
+    
+    for(let attendee of attendees) {
+      let response = await fetch("https://bussin.blakekjohnson.dev/api/reminder/", {
+            method: "POST",
+            body: JSON.stringify({
+              reminder: {
+                  to: attendee,
+                  from: item.host._id,
+                  eventID: item._id,
+                  description: "testing"
+               }
+            }),
+            headers: {
+              'Authorization': `Bearer ${storedToken}`,
+              'Content-Type': 'application/json',
+            },
+    });
+    console.log("HEYYY")
+    
+
+    }
+    
+  }
+
+  
+
+>>>>>>> Stashed changes
   const focusWrapper = () => {
     fetchData();
   };
