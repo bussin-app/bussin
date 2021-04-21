@@ -40,7 +40,7 @@ const ModifyAcc = (props) => {
                 }),
             });
 
-            console.log(res.status);
+          //console.log(res.status);
         }
 
         // Send request to server and await response
@@ -58,7 +58,7 @@ const ModifyAcc = (props) => {
         // Reject if status is anything other than 200
         if (res.status !== 200) {
             let data = await res.json();
-            console.log(data);
+          //console.log(data);
             return;
         }
 
