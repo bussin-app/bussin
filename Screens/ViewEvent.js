@@ -15,10 +15,11 @@ const ViewEvent = (props) => {
   const [attending, setAttending] = useState(true);
   const [maxAttendees, setMaxAttendees] = useState('');
   const [rating, setRating] = useState(0);
+  const [event, setEvent] = useState("");
 
   const fetchEventData = async () => {
     let { event } = props.route.params;
-
+    setEvent(event);
     setName(event.name);
     setDescription(event.description || 'No description');
     setAttendeeCount(event.attendees.length || 0);
@@ -128,7 +129,7 @@ const ViewEvent = (props) => {
        </View>
        <View style={styles.statsBox}>
           <Text style={[styles.text, { fontSize: 24 }]}>{rating}</Text>
-          <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('Ratings', {eventID})}>Ratings</Text>
+          <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('Ratings', {event})}>Ratings</Text>
        </View>
     </View>
     <View style={[styles.infoContainer, {alignContent: 'start'}]}>
