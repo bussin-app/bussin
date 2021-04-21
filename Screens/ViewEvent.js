@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, StyleSheet, SafeAreaView} from "react-native";
+import { View, Text, Button, StyleSheet, SafeAreaView, Linking} from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -8,13 +8,13 @@ const ViewEvent = (props) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [attendeeCount, setAttendeeCount] = useState('');
-  const [eventURL, setEventURL] = useState('');
   const [host, setHost] = useState('');
   const [date, setDate] = useState('');
   const [full, setFull] = useState(false);
   const [eventID, setEventID] = useState('');
   const [attending, setAttending] = useState(true);
   const [maxAttendees, setMaxAttendees] = useState('');
+  const [url, setURL] = useState('');
 
   const fetchEventData = async () => {
     let { event } = props.route.params;
@@ -25,6 +25,7 @@ const ViewEvent = (props) => {
     setDate(event.date);
     setEventID(event._id);
     setMaxAttendees(event.maxAttendees);
+    setURL(event.url || 'No URL');
 
     let token = await AsyncStorage.getItem('@bussin-token');
     if (!token) return;
@@ -74,6 +75,32 @@ const ViewEvent = (props) => {
     setAttending(true);
     setAttendeeCount(attendeeCount + 1);
   };
+
+  const formatDate = (date) => {
+    if (date == undefined) {
+      return '';
+    }
+
+    let dateParts = date.split("-");
+    let year = dateParts[0];
+    let monthNum = dateParts[1];
+    let curDate = dateParts[2].substring(0,2);
+    var month = new Array();
+    month[0] = "Jan";
+    month[1] = "Feb";
+    month[2] = "Mar";
+    month[3] = "Apr";
+    month[4] = "May";
+    month[5] = "Jun";
+    month[6] = "Jul";
+    month[7] = "Aug";
+    month[8] = "Sep";
+    month[9] = "Oct";
+    month[10] = "Nov";
+    month[11] = "Dec";
+    let formattedString =month[monthNum - 1] + " " + curDate + ", " + year;
+    return formattedString;
+  }
 
   const styles = StyleSheet.create({
     
@@ -129,14 +156,15 @@ const ViewEvent = (props) => {
     <View style={[styles.infoContainer, {alignContent: 'start'}]}>
       <Text style={[styles.text, { fontSize: 20}]}>Host: {host}</Text>
       <Text style={[styles.text, { fontSize: 20}]}>Date: {date}</Text>
+      <Text onPress={() => Linking.openURL(url)}>
+        {url}
+      </Text>
       { attending && <Text style={[styles.text, { fontSize: 20}]}>You are already attending this event</Text>}
       { full && <Text style={[styles.text, { fontSize: 20}]}>This event has reached the max number of attendees</Text>}
       { !attending && !full && <Button style={[styles.text, { fontSize: 20}]} title='Attend' onPress={attend} />}
     </View>
   </SafeAreaView>
-    
   );
-
 };
 
 export default ViewEvent;
