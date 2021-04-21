@@ -30,6 +30,7 @@
     "react-native-flash-message": "^0.1.23",
     "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "~1.8.0",
+    "react-native-google-signin": "^2.1.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.3",
     "react-native-maps": "0.27.1",
     "react-native-numeric-input": "^1.8.3",
