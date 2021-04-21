@@ -21,7 +21,7 @@ const Event = (props) => {
     const [maxAttendees, setMaxAttendees] = useState(1);
     const [orgName, setOrgName] = useState("");
     const [eventAddress, setEventAddress] = useState("");
-    const [eventLink, seteventLink] = useState("");
+    const [eventLink, setEventLink] = useState("");
     const [status, setStatus] = useState("");
 
 
@@ -48,7 +48,8 @@ const Event = (props) => {
             maxAttendees,
             description,
             private: (status == 'private'),
-            date: dateData
+            date: dateData,
+            url: eventLink,
         };
 
         let body = {
@@ -66,7 +67,7 @@ const Event = (props) => {
         if (eventLink.length > 0) {
             body.link = eventLink;
         }
-        eventLink
+        // eventLink
         console.log(body);
 
         // Send the request
@@ -121,7 +122,7 @@ const Event = (props) => {
                     placeholder={"Optional: A Link"}
                     name={"eventLink"}
                     id={"eventLink"}
-                    onChange={(text) => setEventLink(text)}
+                    onChangeText={(text) => setEventLink(text)}
                 />
             </FormContainer>
 
