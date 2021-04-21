@@ -15,23 +15,26 @@ const OrgMemberList = (props) => {
     if (!storedToken) return;
     setToken(storedToken);
 
+    console.log(props.route.params.item._id);
+
     let response = await fetch("https://bussin.blakekjohnson.dev/api/organization/getUsers", {
             method: "PUT",
             headers: {
               'Authorization': `Bearer ${storedToken}`,
               'Content-Type': 'application/json',
             },
-            body: {
-              orgID: props.orgID, // PUT ORGANIZATION ID HERE
-            }
+            body: JSON.stringify({
+              orgID: props.route.params.item._id,
+            }),
     });
 
     // Convert response to JSON
     response = await response.json();
+    console.log(response);
     // Set data source
     
-    let unsortedArray = [...response];
-    let sortedArray = response.sort((a, b) => { 
+    let unsortedArray = response.users;
+    let sortedArray = unsortedArray.sort((a, b) => { 
       return a.name.localeCompare(b.name);
     });
     setMembers(unsortedArray);
@@ -51,10 +54,10 @@ const OrgMemberList = (props) => {
               'Authorization': `Bearer ${storedToken}`,
               'Content-Type': 'application/json',
             },
-            body: {
-              orgID: props.orgID, // PUT ORGANIZATION ID HERE
+            body: JSON.stringify({
+              orgID: props.route.params.item._id,
               delUserID: item._id,
-            }
+            }),
     });
 
     if (response.status != 200) {

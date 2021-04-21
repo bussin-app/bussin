@@ -8,6 +8,7 @@ const ViewEvent = (props) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [attendeeCount, setAttendeeCount] = useState('');
+  const [eventURL, setEventURL] = useState('');
   const [host, setHost] = useState('');
   const [date, setDate] = useState('');
   const [full, setFull] = useState(false);
