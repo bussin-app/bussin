@@ -14,6 +14,7 @@ const ViewEvent = (props) => {
   const [eventID, setEventID] = useState('');
   const [attending, setAttending] = useState(true);
   const [maxAttendees, setMaxAttendees] = useState('');
+  const [rating, setRating] = useState(0);
 
   const fetchEventData = async () => {
     let { event } = props.route.params;
@@ -24,6 +25,7 @@ const ViewEvent = (props) => {
     setDate(event.date);
     setEventID(event._id);
     setMaxAttendees(event.maxAttendees);
+    setRating(event.rating);
 
     let token = await AsyncStorage.getItem('@bussin-token');
     if (!token) return;
@@ -120,9 +122,13 @@ const ViewEvent = (props) => {
           <Text style={[styles.text, { fontSize: 24 }]}>{attendeeCount}</Text>
           <Text style={[styles.text, styles.subText]}>Current Attendees</Text>
        </View>
-       <View style={styles.statsBox}>
+       <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
           <Text style={[styles.text, { fontSize: 24 }]}>{maxAttendees - attendeeCount}</Text>
           <Text style={[styles.text, styles.subText]}>Space Left</Text>
+       </View>
+       <View style={styles.statsBox}>
+          <Text style={[styles.text, { fontSize: 24 }]}>{rating}</Text>
+          <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('Ratings', {eventID})}>Ratings</Text>
        </View>
     </View>
     <View style={[styles.infoContainer, {alignContent: 'start'}]}>
