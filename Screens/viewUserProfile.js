@@ -113,6 +113,7 @@ const UserProfile = (props) => {
     let [isFriend, setIsFriend] = useState(false);
 
   let { user } = props.route.params;
+  console.log(user);
 
   const addFriendAlert = () => {
       if (!enabled) {
@@ -225,7 +226,7 @@ const UserProfile = (props) => {
               </View>
               <View style={{ alignSelf: "center" }}>
                   <View style={styles.profileImage}>
-                      <Image source={user.profilePhoto} style={styles.image} resizeMode="center"></Image>
+                      <Image source={{ uri: user.profilePhoto }} style={styles.image} resizeMode="center"></Image>
                   </View>
                   <View style={styles.ban}>
                      <Icon name = 'ban' size = {30} onPress = {createReportAlert}></Icon>
