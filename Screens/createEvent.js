@@ -21,6 +21,7 @@ const Event = (props) => {
     const [maxAttendees, setMaxAttendees] = useState(1);
     const [orgName, setOrgName] = useState("");
     const [eventAddress, setEventAddress] = useState("");
+    const [eventLink, seteventLink] = useState("");
     const [status, setStatus] = useState("");
 
 
@@ -62,7 +63,10 @@ const Event = (props) => {
         if (eventAddress.length > 0) {
             body.address = eventAddress;
         }
-
+        if (eventLink.length > 0) {
+            body.link = eventLink;
+        }
+        eventLink
         console.log(body);
 
         // Send the request
@@ -112,6 +116,12 @@ const Event = (props) => {
                     name={"eventAddress"}
                     id={"eventAddress"}
                     onChange={(text) => setEventAddress(text)}
+                />
+                <Input
+                    placeholder={"Optional: A Link"}
+                    name={"eventLink"}
+                    id={"eventLink"}
+                    onChange={(text) => setEventLink(text)}
                 />
             </FormContainer>
 
