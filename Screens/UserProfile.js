@@ -200,6 +200,7 @@ const UserProfile = (props) => {
               </View>
 
               <View style={styles.infoContainer}>
+                    <Button title='Find Friends' onPress={() => props.navigation.navigate('FindFriends')} />
                     <Button title='Create an Organization' onPress={() => props.navigation.navigate('CreateOrg')} />
                     <Button title='Log Out' onPress={logOut} />
               </View>

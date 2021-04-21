@@ -3,13 +3,18 @@ import { View, Text, Button } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
+//import {GoogleSignin, GoogleSigninButton, statusCodes} from 'react-native-google-signin';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  //Added for google signin
+  /*
+  const [loggedIn, setloggedIn] = useState(false);
+  const [userInfo, setuserInfo] = useState([]);
+  */
   useEffect(() => {
     redirectIfLoggedIn(props);
   }, [props]);
@@ -61,6 +66,47 @@ const Login = (props) => {
       ]
     });
   };
+  /*
+  _signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const {accessToken, idToken} = await GoogleSignin.signIn();
+      setloggedIn(true);
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+        alert('Cancel');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        alert('Signin in progress');
+        // operation (f.e. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        alert('PLAY_SERVICES_NOT_AVAILABLE');
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  };
+  useEffect(() => {
+    GoogleSignin.configure({
+      scopes: ['email'], // what API you want to access on behalf of the user, default is email and profile
+      webClientId:
+        '418977770929-g9ou7r9eva1u78a3anassxxxxxxx.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+    });
+  }, []);
+
+  signOut = async () => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      setloggedIn(false);
+      setuserInfo([]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  */
 
   return (
     <KeyboardAwareScrollView
@@ -87,6 +133,15 @@ const Login = (props) => {
 
         <View>
           <Button title={"Login"} onPress={sendRequest} />
+          {/*
+          <GoogleSigninButton
+            style={{ width: 192, height: 48 }}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={console.log("Signin with Google")}
+          />
+          */
+          }
         </View>
         <View>
           <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue' }} >Don't have an account yet?</Text>
