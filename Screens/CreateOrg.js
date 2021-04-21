@@ -41,7 +41,7 @@ const Organization = (props) => {
         // Accept the response
         res = await res.json();
         createAlert;
-        console.log(res);
+      //console.log(res);
         props.navigation.navigate('User Profile');
     };
 

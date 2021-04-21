@@ -62,7 +62,7 @@ const attendEvent = (props) => {
 
         // Accept the response
         res = await res.json();
-        console.log(res);
+      //console.log(res);
 
         props.navigation.navigate('Event');
     };

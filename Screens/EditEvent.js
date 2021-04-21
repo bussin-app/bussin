@@ -57,7 +57,7 @@ const EditEvent = (props) => {
             }
         });
 
-        console.log(res);
+      //console.log(res);
         if (res.status != 200) return;
 
         props.navigation.navigate('Event');
@@ -94,7 +94,7 @@ const EditEvent = (props) => {
             });
         } catch (e) { console.error(e); return; }
 
-        console.log(res.status);
+      //console.log(res.status);
 
         props.navigation.navigate('Event');
     };
