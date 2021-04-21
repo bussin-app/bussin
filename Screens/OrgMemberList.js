@@ -15,7 +15,7 @@ const OrgMemberList = (props) => {
     if (!storedToken) return;
     setToken(storedToken);
 
-    console.log(props.route.params.item._id);
+  //console.log(props.route.params.item._id);
 
     let response = await fetch("https://bussin.blakekjohnson.dev/api/organization/getUsers", {
             method: "PUT",
@@ -30,7 +30,7 @@ const OrgMemberList = (props) => {
 
     // Convert response to JSON
     response = await response.json();
-    console.log(response);
+  //console.log(response);
     // Set data source
     
     let unsortedArray = response.users;

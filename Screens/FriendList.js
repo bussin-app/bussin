@@ -86,7 +86,7 @@ const FriendList = (props) => {
 
     // Convert response to JSON
     response = await response.json();
-    console.log(response);
+  //console.log(response);
     // Set data source
   
   };

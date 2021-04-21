@@ -60,7 +60,7 @@ const Event = (props) => {
             body.organizationName = orgName;
         }
 
-        console.log('ADDDRESSS SS S :', eventAddress);
+      //console.log('ADDDRESSS SS S :', eventAddress);
         if (eventAddress.length > 0) {
             body.address = eventAddress;
         }
@@ -68,7 +68,7 @@ const Event = (props) => {
             body.link = eventLink;
         }
         // eventLink
-        console.log(body);
+      //console.log(body);
 
         // Send the request
         let token = await AsyncStorage.getItem('@bussin-token');
