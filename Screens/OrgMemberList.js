@@ -15,8 +15,6 @@ const OrgMemberList = (props) => {
     if (!storedToken) return;
     setToken(storedToken);
 
-  //console.log(props.route.params.item._id);
-
     let response = await fetch("https://bussin.blakekjohnson.dev/api/organization/getUsers", {
             method: "PUT",
             headers: {
@@ -30,10 +28,14 @@ const OrgMemberList = (props) => {
 
     // Convert response to JSON
     response = await response.json();
-  //console.log(response);
+
+    if (response.status !== 200) {
+      return;
+    }
+
     // Set data source
     
-    let unsortedArray = response.users;
+    let unsortedArray = [...response];
     let sortedArray = unsortedArray.sort((a, b) => { 
       return a.name.localeCompare(b.name);
     });
@@ -91,7 +93,8 @@ const OrgMemberList = (props) => {
         );
 
   const SPACING = 20;
-  const ItemView = ({ item }) => {
+  const ItemView = (item) => {
+    console.log(item);
     return (
       <SafeAreaView>
       <View style={{
@@ -143,11 +146,10 @@ const OrgMemberList = (props) => {
     return <View><Text>To get started login at the user page.</Text></View>;
   }
 
-    return (
+  return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignItems: 'center' }}>
         <Text style={{ fontSize: 30, fontFamily: 'HelveticaNeue', fontWeight: "200" }}>Your Members</Text>
-        <Button title={ (sorted == 'true')? 'Sort Alphabetically' : 'Sort Oldest First' }  onPress = {() => changeSort()} />
         <FlatList
           data={data}
           keyExtractor={(item, index) => index.toString()}
