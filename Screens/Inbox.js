@@ -8,9 +8,6 @@ const Inbox = (props) => {
   const [filter, setFilter] = useState(['friends']);
   const [title, setTitle] = useState(['friends']);
 
-
-
-
   const fetchRequests = async () => {
     let storedToken = await AsyncStorage.getItem('@bussin-token');
     if (!storedToken) return;
@@ -115,9 +112,9 @@ const Inbox = (props) => {
   useEffect(() => {
     props.navigation.addListener('focus', () => {
       if (filter == 'friends') {
-        fetchInvites();
-      } else if (filter == 'invites') {
         fetchRequests();
+      } else if (filter == 'invites') {
+        fetchInvites();
       }
       else {
         fetchReminders();
@@ -125,17 +122,24 @@ const Inbox = (props) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (filter == 'friends') {
+      fetchRequests();
+    } else if (filter == 'invites') {
+      fetchInvites();
+    } else if (filter == 'reminders') {
+      fetchReminders();
+    }
+  }, [filter]);
+
   const changeFilter = async (filter) => {
     if (filter == 'friends') {
       setFilter('invites');
-      await fetchInvites();
     } else if (filter == 'invites') {
       setFilter('reminders');
-      await fetchRequests();
     }
     else {
       setFilter('friends');
-      await fetchReminders();
     }
   }
 
@@ -160,13 +164,13 @@ const Inbox = (props) => {
             Organization Invite From:</Text>}
           {filter == 'invites' && item.type == 'event' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
             Event Invite From:</Text>}
-          {filter == 'reminders' && item.type == 'reminder' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+          {filter == 'reminders' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
             Reminder From:</Text>}
           <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
             {item.from.name}  ({item.from.username})
         </Text>
           {filter == 'invites' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }}>To:</Text>}
-          {filter == 'invites' && <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }}>{item.foreignID.name}</Text>}
+          {filter == 'invites' && item && item.foreignID && <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }}>{item.foreignID.name}</Text>}
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
             <Button title={"Accept"} onPress={() => replyRequest(1, item)}></Button>
             <Button title={"Deny"} onPress={() => replyRequest(2, item)}></Button>
@@ -206,10 +210,10 @@ const Inbox = (props) => {
           <Button title = 'Friend Request' onPress={() => changeFilter(filter)} />
         }
         {filter == 'invites' && 
-          <Button title = 'invites' onPress={() => changeFilter(filter)} />
+          <Button title = 'Invites' onPress={() => changeFilter(filter)} />
         }
         {filter == 'reminders' && 
-          <Button title = 'reminders' onPress={() => changeFilter(filter)} />
+          <Button title = 'Reminders' onPress={() => changeFilter(filter)} />
         }
         </View>
       <View style={{ alignItems: 'center' }}>
