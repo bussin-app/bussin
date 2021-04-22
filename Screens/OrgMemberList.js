@@ -28,7 +28,6 @@ const OrgMemberList = (props) => {
 
     // Convert response to JSON
     response = await response.json();
-    console.log(response);
 
     if (response.status !== 200) {
       return;
@@ -36,15 +35,13 @@ const OrgMemberList = (props) => {
 
     // Set data source
     
-    let unsortedArray = response;
+    let unsortedArray = [...response];
     let sortedArray = unsortedArray.sort((a, b) => { 
       return a.name.localeCompare(b.name);
     });
-    setMembers(response);
+    setMembers(unsortedArray);
     setSortedMembers(sortedArray);
-    setData(response);
-
-    console.log(data);
+    setData(unsortedArray);
   };
 
   const removeMember = async (item) => {
@@ -96,7 +93,8 @@ const OrgMemberList = (props) => {
         );
 
   const SPACING = 20;
-  const ItemView = ({ item }) => {
+  const ItemView = (item) => {
+    console.log(item);
     return (
       <SafeAreaView>
       <View style={{
@@ -148,7 +146,7 @@ const OrgMemberList = (props) => {
     return <View><Text>To get started login at the user page.</Text></View>;
   }
 
-    return (
+  return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignItems: 'center' }}>
         <Text style={{ fontSize: 30, fontFamily: 'HelveticaNeue', fontWeight: "200" }}>Your Members</Text>
