@@ -6,6 +6,9 @@ const Event = (props) => {
   const [token, setToken] = useState(null);
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
+  const [eventArray, setEventArray] = useState([]);
+  const [sortedEventArray, setSortedEventArray] = useState([]);
+  const [sorted, setSorted] = useState('false');
   const [status, setStatus] = useState("host_events");
 
   const fetchData = async () => {
@@ -30,10 +33,23 @@ const Event = (props) => {
 
     // Convert response to JSON
     response = await response.json();
+
+  //console.log(response.items);
     
     // Set data sources
     setFilteredDataSource(response.items);
     setMasterDataSource(response.items);
+
+    if (source === 'https://bussin.blakekjohnson.dev/api/event/' || source === 'https://bussin.blakekjohnson.dev/api/event/attend') {
+      setEventArray(response.items);
+      setSortedEventArray(response.items.sort((a, b) => {
+        console.log('' + a.attendees.length + ' ' + b.attendees.length)
+        return a.attendees.length - b.attendees.length;
+      }));
+
+
+      console.log(eventArray);
+    }
   };
 
   const startEvent = async (item) => {
@@ -98,6 +114,7 @@ const Event = (props) => {
             style: "cancel"
           },
           { text: "Edit", onPress: () => props.navigation.navigate("EditOrg", { item }) },
+          { text: "See members", onPress: () => props.navigation.navigate("OrgMemberList", {type: "orgs", item})},
           { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "orgs", item})}
         ],
         { cancelable: false }
@@ -195,6 +212,17 @@ const Event = (props) => {
     return formattedString;
   }
 
+  const changeSort = () => {
+    if (sorted === 'true') {
+      setSorted('false');
+      console.log()
+      setFilteredDataSource(sortedEventArray);
+    } else {
+      setSorted('true');
+      setFilteredDataSource(eventArray);
+    }
+  }
+
   const SPACING = 20;
   const ItemView = ({ item }) => {
     return (
@@ -258,6 +286,11 @@ const Event = (props) => {
       <Button title={ (status == 'host_events')?"My Hosted Events":
         ((status == 'attend_events')?"My Attending Events":"My Organizations"
         )} onPress = {() => changeStatus(status)} />
+      </View>
+      <View style={{ textAlign: 'left' }}>
+      <Button title={ (status == 'host_events')?"Sort":
+        ((status == 'attend_events')?"Sort":" "
+        )} onPress = {() => changeSort()} />
       </View>
       <View>
         <FlatList

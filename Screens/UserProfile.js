@@ -2,12 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, Button } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from "react-native-vector-icons/FontAwesome";
+import { LogBox } from 'react-native';
+import firebase from 'firebase';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+
+LogBox.ignoreLogs(['Warning: ...']);
+WebBrowser.maybeCompleteAuthSession();
 
 const UserProfile = (props) => {
     const [profile, setProfile] = useState(null);
     const [fetched, setFetched] = useState(false);
     const [numPast, setNumPast] = useState('');
 
+    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+        clientId: '92611639381-kn3mlc4do2rev1gmndm6tqir7823hinc.apps.googleusercontent.com',
+    });
 
     const styles = StyleSheet.create({
         container: {
@@ -75,6 +85,28 @@ const UserProfile = (props) => {
       });
 
     
+
+    const linkGoogle = async () => {
+        let { id_token } = response.params;
+        const credential = firebase.auth.GoogleAuthProvider.credential(id_token);
+        let firebase_cred = await firebase
+            .auth()
+            .signInWithCredential(credential)
+        let uid = firebase_cred.user.uid;
+        let uri = `https://bussin.blakekjohnson.dev/api/google/link/${uid}`;
+        let token = await AsyncStorage.getItem('@bussin-token');
+        let google_res = await fetch(uri, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        fetchProfile();
+    };
+
+    useEffect(() => {
+        if (response?.type === 'success') {
+            linkGoogle();
+        }
+    }, [response]);
 
     const fetchProfile = async () => {
         let token = await AsyncStorage.getItem('@bussin-token');
@@ -177,6 +209,15 @@ const UserProfile = (props) => {
               </View>
 
               <View style={styles.infoContainer}>
+                    {
+                        !profile.googleUID &&
+                        <Button title="Link Google" disabled={!request} onPress={() => promptAsync()} />
+                    }
+                    {
+                        !!profile.googleUID &&
+                        <Button title="Google Account Linked" disabled={true} />
+                    }
+                    <Button title='Find Friends' onPress={() => props.navigation.navigate('FindFriends')} />
                     <Button title='Create an Organization' onPress={() => props.navigation.navigate('CreateOrg')} />
                     <Button title='Log Out' onPress={logOut} />
               </View>
