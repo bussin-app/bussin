@@ -13,6 +13,7 @@ import pastEvent from "../Screens/pastEvent";
 import ViewOrg from "../Screens/ViewOrg";
 import viewUserProfile from '../Screens/viewUserProfile';
 import ViewEvent from '../Screens/ViewEvent';
+import FriendEventList from "../Screens/friendEventList";
 
 const Stack = createStackNavigator();
 
@@ -93,6 +94,13 @@ function MyStack() {
       <Stack.Screen
         name="viewUserProfile"
         component={viewUserProfile}
+        options={{
+          headerShown: false
+        }}
+      />
+      <Stack.Screen
+        name="friendEventList"
+        component={FriendEventList}
         options={{
           headerShown: false
         }}
