@@ -43,12 +43,10 @@ const Event = (props) => {
     if (source === 'https://bussin.blakekjohnson.dev/api/event/' || source === 'https://bussin.blakekjohnson.dev/api/event/attend') {
       setEventArray(response.items);
       setSortedEventArray(response.items.sort((a, b) => {
-        console.log('' + a.attendees.length + ' ' + b.attendees.length)
         return a.attendees.length - b.attendees.length;
       }));
 
 
-      console.log(eventArray);
     }
   };
 
@@ -71,24 +69,25 @@ const Event = (props) => {
 
   const sendReminder = async (item) => {
     let attendees = item.attendees;
+    let token = await AsyncStorage.getItem('@bussin-token');
+    if (!token) return;
     
     for(let attendee of attendees) {
-      console.log(attendee);
       let response = await fetch("https://bussin.blakekjohnson.dev/api/reminder/", {
             method: "POST",
             body: JSON.stringify({
               reminder: {
-                  to: item._id, 
-                  from: attendee._id,
+                  to: attendee, 
                   eventID: item._id,
                   description: "testing"
                }
             }),
-    });
-    console.log(response.body);
-
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+          }
+      });
     }
-    
   }
 
   
