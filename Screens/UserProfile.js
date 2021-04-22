@@ -166,30 +166,7 @@ const UserProfile = (props) => {
     if (!fetched) {
     }
 
-    // helper function to create a table to present the past events
-    const createPastEventTable = async () => {
-    let table = [];
-
-    let children = [];
-    // TODO: create function to put all the past events in the Profile
-    // using fetchProfile
-    var len = profile.pastEvent.length;
-    //Inner loop to create children
-    //only showcase the first 5 events
-    // TODO: add name field to the pastEvent 
-    for (let j = 0; j < len && j < 5; j++) {
-      children.push(<td>{`${profile.pastEvent[j].name}`}
-      <Button
-            title="view event"
-            onPress={findPastEvent}
-          />
-      </td>);
-    }
-    //Create the parent and add the children
-    table.push(<tr>{children}</tr>);
-
-    return table;
-    };
+    
 
     return (
     

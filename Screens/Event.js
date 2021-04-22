@@ -43,12 +43,10 @@ const Event = (props) => {
     if (source === 'https://bussin.blakekjohnson.dev/api/event/' || source === 'https://bussin.blakekjohnson.dev/api/event/attend') {
       setEventArray(response.items);
       setSortedEventArray(response.items.sort((a, b) => {
-        console.log('' + a.attendees.length + ' ' + b.attendees.length)
         return a.attendees.length - b.attendees.length;
       }));
 
 
-      console.log(eventArray);
     }
   };
 
@@ -68,6 +66,31 @@ const Event = (props) => {
         });
     } catch (e) { console.error(e); return; }
 };
+
+  const sendReminder = async (item) => {
+    let attendees = item.attendees;
+    let token = await AsyncStorage.getItem('@bussin-token');
+    if (!token) return;
+    
+    for(let attendee of attendees) {
+      let response = await fetch("https://bussin.blakekjohnson.dev/api/reminder/", {
+            method: "POST",
+            body: JSON.stringify({
+              reminder: {
+                  to: attendee, 
+                  eventID: item._id,
+                  description: "testing"
+               }
+            }),
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+          }
+      });
+    }
+  }
+
+  
 
   const focusWrapper = () => {
     fetchData();
@@ -108,6 +131,7 @@ const Event = (props) => {
         },
         { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event: item }) },
         { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "events", item })},
+        { text: "Send Reminder", onPress: () => sendReminder(item)},
         { text: "Start", onPress: () => startEvent(item)}
       ],
       { cancelable: false }
@@ -123,6 +147,7 @@ const Event = (props) => {
             style: "cancel"
           },
           { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event: item }) },
+          { text: "Send Reminder", onPress: () => sendReminder(item)},
           { text: "Start", onPress: () => startEvent(item) }
         ],
         { cancelable: false }

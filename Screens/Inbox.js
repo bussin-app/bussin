@@ -49,6 +49,25 @@ const Inbox = (props) => {
     setData(response);
   };
 
+  const fetchReminders = async () => {
+    let storedToken = await AsyncStorage.getItem('@bussin-token');
+    if (!storedToken) return;
+    setToken(storedToken);
+
+    let response = await fetch("https://bussin.blakekjohnson.dev/api/reminder/reminderInbox", {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${storedToken}`,
+      },
+    });
+
+    // Convert response to JSON
+    response = await response.json();
+
+    // Set data sources
+    setData(response);
+  };
+
 
 
   const replyRequest = async (status, item) => {
@@ -96,9 +115,12 @@ const Inbox = (props) => {
   useEffect(() => {
     props.navigation.addListener('focus', () => {
       if (filter == 'friends') {
-        fetchRequests();
-      } else {
         fetchInvites();
+      } else if (filter == 'invites') {
+        fetchRequests();
+      }
+      else {
+        fetchReminders();
       }
     });
   }, []);
@@ -107,9 +129,13 @@ const Inbox = (props) => {
     if (filter == 'friends') {
       setFilter('invites');
       await fetchInvites();
-    } else {
-      setFilter('friends');
+    } else if (filter == 'invites') {
+      setFilter('reminders');
       await fetchRequests();
+    }
+    else {
+      setFilter('friends');
+      await fetchReminders();
     }
   }
 
@@ -134,6 +160,8 @@ const Inbox = (props) => {
             Organization Invite From:</Text>}
           {filter == 'invites' && item.type == 'event' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
             Event Invite From:</Text>}
+          {filter == 'reminders' && item.type == 'reminder' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+            Reminder From:</Text>}
           <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
             {item.from.name}  ({item.from.username})
         </Text>
@@ -173,8 +201,17 @@ const Inbox = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignItems: 'center' }}>
-        <Button title={(filter != 'friends') ? 'Invites' : 'Friend Request'} onPress={() => changeFilter(filter)} />
-      </View>
+      
+        {filter == 'friends' && 
+          <Button title = 'Friend Request' onPress={() => changeFilter(filter)} />
+        }
+        {filter == 'invites' && 
+          <Button title = 'invites' onPress={() => changeFilter(filter)} />
+        }
+        {filter == 'reminders' && 
+          <Button title = 'reminders' onPress={() => changeFilter(filter)} />
+        }
+        </View>
       <View style={{ alignItems: 'center' }}>
         <FlatList
           data={data}
