@@ -8,9 +8,6 @@ const Inbox = (props) => {
   const [filter, setFilter] = useState(['friends']);
   const [title, setTitle] = useState(['friends']);
 
-
-
-
   const fetchRequests = async () => {
     let storedToken = await AsyncStorage.getItem('@bussin-token');
     if (!storedToken) return;
@@ -36,6 +33,25 @@ const Inbox = (props) => {
     setToken(storedToken);
 
     let response = await fetch("https://bussin.blakekjohnson.dev/api/invites/inviteInbox", {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${storedToken}`,
+      },
+    });
+
+    // Convert response to JSON
+    response = await response.json();
+
+    // Set data sources
+    setData(response);
+  };
+
+  const fetchReminders = async () => {
+    let storedToken = await AsyncStorage.getItem('@bussin-token');
+    if (!storedToken) return;
+    setToken(storedToken);
+
+    let response = await fetch("https://bussin.blakekjohnson.dev/api/reminder/reminderInbox", {
       method: "GET",
       headers: {
         'Authorization': `Bearer ${storedToken}`,
@@ -97,19 +113,33 @@ const Inbox = (props) => {
     props.navigation.addListener('focus', () => {
       if (filter == 'friends') {
         fetchRequests();
-      } else {
+      } else if (filter == 'invites') {
         fetchInvites();
+      }
+      else {
+        fetchReminders();
       }
     });
   }, []);
 
+  useEffect(() => {
+    if (filter == 'friends') {
+      fetchRequests();
+    } else if (filter == 'invites') {
+      fetchInvites();
+    } else if (filter == 'reminders') {
+      fetchReminders();
+    }
+  }, [filter]);
+
   const changeFilter = async (filter) => {
     if (filter == 'friends') {
       setFilter('invites');
-      await fetchInvites();
-    } else {
+    } else if (filter == 'invites') {
+      setFilter('reminders');
+    }
+    else {
       setFilter('friends');
-      await fetchRequests();
     }
   }
 
@@ -134,11 +164,13 @@ const Inbox = (props) => {
             Organization Invite From:</Text>}
           {filter == 'invites' && item.type == 'event' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
             Event Invite From:</Text>}
+          {filter == 'reminders' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
+            Reminder From:</Text>}
           <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }} onPress={() => getItem(item)}>
             {item.from.name}  ({item.from.username})
         </Text>
           {filter == 'invites' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }}>To:</Text>}
-          {filter == 'invites' && <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }}>{item.foreignID.name}</Text>}
+          {filter == 'invites' && item && item.foreignID && <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }}>{item.foreignID.name}</Text>}
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
             <Button title={"Accept"} onPress={() => replyRequest(1, item)}></Button>
             <Button title={"Deny"} onPress={() => replyRequest(2, item)}></Button>
@@ -173,8 +205,17 @@ const Inbox = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignItems: 'center' }}>
-        <Button title={(filter != 'friends') ? 'Invites' : 'Friend Request'} onPress={() => changeFilter(filter)} />
-      </View>
+      
+        {filter == 'friends' && 
+          <Button title = 'Friend Request' onPress={() => changeFilter(filter)} />
+        }
+        {filter == 'invites' && 
+          <Button title = 'Invites' onPress={() => changeFilter(filter)} />
+        }
+        {filter == 'reminders' && 
+          <Button title = 'Reminders' onPress={() => changeFilter(filter)} />
+        }
+        </View>
       <View style={{ alignItems: 'center' }}>
         <FlatList
           data={data}

@@ -30,7 +30,7 @@ const map = (props) => {
       getNearbyEvents();
     }
     else {
-      console.log("error");
+    //console.log("error");
     }
   }, [location]);
 
@@ -387,7 +387,9 @@ const map = (props) => {
     if (!events) {
       return <></>;
     }
-    console.log(events);
+
+  //console.log(events);
+
     return (
       <>
         {

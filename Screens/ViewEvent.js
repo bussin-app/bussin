@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, StyleSheet, SafeAreaView} from "react-native";
-
+import { View, Text, Button, StyleSheet, SafeAreaView, Linking} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 
 const ViewEvent = (props) => {
@@ -14,31 +14,48 @@ const ViewEvent = (props) => {
   const [eventID, setEventID] = useState('');
   const [attending, setAttending] = useState(true);
   const [maxAttendees, setMaxAttendees] = useState('');
+  const [rating, setRating] = useState(0);
+  const [event, setEvent] = useState("");
+  const [url, setURL] = useState('');
 
   const fetchEventData = async () => {
     let { event } = props.route.params;
 
-    setName(event.name);
-    setDescription(event.description || 'No description');
-    setAttendeeCount(event.attendees.length || 0);
-    setDate(event.date);
-    setEventID(event._id);
-    setMaxAttendees(event.maxAttendees);
-
     let token = await AsyncStorage.getItem('@bussin-token');
     if (!token) return;
-
-    
-    setHost(event.host.ref.name);
-
-    let res = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
+    let res = await fetch(`https://bussin.blakekjohnson.dev/api/event/${event._id}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
-    res = await res.json();
+    console.log(res.status);
+    try {
+      res = await res.json();
+    } catch (e) {return;}
+    
+    res = res.event;
+
+    setEvent(res);
+    setName(res.name);
+    setDescription(res.description || 'No description');
+    setAttendeeCount(res.attendees.length || 0);
+    setDate(res.date);
+    setEventID(res._id);
+    setMaxAttendees(res.maxAttendees);
+    setRating(res.rating);
+    setURL(res.url || 'No URL');
+    
+    
+    setHost(res.host.ref.name);
+
+    let response = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    response = await res.json();
     setFull(event.attendees.length >= event.maxAttendees);
-    setAttending(event.attendees.includes(res.user._id));
+    setAttending(event.attendees.includes(response.user._id));
   };
 
   useEffect(() => {
@@ -73,6 +90,34 @@ const ViewEvent = (props) => {
     setAttending(true);
     setAttendeeCount(attendeeCount + 1);
   };
+
+
+  const formatDate = (date) => {
+    if (date == undefined) {
+      return '';
+    }
+
+    let dateParts = date.split("-");
+    let year = dateParts[0];
+    let monthNum = dateParts[1];
+    let curDate = dateParts[2].substring(0,2);
+    var month = new Array();
+    month[0] = "Jan";
+    month[1] = "Feb";
+    month[2] = "Mar";
+    month[3] = "Apr";
+    month[4] = "May";
+    month[5] = "Jun";
+    month[6] = "Jul";
+    month[7] = "Aug";
+    month[8] = "Sep";
+    month[9] = "Oct";
+    month[10] = "Nov";
+    month[11] = "Dec";
+    let formattedString =month[monthNum - 1] + " " + curDate + ", " + year;
+    return formattedString;
+  }
+
 
   const styles = StyleSheet.create({
     
@@ -120,22 +165,27 @@ const ViewEvent = (props) => {
           <Text style={[styles.text, { fontSize: 24 }]}>{attendeeCount}</Text>
           <Text style={[styles.text, styles.subText]}>Current Attendees</Text>
        </View>
-       <View style={styles.statsBox}>
+       <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
           <Text style={[styles.text, { fontSize: 24 }]}>{maxAttendees - attendeeCount}</Text>
           <Text style={[styles.text, styles.subText]}>Space Left</Text>
+       </View>
+       <View style={styles.statsBox}>
+          <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('Ratings', {event})}>{rating}</Text>
+          <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('Ratings', {event})}>Ratings</Text>
        </View>
     </View>
     <View style={[styles.infoContainer, {alignContent: 'start'}]}>
       <Text style={[styles.text, { fontSize: 20}]}>Host: {host}</Text>
       <Text style={[styles.text, { fontSize: 20}]}>Date: {date}</Text>
+      <Text onPress={() => Linking.openURL(url)}>
+        {url}
+      </Text>
       { attending && <Text style={[styles.text, { fontSize: 20}]}>You are already attending this event</Text>}
       { full && <Text style={[styles.text, { fontSize: 20}]}>This event has reached the max number of attendees</Text>}
       { !attending && !full && <Button style={[styles.text, { fontSize: 20}]} title='Attend' onPress={attend} />}
     </View>
   </SafeAreaView>
-    
   );
-
 };
 
 export default ViewEvent;

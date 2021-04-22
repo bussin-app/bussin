@@ -53,11 +53,8 @@ const ViewOrg = (props) => {
       console.error(e);
       return;
     }
-    console.log(res);
-    // add stuff to fill up the follower list
     setFollowing(true);
     setFollowingCount(followingCount + 1);
-    console.log(followingCount);
   };
 
   const unfollow = async () => {
@@ -80,7 +77,7 @@ const ViewOrg = (props) => {
       console.error(e);
       return;
     }
-    console.log(res);
+  //console.log(res);
     // add stuff to fill up the follower list
     setFollowing(false);
     setFollowingCount(followingCount - 1);

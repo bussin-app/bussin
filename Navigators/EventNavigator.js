@@ -6,7 +6,9 @@ import Event from '../Screens/Event';
 import EditEvent from '../Screens/EditEvent';
 import EditOrg from '../Screens/EditOrg';
 import FriendList from '../Screens/FriendList';
+import OrgMemberList from '../Screens/OrgMemberList';
 import ViewEvent from '../Screens/ViewEvent';
+
 
 const Stack = createStackNavigator();
 
@@ -55,6 +57,13 @@ function MyStack() {
                 }}
             />
 
+            <Stack.Screen
+                name="OrgMemberList"
+                component={OrgMemberList}
+                options={{
+                    headerShown: false
+                }}
+            />
             <Stack.Screen
                 name="ViewEvent"
                 component={ViewEvent}

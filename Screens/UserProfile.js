@@ -2,12 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, Button } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from "react-native-vector-icons/FontAwesome";
+import { LogBox } from 'react-native';
+import firebase from 'firebase';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+
+LogBox.ignoreLogs(['Warning: ...']);
+WebBrowser.maybeCompleteAuthSession();
 
 const UserProfile = (props) => {
     const [profile, setProfile] = useState(null);
     const [fetched, setFetched] = useState(false);
     const [numPast, setNumPast] = useState('');
 
+    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+        clientId: '92611639381-kn3mlc4do2rev1gmndm6tqir7823hinc.apps.googleusercontent.com',
+    });
 
     const styles = StyleSheet.create({
         container: {
@@ -76,6 +86,28 @@ const UserProfile = (props) => {
 
     
 
+    const linkGoogle = async () => {
+        let { id_token } = response.params;
+        const credential = firebase.auth.GoogleAuthProvider.credential(id_token);
+        let firebase_cred = await firebase
+            .auth()
+            .signInWithCredential(credential)
+        let uid = firebase_cred.user.uid;
+        let uri = `https://bussin.blakekjohnson.dev/api/google/link/${uid}`;
+        let token = await AsyncStorage.getItem('@bussin-token');
+        let google_res = await fetch(uri, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        fetchProfile();
+    };
+
+    useEffect(() => {
+        if (response?.type === 'success') {
+            linkGoogle();
+        }
+    }, [response]);
+
     const fetchProfile = async () => {
         let token = await AsyncStorage.getItem('@bussin-token');
 
@@ -134,33 +166,9 @@ const UserProfile = (props) => {
     if (!fetched) {
     }
 
-    // helper function to create a table to present the past events
-    const createPastEventTable = async () => {
-    let table = [];
 
-    let children = [];
-    // TODO: create function to put all the past events in the Profile
-    // using fetchProfile
-    var len = profile.pastEvent.length;
-    //Inner loop to create children
-    //only showcase the first 5 events
-    // TODO: add name field to the pastEvent 
-    for (let j = 0; j < len && j < 5; j++) {
-      children.push(<td>{`${profile.pastEvent[j].name}`}
-      <Button
-            title="view event"
-            onPress={findPastEvent}
-          />
-      </td>);
-    }
-    //Create the parent and add the children
-    table.push(<tr>{children}</tr>);
+    return ( 
 
-    return table;
-    };
-
-    return (
-    
       <SafeAreaView style={styles.container}>
         {profile && <>
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -194,12 +202,21 @@ const UserProfile = (props) => {
                       <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('FriendList', {type: 'friends'})}>Friends</Text>
                   </View>
                   <View style={styles.statsBox}>
-                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('OrgFollowing')}>{profile.organizations.length}</Text>
+                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('OrgFollowing')}>{profile.followedOrganizations.length}</Text>
                       <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('OrgFollowing')}>Organizations</Text>
                   </View>
               </View>
 
               <View style={styles.infoContainer}>
+                    {
+                        !profile.googleUID &&
+                        <Button title="Link Google" disabled={!request} onPress={() => promptAsync()} />
+                    }
+                    {
+                        !!profile.googleUID &&
+                        <Button title="Google Account Linked" disabled={true} />
+                    }
+                    <Button title='Find Friends' onPress={() => props.navigation.navigate('FindFriends')} />
                     <Button title='Create an Organization' onPress={() => props.navigation.navigate('CreateOrg')} />
                     <Button title='Log Out' onPress={logOut} />
               </View>

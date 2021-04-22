@@ -62,6 +62,7 @@ const EditOrg = (props) => {
             props.navigation.navigate('Event');
         res = await res.json();
         setError(res.msg);
+        props.navigation.navigate('Event');
     };
 
     return (
