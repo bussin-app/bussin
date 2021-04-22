@@ -115,7 +115,7 @@ const Event = (props) => {
         },
         { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event: item }) },
         { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "events", item })},
-        { text: "send reminder", onPress: () => sendReminder(item)},
+        { text: "Send Reminder", onPress: () => sendReminder(item)},
         { text: "Start", onPress: () => startEvent(item)}
       ],
       { cancelable: false }
@@ -131,7 +131,7 @@ const Event = (props) => {
             style: "cancel"
           },
           { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event: item }) },
-          { text: "send reminder", onPress: () => sendReminder(item)},
+          { text: "Send Reminder", onPress: () => sendReminder(item)},
           { text: "Start", onPress: () => startEvent(item) }
         ],
         { cancelable: false }
