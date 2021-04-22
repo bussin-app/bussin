@@ -3,6 +3,7 @@ import { View, Text, Button, StyleSheet, SafeAreaView, Linking} from "react-nati
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
+
 const ViewEvent = (props) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -13,33 +14,48 @@ const ViewEvent = (props) => {
   const [eventID, setEventID] = useState('');
   const [attending, setAttending] = useState(true);
   const [maxAttendees, setMaxAttendees] = useState('');
+  const [rating, setRating] = useState(0);
+  const [event, setEvent] = useState("");
   const [url, setURL] = useState('');
 
   const fetchEventData = async () => {
     let { event } = props.route.params;
 
-    setName(event.name);
-    setDescription(event.description || 'No description');
-    setAttendeeCount(event.attendees.length || 0);
-    setDate(event.date);
-    setEventID(event._id);
-    setMaxAttendees(event.maxAttendees);
-    setURL(event.url || 'No URL');
-
     let token = await AsyncStorage.getItem('@bussin-token');
     if (!token) return;
-
-    
-    setHost(event.host.ref.name);
-
-    let res = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
+    let res = await fetch(`https://bussin.blakekjohnson.dev/api/event/${event._id}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
-    res = await res.json();
+    console.log(res.status);
+    try {
+      res = await res.json();
+    } catch (e) {return;}
+    
+    res = res.event;
+
+    setEvent(res);
+    setName(res.name);
+    setDescription(res.description || 'No description');
+    setAttendeeCount(res.attendees.length || 0);
+    setDate(res.date);
+    setEventID(res._id);
+    setMaxAttendees(res.maxAttendees);
+    setRating(res.rating);
+    setURL(res.url || 'No URL');
+    
+    
+    setHost(res.host.ref.name);
+
+    let response = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    response = await res.json();
     setFull(event.attendees.length >= event.maxAttendees);
-    setAttending(event.attendees.includes(res.user._id));
+    setAttending(event.attendees.includes(response.user._id));
   };
 
   useEffect(() => {
@@ -75,6 +91,7 @@ const ViewEvent = (props) => {
     setAttendeeCount(attendeeCount + 1);
   };
 
+
   const formatDate = (date) => {
     if (date == undefined) {
       return '';
@@ -100,6 +117,7 @@ const ViewEvent = (props) => {
     let formattedString =month[monthNum - 1] + " " + curDate + ", " + year;
     return formattedString;
   }
+
 
   const styles = StyleSheet.create({
     
@@ -147,9 +165,13 @@ const ViewEvent = (props) => {
           <Text style={[styles.text, { fontSize: 24 }]}>{attendeeCount}</Text>
           <Text style={[styles.text, styles.subText]}>Current Attendees</Text>
        </View>
-       <View style={styles.statsBox}>
+       <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
           <Text style={[styles.text, { fontSize: 24 }]}>{maxAttendees - attendeeCount}</Text>
           <Text style={[styles.text, styles.subText]}>Space Left</Text>
+       </View>
+       <View style={styles.statsBox}>
+          <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('Ratings', {event})}>{rating}</Text>
+          <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('Ratings', {event})}>Ratings</Text>
        </View>
     </View>
     <View style={[styles.infoContainer, {alignContent: 'start'}]}>

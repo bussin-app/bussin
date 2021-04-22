@@ -9,6 +9,7 @@ import FriendList from '../Screens/FriendList';
 import OrgMemberList from '../Screens/OrgMemberList';
 import ViewEvent from '../Screens/ViewEvent';
 
+
 const Stack = createStackNavigator();
 
 function MyStack() {

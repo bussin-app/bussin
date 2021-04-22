@@ -14,6 +14,7 @@ import ViewOrg from "../Screens/ViewOrg";
 import viewUserProfile from '../Screens/viewUserProfile';
 import ViewEvent from '../Screens/ViewEvent';
 import Report from "../Screens/Report";
+import Ratings from "../Screens/Ratings";
 import FindFriends from "../Screens/FindFriends";
 
 const Stack = createStackNavigator();
@@ -119,6 +120,14 @@ function MyStack() {
       <Stack.Screen
         name="Report"
         component={Report}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="Ratings"
+        component={Ratings}
         options={{
           headerShown: false,
         }}
