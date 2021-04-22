@@ -10,6 +10,7 @@ const ViewEvent = (props) => {
   const [attendeeCount, setAttendeeCount] = useState('');
   const [host, setHost] = useState('');
   const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
   const [full, setFull] = useState(false);
   const [eventID, setEventID] = useState('');
   const [attending, setAttending] = useState(true);
@@ -38,7 +39,7 @@ const ViewEvent = (props) => {
       setName(res.name);
       setDescription(res.description || 'No description');
       setAttendeeCount(res.attendees.length || 0);
-      setDate(res.date);
+      setDate(formatDate(res.date));
       setEventID(res._id);
       setMaxAttendees(res.maxAttendees);
       setRating(res.rating);
