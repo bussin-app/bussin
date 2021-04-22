@@ -206,6 +206,7 @@ const UserProfile = (props) => {
         updateEnabled();
     }, [user]);
 
+
     const addFriend = async () => {
         let token = await AsyncStorage.getItem('@bussin-token');
         if (!token) return;
