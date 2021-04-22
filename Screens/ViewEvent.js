@@ -28,6 +28,7 @@ const ViewEvent = (props) => {
     setEventID(event._id);
     setMaxAttendees(event.maxAttendees);
     setRating(event.rating);
+    console.log(event.rating);
 
     let token = await AsyncStorage.getItem('@bussin-token');
     if (!token) return;
@@ -77,6 +78,8 @@ const ViewEvent = (props) => {
     setAttending(true);
     setAttendeeCount(attendeeCount + 1);
   };
+
+  
 
   const styles = StyleSheet.create({
     
