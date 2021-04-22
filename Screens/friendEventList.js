@@ -80,23 +80,17 @@ const FriendEventList = (props) => {
 
   useEffect(() => {
     props.navigation.addListener('focus', () => {
-        setLoading(false);
-        setError(null);
+      setLoading(false);
+      setError(null);
       fetchEvents();
-
-      
     });
   }, []);
 
 
   const fetchEvents = async () => {
-      console.log(user);
-    
-    
     let res = user.events;
     setEvents(res);
-    console.log(res);
-    console.log(events);
+    console.log(user.events);
     setLoading(false);
   };
 
