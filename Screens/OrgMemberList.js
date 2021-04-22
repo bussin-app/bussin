@@ -152,7 +152,6 @@ const OrgMemberList = (props) => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignItems: 'center' }}>
         <Text style={{ fontSize: 30, fontFamily: 'HelveticaNeue', fontWeight: "200" }}>Your Members</Text>
-        <Button title={ (sorted == 'true')? 'Sort Alphabetically' : 'Sort Oldest First' }  onPress = {() => changeSort()} />
         <FlatList
           data={data}
           keyExtractor={(item, index) => index.toString()}
