@@ -166,7 +166,7 @@ const UserProfile = (props) => {
     if (!fetched) {
     }
 
-    return (    
+    return ( 
       <SafeAreaView style={styles.container}>
         {profile && <>
           <ScrollView showsVerticalScrollIndicator={false}>

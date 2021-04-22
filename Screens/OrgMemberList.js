@@ -3,12 +3,15 @@ import { SafeAreaView, Text, StyleSheet, View, FlatList, StatusBar, Button, Aler
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const OrgMemberList = (props) => {
+  const memberString = 'Member';
+  const adminString = 'Admin';
   const [token, setToken] = useState(null);
   const [members, setMembers] = useState([]);
   const [sortedMembers, setSortedMembers] = useState([]);
   const [sorted, setSorted] = useState('false');
   const [source, setSource] = useState('members');
   const [data, setData] = useState([]); 
+  const [adminTitle, setAdminTitle] = useState(memberString);
 
   const fetchOrgs = async () => {
     let storedToken = await AsyncStorage.getItem('@bussin-token');
@@ -27,13 +30,13 @@ const OrgMemberList = (props) => {
     });
 
     if (response.status != 200) {
-      console.log(await response.json());
+      //console.log(await response.json());
       return;
     }
 
     // Convert response to JSON
     response = await response.json();
-
+    console.log(response);
     // Set data source
     
     let unsortedArray = [...response.users];
@@ -121,6 +124,9 @@ const OrgMemberList = (props) => {
           </Text>
         </View>
             <Button title = {"Delete"} onPress={() => createRemoveAlert(item)}/>
+            <Button title= {adminTitle} onPress={() => {
+              setAdminTitle(adminTitle == memberString ? adminString : memberString);
+            }}/>
         </View>
       </SafeAreaView>
     );
