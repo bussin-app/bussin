@@ -8,7 +8,7 @@ import EditOrg from '../Screens/EditOrg';
 import FriendList from '../Screens/FriendList';
 import OrgMemberList from '../Screens/OrgMemberList';
 import ViewEvent from '../Screens/ViewEvent';
-import Ratings from '../Screens/Ratings';
+
 
 const Stack = createStackNavigator();
 
@@ -67,13 +67,6 @@ function MyStack() {
             <Stack.Screen
                 name="ViewEvent"
                 component={ViewEvent}
-                options={{
-                    headerShown: false
-                }}
-            />
-            <Stack.Screen
-                name="Ratings"
-                component={Ratings}
                 options={{
                     headerShown: false
                 }}

@@ -4,6 +4,7 @@ import { View, Text, Button, StyleSheet, SafeAreaView} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
+
 const ViewEvent = (props) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -128,7 +129,7 @@ const ViewEvent = (props) => {
           <Text style={[styles.text, styles.subText]}>Space Left</Text>
        </View>
        <View style={styles.statsBox}>
-          <Text style={[styles.text, { fontSize: 24 }]}>{rating}</Text>
+          <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('Ratings', {event})}>{rating}</Text>
           <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('Ratings', {event})}>Ratings</Text>
        </View>
     </View>
