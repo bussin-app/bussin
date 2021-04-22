@@ -20,30 +20,41 @@ const ViewEvent = (props) => {
 
   const fetchEventData = async () => {
     let { event } = props.route.params;
-    setEvent(event);
-    setName(event.name);
-    setDescription(event.description || 'No description');
-    setAttendeeCount(event.attendees.length || 0);
-    setDate(event.date);
-    setEventID(event._id);
-    setMaxAttendees(event.maxAttendees);
-    setRating(event.rating);
-    console.log(event.rating);
-
     let token = await AsyncStorage.getItem('@bussin-token');
     if (!token) return;
-
-    
-    setHost(event.host.ref.name);
-
-    let res = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
+    let res = await fetch(`https://bussin.blakekjohnson.dev/api/event/${event._id}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
-    res = await res.json();
+    console.log(res.status);
+    try {
+      res = await res.json();
+    } catch (e) {return;}
+    
+    res = res.event;
+
+    setEvent(res);
+    setName(res.name);
+    setDescription(res.description || 'No description');
+    setAttendeeCount(res.attendees.length || 0);
+    setDate(res.date);
+    setEventID(res._id);
+    setMaxAttendees(res.maxAttendees);
+    setRating(res.rating);
+
+    
+    
+    setHost(res.host.ref.name);
+
+    let response = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    response = await res.json();
     setFull(event.attendees.length >= event.maxAttendees);
-    setAttending(event.attendees.includes(res.user._id));
+    setAttending(event.attendees.includes(response.user._id));
   };
 
   useEffect(() => {

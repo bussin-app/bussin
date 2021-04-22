@@ -148,7 +148,7 @@ const UserProfile = (props) => {
     for (let j = 0; j < len && j < 5; j++) {
       children.push(<td>{`${profile.pastEvent[j].name}`}
       <Button
-            title="view event"
+            title="View Event"
             onPress={findPastEvent}
           />
       </td>);

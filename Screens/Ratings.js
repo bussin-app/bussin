@@ -20,6 +20,13 @@ const Ratings = (props) => {
     props.navigation.addListener("focus", fetchData);
   }, []);
 
+  const styles = StyleSheet.create({
+    text: {
+        fontFamily: "HelveticaNeue",
+        color: "#52575D"
+    }
+  });
+
   const submitRating = async () => {
     try {
         let token = await AsyncStorage.getItem('@bussin-token');
@@ -40,17 +47,23 @@ const Ratings = (props) => {
   
 
   return (
-    <SafeAreaView>
-      <NumericInput
+    <SafeAreaView style={{alignItems: 'center'}}>
+       <Text style={{ fontFamily: "HelveticaNeue", fontSize: 36, marginTop: 5, fontWeight: "200"}}>Rate Event</Text>
+       <Text style={[styles.text, { fontSize: 20 }]}>{event.name}</Text>
+      <View style={{marginTop: 20, marginBottom: 10}}>
+        <NumericInput
         onChange={(value) => setRatings(value)}
         value={ratings}
         rounded
         borderColor={"#B92126"}
         minValue={"0"}
+        maxValue={"5"}
       />
+      </View>
+      
       
 
-      <Button title={"submit rating"} onPress={submitRating}/>
+      <Button title={"Submit"} onPress={submitRating}/>
     </SafeAreaView>
   );
 };
