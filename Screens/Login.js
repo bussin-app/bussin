@@ -3,18 +3,49 @@ import { View, Text, Button } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import FormContainer from "../Shared/Form/FormContainer";
 import Input from "../Shared/Form/Input";
-//import {GoogleSignin, GoogleSigninButton, statusCodes} from 'react-native-google-signin';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+
+WebBrowser.maybeCompleteAuthSession();
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import firebase from "firebase";
 
 const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  //Added for google signin
-  /*
-  const [loggedIn, setloggedIn] = useState(false);
-  const [userInfo, setuserInfo] = useState([]);
-  */
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    clientId: '92611639381-kn3mlc4do2rev1gmndm6tqir7823hinc.apps.googleusercontent.com'
+  });
+
+  const loginGoogle = async () => {
+    let { id_token } = response.params;
+    const credential = firebase.auth.GoogleAuthProvider.credential(id_token);
+    let firebase_cred = await firebase
+      .auth()
+      .signInWithCredential(credential);
+    let uid = firebase_cred.user.uid;
+    let uri = `https://bussin.blakekjohnson.dev/api/google/login/${uid}`;
+    let login_res = await fetch(uri, {
+      method: 'POST',
+    });
+    let data = await login_res.json();
+    await AsyncStorage.setItem('@bussin-token', data.token);
+
+    props.navigation.reset({
+      index: 0,
+      routes: [
+        { name: 'User Profile' }
+      ]
+    });
+  };
+
+  useEffect(() => {
+    if (response?.type === 'success') {
+      loginGoogle();
+    }
+  }, [response]);
+
   useEffect(() => {
     redirectIfLoggedIn(props);
   }, [props]);
@@ -133,15 +164,7 @@ const Login = (props) => {
 
         <View>
           <Button title={"Login"} onPress={sendRequest} />
-          {/*
-          <GoogleSigninButton
-            style={{ width: 192, height: 48 }}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={console.log("Signin with Google")}
-          />
-          */
-          }
+          <Button title="Login With Google" disabled={!request} onPress={() => promptAsync()} /> 
         </View>
         <View>
           <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue' }} >Don't have an account yet?</Text>
