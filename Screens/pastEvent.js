@@ -100,6 +100,8 @@ const PastEvent = (props) => {
         <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
           {formatDate(item.date)}
         </Text>
+        <Button style={[styles.text, { fontSize: 20 }]} title='Follow' onPress={follow} disabled={following} />
+        
       </View>
     );
   };
