@@ -6,6 +6,9 @@ const Event = (props) => {
   const [token, setToken] = useState(null);
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
+  const [eventArray, setEventArray] = useState([]);
+  const [sortedEventArray, setSortedEventArray] = useState([]);
+  const [sorted, setSorted] = useState('false');
   const [status, setStatus] = useState("host_events");
 
   const fetchData = async () => {
@@ -36,6 +39,17 @@ const Event = (props) => {
     // Set data sources
     setFilteredDataSource(response.items);
     setMasterDataSource(response.items);
+
+    if (source === 'https://bussin.blakekjohnson.dev/api/event/' || source === 'https://bussin.blakekjohnson.dev/api/event/attend') {
+      setEventArray(response.items);
+      setSortedEventArray(response.items.sort((a, b) => {
+        console.log('' + a.attendees.length + ' ' + b.attendees.length)
+        return a.attendees.length - b.attendees.length;
+      }));
+
+
+      console.log(eventArray);
+    }
   };
 
   const startEvent = async (item) => {
@@ -172,6 +186,17 @@ const Event = (props) => {
     return formattedString;
   }
 
+  const changeSort = () => {
+    if (sorted === 'true') {
+      setSorted('false');
+      console.log()
+      setFilteredDataSource(sortedEventArray);
+    } else {
+      setSorted('true');
+      setFilteredDataSource(eventArray);
+    }
+  }
+
   const SPACING = 20;
   const ItemView = ({ item }) => {
     return (
@@ -239,7 +264,7 @@ const Event = (props) => {
       <View style={{ textAlign: 'left' }}>
       <Button title={ (status == 'host_events')?"Sort":
         ((status == 'attend_events')?"Sort":" "
-        )} onPress = {() => console.log("Sort Alphabetically(Need to add)")} />
+        )} onPress = {() => changeSort()} />
       </View>
       <View>
         <FlatList

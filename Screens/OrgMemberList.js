@@ -15,8 +15,6 @@ const OrgMemberList = (props) => {
     if (!storedToken) return;
     setToken(storedToken);
 
-    console.log(props.route.params.item._id);
-
     let response = await fetch("https://bussin.blakekjohnson.dev/api/organization/getUsers", {
             method: "PUT",
             headers: {
@@ -31,15 +29,22 @@ const OrgMemberList = (props) => {
     // Convert response to JSON
     response = await response.json();
     console.log(response);
+
+    if (response.status !== 200) {
+      return;
+    }
+
     // Set data source
     
-    let unsortedArray = response.users;
+    let unsortedArray = response;
     let sortedArray = unsortedArray.sort((a, b) => { 
       return a.name.localeCompare(b.name);
     });
-    setMembers(unsortedArray);
+    setMembers(response);
     setSortedMembers(sortedArray);
-    setData(unsortedArray);
+    setData(response);
+
+    console.log(data);
   };
 
   const removeMember = async (item) => {
