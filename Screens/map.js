@@ -387,7 +387,6 @@ const map = (props) => {
     if (!events) {
       return <></>;
     }
-    console.log(events);
     return (
       <>
         {
