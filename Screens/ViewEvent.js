@@ -23,39 +23,40 @@ const ViewEvent = (props) => {
 
     let token = await AsyncStorage.getItem('@bussin-token');
     if (!token) return;
-    let res = await fetch(`https://bussin.blakekjohnson.dev/api/event/${event._id}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    console.log(res.status);
+    
     try {
-      res = await res.json();
-    } catch (e) {return;}
-    
-    res = res.event;
-
-    setEvent(res);
-    setName(res.name);
-    setDescription(res.description || 'No description');
-    setAttendeeCount(res.attendees.length || 0);
-    setDate(res.date);
-    setEventID(res._id);
-    setMaxAttendees(res.maxAttendees);
-    setRating(res.rating);
-    setURL(res.url || 'No URL');
-    
-    
-    setHost(res.host.ref.name);
-
-    let response = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
-      headers: {
+      let res = await fetch(`https://bussin.blakekjohnson.dev/api/event/${event._id}`, {
+        headers: {
         'Authorization': `Bearer ${token}`
-      }
-    });
-    response = await res.json();
-    setFull(event.attendees.length >= event.maxAttendees);
-    setAttending(event.attendees.includes(response.user._id));
+        }
+      });
+    
+      res = await res.json();
+      res = res.event;
+
+      setEvent(res);
+      setName(res.name);
+      setDescription(res.description || 'No description');
+      setAttendeeCount(res.attendees.length || 0);
+      setDate(res.date);
+      setEventID(res._id);
+      setMaxAttendees(res.maxAttendees);
+      setRating(res.rating);
+      setURL(res.url || 'No URL');
+      
+      
+      setHost(res.host.ref.name);
+
+      let response = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      response = await res.json();
+      setFull(event.attendees.length >= event.maxAttendees);
+      setAttending(event.attendees.includes(response.user._id));
+
+    } catch (e) {return;}
   };
 
   useEffect(() => {
