@@ -166,10 +166,7 @@ const UserProfile = (props) => {
     if (!fetched) {
     }
 
-    
-
-    return (
-    
+    return (    
       <SafeAreaView style={styles.container}>
         {profile && <>
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -203,7 +200,7 @@ const UserProfile = (props) => {
                       <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('FriendList', {type: 'friends'})}>Friends</Text>
                   </View>
                   <View style={styles.statsBox}>
-                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('OrgFollowing')}>{profile.organizations.length}</Text>
+                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('OrgFollowing')}>{profile.followedOrganizations.length}</Text>
                       <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('OrgFollowing')}>Organizations</Text>
                   </View>
               </View>
