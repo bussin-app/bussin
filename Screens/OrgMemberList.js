@@ -26,16 +26,17 @@ const OrgMemberList = (props) => {
             }),
     });
 
-    // Convert response to JSON
-    response = await response.json();
-
-    if (response.status !== 200) {
+    if (response.status != 200) {
+      console.log(await response.json());
       return;
     }
 
+    // Convert response to JSON
+    response = await response.json();
+
     // Set data source
     
-    let unsortedArray = [...response];
+    let unsortedArray = [...response.users];
     let sortedArray = unsortedArray.sort((a, b) => { 
       return a.name.localeCompare(b.name);
     });
@@ -63,6 +64,7 @@ const OrgMemberList = (props) => {
     });
 
     if (response.status != 200) {
+      console.log(response.status, await response.json());
       return;
     }
 
@@ -93,8 +95,7 @@ const OrgMemberList = (props) => {
         );
 
   const SPACING = 20;
-  const ItemView = (item) => {
-    console.log(item);
+  const ItemView = ({ item }) => {
     return (
       <SafeAreaView>
       <View style={{
