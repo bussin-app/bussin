@@ -6,6 +6,9 @@ const Event = (props) => {
   const [token, setToken] = useState(null);
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
+  const [eventArray, setEventArray] = useState([]);
+  const [sortedEventArray, setSortedEventArray] = useState([]);
+  const [sorted, setSorted] = useState('false');
   const [status, setStatus] = useState("host_events");
 
   const fetchData = async () => {
@@ -30,10 +33,21 @@ const Event = (props) => {
 
     // Convert response to JSON
     response = await response.json();
+
+  //console.log(response.items);
     
     // Set data sources
     setFilteredDataSource(response.items);
     setMasterDataSource(response.items);
+
+    if (source === 'https://bussin.blakekjohnson.dev/api/event/' || source === 'https://bussin.blakekjohnson.dev/api/event/attend') {
+      setEventArray(response.items);
+      setSortedEventArray(response.items.sort((a, b) => {
+        return a.attendees.length - b.attendees.length;
+      }));
+
+
+    }
   };
 
   const startEvent = async (item) => {
@@ -55,9 +69,8 @@ const Event = (props) => {
 
   const sendReminder = async (item) => {
     let attendees = item.attendees;
-    let storedToken = await AsyncStorage.getItem('@bussin-token');
-    if (!storedToken) return;
-    setToken(storedToken);
+    let token = await AsyncStorage.getItem('@bussin-token');
+    if (!token) return;
     
     for(let attendee of attendees) {
       let response = await fetch("https://bussin.blakekjohnson.dev/api/reminder/", {
@@ -71,15 +84,11 @@ const Event = (props) => {
                }
             }),
             headers: {
-              'Authorization': `Bearer ${storedToken}`,
+              'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json',
-            },
-    });
-    console.log("HEYYY")
-    
-
+          }
+      });
     }
-    
   }
 
   
@@ -123,6 +132,7 @@ const Event = (props) => {
         },
         { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event: item }) },
         { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "events", item })},
+        { text: "Send Reminder", onPress: () => sendReminder(item)},
         { text: "Start", onPress: () => startEvent(item)}
       ],
       { cancelable: false }
@@ -138,6 +148,7 @@ const Event = (props) => {
             style: "cancel"
           },
           { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event: item }) },
+          { text: "Send Reminder", onPress: () => sendReminder(item)},
           { text: "Start", onPress: () => startEvent(item) }
         ],
         { cancelable: false }
@@ -199,6 +210,17 @@ const Event = (props) => {
     month[11] = "Dec";
     let formattedString =month[monthNum - 1] + " " + curDate + ", " + year;
     return formattedString;
+  }
+
+  const changeSort = () => {
+    if (sorted === 'true') {
+      setSorted('false');
+      console.log()
+      setFilteredDataSource(sortedEventArray);
+    } else {
+      setSorted('true');
+      setFilteredDataSource(eventArray);
+    }
   }
 
   const SPACING = 20;
@@ -268,7 +290,7 @@ const Event = (props) => {
       <View style={{ textAlign: 'left' }}>
       <Button title={ (status == 'host_events')?"Sort":
         ((status == 'attend_events')?"Sort":" "
-        )} onPress = {() => console.log("Sort Alphabetically(Need to add)")} />
+        )} onPress = {() => changeSort()} />
       </View>
       <View>
         <FlatList

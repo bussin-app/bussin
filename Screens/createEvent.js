@@ -21,6 +21,7 @@ const Event = (props) => {
     const [maxAttendees, setMaxAttendees] = useState(1);
     const [orgName, setOrgName] = useState("");
     const [eventAddress, setEventAddress] = useState("");
+    const [eventLink, setEventLink] = useState("");
     const [status, setStatus] = useState("");
 
 
@@ -47,7 +48,8 @@ const Event = (props) => {
             maxAttendees,
             description,
             private: (status == 'private'),
-            date: dateData
+            date: dateData,
+            url: eventLink,
         };
 
         let body = {
@@ -58,12 +60,15 @@ const Event = (props) => {
             body.organizationName = orgName;
         }
 
-        console.log('ADDDRESSS SS S :', eventAddress);
+      //console.log('ADDDRESSS SS S :', eventAddress);
         if (eventAddress.length > 0) {
             body.address = eventAddress;
         }
-
-        console.log(body);
+        if (eventLink.length > 0) {
+            body.link = eventLink;
+        }
+        // eventLink
+      //console.log(body);
 
         // Send the request
         let token = await AsyncStorage.getItem('@bussin-token');
@@ -112,6 +117,12 @@ const Event = (props) => {
                     name={"eventAddress"}
                     id={"eventAddress"}
                     onChange={(text) => setEventAddress(text)}
+                />
+                <Input
+                    placeholder={"Optional: A Link"}
+                    name={"eventLink"}
+                    id={"eventLink"}
+                    onChangeText={(text) => setEventLink(text)}
                 />
             </FormContainer>
 

@@ -12,6 +12,38 @@ const Report = (props) => {
     const [description, setDescription] = useState("");
     let { user } = props.route.params;
 
+    const sendReport = async () => {
+        // Construct the reason for the report
+        let body = JSON.stringify({
+            reason: `${type}: ${description}`,
+        });
+
+        let token = await AsyncStorage.getItem('@bussin-token');
+        if (!token) return;
+
+        let reportURI = `https://bussin.blakekjohnson.dev/api/report/user/${user._id}`;
+        let reportResponse = await fetch(reportURI, {
+            body,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        console.log(reportResponse.status);
+
+        let blockURI = `https://bussin.blakekjohnson.dev/api/block/${user._id}`;
+        let blockResponse = await fetch(blockURI, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log(blockResponse.status);
+
+        props.navigation.goBack();
+    };
+
     return (
         <KeyboardAwareScrollView
             viewIsInsideTabBar={true}
@@ -36,7 +68,7 @@ const Report = (props) => {
                     onChangeText={(text) => setDescription(text)}
                 />
                 <View style={{ marginTop: 200 }}>
-                    <Button title={"Submit"} onPress={() => console.log("Submit")}/>
+                    <Button title={"Submit"} onPress={sendReport} />
                 </View>
             </FormContainer>
         </KeyboardAwareScrollView>

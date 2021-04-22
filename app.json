@@ -4,6 +4,7 @@
   "expo": {
     "name": "bussin",
     "slug": "bussin",
+    "scheme": "bussin",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
