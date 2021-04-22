@@ -30,7 +30,6 @@ const Report = (props) => {
                 'Content-Type': 'application/json',
             },
         });
-        console.log(reportResponse.status);
 
 
         props.navigation.goBack();
