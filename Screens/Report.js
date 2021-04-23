@@ -50,7 +50,7 @@ const Report = (props) => {
             enableOnAndroid={true}
         >
             <FormContainer title={"Send Report"}>
-                <Text style = {{fontFamily: 'HelveticaNeue', fontSize: 15}}>{user.name}</Text>
+                <Text style = {{fontFamily: 'HelveticaNeue', fontSize: 15, fontWeight: "300" }}>{user.name}</Text>
                 <Picker
                     style={{ height: 200, width: 300 }}
                     selectedValue={type}

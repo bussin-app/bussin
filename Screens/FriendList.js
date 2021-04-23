@@ -146,10 +146,10 @@ const FriendList = (props) => {
           {item.name}
         </Text>
         <View style={{ alignContents: "row"}}>
-          <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }}>
+          <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue', fontWeight: "300"  }}>
           {item.username}
           </Text>
-          <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
+          <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue', textAlign: 'right', fontWeight: "300"  }}>
           {item.eventPoints}
           </Text>
         </View>

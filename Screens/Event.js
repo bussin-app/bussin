@@ -255,10 +255,10 @@ const Event = (props) => {
           <Text style={{ fontSize: 25, fontWeight: "200" }} onPress={() => createAlert(item)}>
             {item.name}
           </Text>
-          <Text style={{ fontSize: 20 }} onPress={() => createAlert(item)}>
+          <Text style={{ fontSize: 20, fontWeight: "300"  }} onPress={() => createAlert(item)}>
             {item.description || ""}
           </Text>
-          <Text style={{ fontSize: 15, textAlign: 'right' }} onPress={() => createAlert(item)}>
+          <Text style={{ fontSize: 15, textAlign: 'right', fontWeight: "300"  }} onPress={() => createAlert(item)}>
             {formatDate(item.date) || ""}
           </Text>
         </View>
