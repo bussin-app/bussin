@@ -17,7 +17,7 @@ import FriendEventList from "../Screens/friendEventList";
 import Report from "../Screens/Report";
 import Ratings from "../Screens/Ratings";
 import FindFriends from "../Screens/FindFriends";
-
+import ReportEvent from "../Screens/ReportEvent";
 const Stack = createStackNavigator();
 
 function MyStack() {
@@ -112,6 +112,13 @@ function MyStack() {
       <Stack.Screen
         name="PastEvent"
         component={pastEvent}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ReportEvent"
+        component={ReportEvent}
         options={{
           headerShown: false,
         }}
