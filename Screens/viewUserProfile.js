@@ -259,24 +259,24 @@ const UserProfile = (props) => {
                     </View>
                     <View style={styles.infoContainer}>
                         <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{user.name}</Text>
-                        <Text style={[styles.text, { color: "#AEB5BC", fontSize: 20 }]}>{user.username}</Text>
+                        <Text style={[styles.text, { color: "#AEB5BC", fontSize: 20, fontWeight: "300" }]}>{user.username}</Text>
                     </View>
 
                     <View style={styles.statsContainer}>
                         <View style={styles.statsBox}>
-                            <Text style={[styles.text, { fontSize: 24 }]}>{user.eventPoints}</Text>
+                            <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]}>{user.eventPoints}</Text>
                             <Text style={[styles.text, styles.subText]}>Bussin Score</Text>
                         </View>
                         <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderRightWidth: 1, borderLeftWidth: 1 }]}>
-                            <Text style={[styles.text, { fontSize: 24 }]}>{user.friends.length}</Text>
+                            <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]}>{user.friends.length}</Text>
                             <Text style={[styles.text, styles.subText]}>Friends</Text>
                         </View>
                          <View style={[styles.statsBox, { borderColor: "#DFD8C8",  borderRightWidth: 1, borderLeftWidth: 1 }]}>
-                         <Text style={[styles.text, { fontSize: 24 }]}>{user.organizations.length}</Text>
+                         <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]}>{user.organizations.length}</Text>
                          <Text style={[styles.text, styles.subText]}>Organizations</Text>
                         </View>
                         <View style={styles.statsBox}>
-                          <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('friendEventList', {user})}>{user.events.length}</Text>
+                          <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]} onPress={() => props.navigation.navigate('friendEventList', {user})}>{user.events.length}</Text>
                           <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('friendEventList', {user})}>events</Text>
                          </View>
                     </View>
