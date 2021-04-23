@@ -8,7 +8,8 @@ const Event = (props) => {
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [eventArray, setEventArray] = useState([]);
   const [sortedEventArray, setSortedEventArray] = useState([]);
-  const [sorted, setSorted] = useState('false');
+  // const [sorted, setSorted] = useState('false');
+  var sorted = 'false';
   const [status, setStatus] = useState("host_events");
 
   const fetchData = async () => {
@@ -42,11 +43,29 @@ const Event = (props) => {
 
     if (source === 'https://bussin.blakekjohnson.dev/api/event/' || source === 'https://bussin.blakekjohnson.dev/api/event/attend') {
       setEventArray(response.items);
-      setSortedEventArray(response.items.sort((a, b) => {
-        return a.attendees.length - b.attendees.length;
+      setSortedEventArray(eventArray.sort((a, b) => {
+        if (a.attendees.length < b.attendees.length) {
+          return 1;
+        }
+        if (a.attendees.length > b.attendees.length)  {
+          return -1;
+        }
+
+        return 0;
       }));
 
+      /*
 
+      if (sorted === 'true') {
+        setFilteredDataSource(sortedEventArray);
+        console.log(sortedEventArray);
+        setSorted('false');
+        return;
+      }
+      setFilteredDataSource(eventArray);
+      */
+      console.log(eventArray);
+      setFilteredDataSource(eventArray);
     }
   };
 
@@ -229,13 +248,9 @@ const Event = (props) => {
   }
 
   const changeSort = () => {
-    if (sorted === 'true') {
-      setSorted('false');
-      setFilteredDataSource(sortedEventArray);
-    } else {
-      setSorted('true');
-      setFilteredDataSource(eventArray);
-    }
+    // setSorted((sorted == 'true') ? 'false' : 'true');
+    sorted = (sorted == 'true') ? 'false' : 'true';
+    setFilteredDataSource((sorted == 'true') ? sortedEventArray : eventArray);
   }
 
   const SPACING = 20;
