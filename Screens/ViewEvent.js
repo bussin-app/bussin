@@ -47,6 +47,8 @@ const ViewEvent = (props) => {
       
       
       setHost(res.host.ref.name);
+      console.log('HOST:');
+      console.log(res.host.ref);
 
       let response = await fetch(`https://bussin.blakekjohnson.dev/api/user`, {
         headers: {
