@@ -24,7 +24,7 @@ const Event = (props) => {
     } else {
       source = 'https://bussin.blakekjohnson.dev/api/organization/';
     }
-    
+
     let response = await fetch(source, {
       headers: {
         'Authorization': `Bearer ${storedToken}`,
@@ -34,8 +34,8 @@ const Event = (props) => {
     // Convert response to JSON
     response = await response.json();
 
-  //console.log(response.items);
-    
+    //console.log(response.items);
+
     // Set data sources
     setFilteredDataSource(response.items);
     setMasterDataSource(response.items);
@@ -56,42 +56,42 @@ const Event = (props) => {
     if (!token) return;
     let res;
     try {
-        res = await fetch(`https://bussin.blakekjohnson.dev/api/event/${item._id}`, {
-            method: 'PATCH',
-            body: JSON.stringify({ update: { past: true } }),
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            }
-        });
+      res = await fetch(`https://bussin.blakekjohnson.dev/api/event/${item._id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ update: { past: true } }),
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
+      });
     } catch (e) { console.error(e); return; }
-};
+  };
 
   const sendReminder = async (item) => {
     let attendees = item.attendees;
     let token = await AsyncStorage.getItem('@bussin-token');
     if (!token) return;
-    
-    for(let attendee of attendees) {
+
+    for (let attendee of attendees) {
       let response = await fetch("https://bussin.blakekjohnson.dev/api/reminder/", {
-            method: "POST",
-            body: JSON.stringify({
-              reminder: {
-                  to: attendee,
-                  from: item.host._id,
-                  eventID: item._id,
-                  description: "testing"
-               }
-            }),
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
+        method: "POST",
+        body: JSON.stringify({
+          reminder: {
+            to: attendee,
+            from: item.host._id,
+            eventID: item._id,
+            description: "testing"
           }
+        }),
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
       });
     }
   }
 
-  
+
 
   const focusWrapper = () => {
     fetchData();
@@ -102,9 +102,17 @@ const Event = (props) => {
   }, []);
 
 
-  const createAlert = (item) => {
-    if (status == 'organizations') {
-        Alert.alert(
+  const organizationAlert = async (item) => {
+    let token = await AsyncStorage.getItem('@bussin-token');
+    if (!token) return;
+
+    let profileRes = await fetch('https://bussin.blakekjohnson.dev/api/user', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    let current_id = (await profileRes.json()).user._id;
+    let is_admin = item.admins.includes(current_id) || item.owner == current_id;
+    if (is_admin) {
+      Alert.alert(
         "Update Organization",
         "Edit or Invite to Organization",
         [
@@ -114,62 +122,70 @@ const Event = (props) => {
             style: "cancel"
           },
           { text: "Edit", onPress: () => props.navigation.navigate("EditOrg", { item }) },
-          { text: "View Members", onPress: () => props.navigation.navigate("OrgMemberList", {type: "orgs", item})},
-          { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "orgs", item})}
+          { text: "View Members", onPress: () => props.navigation.navigate("OrgMemberList", { type: "orgs", item }) },
+          { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", { type: "orgs", item }) }
         ],
         { cancelable: false }
-        );
-    } else if (status == 'host_events') {
-      if (item.private) {
-      Alert.alert(
-      "Update Event",
-      "Edit or Start this Event?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel"),
-          style: "cancel"
-        },
-        { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event: item }) },
-        { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "events", item })},
-        { text: "Send Reminder", onPress: () => sendReminder(item)},
-        { text: "Start", onPress: () => startEvent(item)}
-      ],
-      { cancelable: false }
       );
     } else {
+      Alert.alert("Update Organization", "You canont edit an organization you are not an owner or admin for.");
+    }
+  };
+
+  const createAlert = (item) => {
+    if (status == 'organizations') {
+      organizationAlert(item);
+    } else if (status == 'host_events') {
+      if (item.private) {
+        Alert.alert(
+          "Update Event",
+          "Edit or Start this Event?",
+          [
+            {
+              text: "Cancel",
+              onPress: () => console.log("Cancel"),
+              style: "cancel"
+            },
+            { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event: item }) },
+            { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", { type: "events", item }) },
+            { text: "Send Reminder", onPress: () => sendReminder(item) },
+            { text: "Start", onPress: () => startEvent(item) }
+          ],
+          { cancelable: false }
+        );
+      } else {
+        Alert.alert(
+          "Update Event",
+          "Edit or Start this Event?",
+          [
+            {
+              text: "Cancel",
+              onPress: () => console.log("Cancel"),
+              style: "cancel"
+            },
+            { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event: item }) },
+            { text: "Send Reminder", onPress: () => sendReminder(item) },
+            { text: "Start", onPress: () => startEvent(item) }
+          ],
+          { cancelable: false }
+        );
+      }
+    } else if (status == 'attend_events') {
       Alert.alert(
-        "Update Event",
-        "Edit or Start this Event?",
+        "View Event",
+        "View this Event?",
         [
           {
             text: "Cancel",
             onPress: () => console.log("Cancel"),
             style: "cancel"
           },
-          { text: "Edit", onPress: () => props.navigation.navigate("EditEvent", { event: item }) },
-          { text: "Send Reminder", onPress: () => sendReminder(item)},
-          { text: "Start", onPress: () => startEvent(item) }
+          { text: "View", onPress: () => props.navigation.navigate("ViewEvent", { event: item }) },
         ],
         { cancelable: false }
       );
     }
-  } else if (status  == 'attend_events') {
-    Alert.alert(
-      "View Event",
-      "View this Event?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel"),
-          style: "cancel"
-        },
-        { text: "View", onPress: () => props.navigation.navigate("ViewEvent", { event: item }) },
-      ],
-      { cancelable: false }
-    );
   }
-}
 
   useEffect(() => {
     fetchData();
@@ -194,7 +210,7 @@ const Event = (props) => {
     let dateParts = date.split("-");
     let year = dateParts[0];
     let monthNum = dateParts[1];
-    let curDate = dateParts[2].substring(0,2);
+    let curDate = dateParts[2].substring(0, 2);
     var month = new Array();
     month[0] = "Jan";
     month[1] = "Feb";
@@ -208,7 +224,7 @@ const Event = (props) => {
     month[9] = "Oct";
     month[10] = "Nov";
     month[11] = "Dec";
-    let formattedString =month[monthNum - 1] + " " + curDate + ", " + year;
+    let formattedString = month[monthNum - 1] + " " + curDate + ", " + year;
     return formattedString;
   }
 
@@ -228,27 +244,27 @@ const Event = (props) => {
     return (
       <SafeAreaView>
         <View style={{
-        flexDirection: 'column', padding: SPACING, marginBottom: SPACING, fontFamily: 'HelveticaNeue', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: 12,
-        shadowColor:"#355070",
-        shadowOffset: {
-          width: 0,
-          height: 10
-        },
-        shadowOpacity: .3,
-        shadowRadius: 20
-      }}>
-        <Text style={{ fontSize: 25, fontWeight: "200" }} onPress={() => createAlert(item)}>
-          {item.name}
-        </Text>
-        <Text style={{ fontSize: 20 }} onPress={() => createAlert(item)}>
-          {item.description || ""}
-        </Text>
-        <Text style={{ fontSize: 15, textAlign: 'right' }} onPress={() => createAlert(item)}>
-          {formatDate(item.date) || ""}
-        </Text>
-      </View>
+          flexDirection: 'column', padding: SPACING, marginBottom: SPACING, fontFamily: 'HelveticaNeue', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: 12,
+          shadowColor: "#355070",
+          shadowOffset: {
+            width: 0,
+            height: 10
+          },
+          shadowOpacity: .3,
+          shadowRadius: 20
+        }}>
+          <Text style={{ fontSize: 25, fontWeight: "200" }} onPress={() => createAlert(item)}>
+            {item.name}
+          </Text>
+          <Text style={{ fontSize: 20 }} onPress={() => createAlert(item)}>
+            {item.description || ""}
+          </Text>
+          <Text style={{ fontSize: 15, textAlign: 'right' }} onPress={() => createAlert(item)}>
+            {formatDate(item.date) || ""}
+          </Text>
+        </View>
       </SafeAreaView>
-      
+
     );
   };
 
@@ -268,12 +284,12 @@ const Event = (props) => {
   const getItem = (item) => {
     if (status == 'host_events')
       props.navigation.navigate('ViewEvent', { event: item });
-    else if ( status == 'organizations') {
+    else if (status == 'organizations') {
       props.navigation.navigate('ViewOrg', { organization: item });
     } else {
       props.navigation.navigate('ViewEvent', { event: item });
     }
-      
+
   };
 
   if (!token) {
@@ -283,14 +299,14 @@ const Event = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignItems: 'center' }}>
-      <Button title={ (status == 'host_events')?"My Hosted Events":
-        ((status == 'attend_events')?"My Attending Events":"My Organizations"
-        )} onPress = {() => changeStatus(status)} />
+        <Button title={(status == 'host_events') ? "My Hosted Events" :
+          ((status == 'attend_events') ? "My Attending Events" : "My Organizations"
+          )} onPress={() => changeStatus(status)} />
       </View>
       <View style={{ textAlign: 'left' }}>
-      <Button title={ (status == 'host_events')?"Sort":
-        ((status == 'attend_events')?"Sort":" "
-        )} onPress = {() => changeSort()} />
+        <Button title={(status == 'host_events') ? "Sort" :
+          ((status == 'attend_events') ? "Sort" : " "
+          )} onPress={() => changeSort()} />
       </View>
       <View>
         <FlatList
@@ -305,8 +321,8 @@ const Event = (props) => {
         />
       </View>
       <View>
-      { status == 'host_events' && <Button title='Create an Event' onPress={() => props.navigation.navigate('CreateEvent')} />}
-      { status == 'organizations' && <Button title='Create an Organization' onPress={() => props.navigation.navigate('CreateOrg')} />}
+        {status == 'host_events' && <Button title='Create an Event' onPress={() => props.navigation.navigate('CreateEvent')} />}
+        {status == 'organizations' && <Button title='Create an Organization' onPress={() => props.navigation.navigate('CreateOrg')} />}
       </View>
     </SafeAreaView>
   );
