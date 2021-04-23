@@ -17,6 +17,7 @@ const ViewEvent = (props) => {
   const [maxAttendees, setMaxAttendees] = useState('');
   const [rating, setRating] = useState(0);
   const [event, setEvent] = useState("");
+  const [past, setPast] = useState(false);
   const [url, setURL] = useState('');
 
   const fetchEventData = async () => {
@@ -45,6 +46,7 @@ const ViewEvent = (props) => {
       setMaxAttendees(res.maxAttendees);
       setRating(res.rating);
       setURL(res.url || '');
+      setPast(res.past);
       
       
       setHost(res.host.ref.name);
@@ -228,10 +230,13 @@ const ViewEvent = (props) => {
           <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]}>{maxAttendees - attendeeCount}</Text>
           <Text style={[styles.text, styles.subText]}>Space Left</Text>
        </View>
-       <View style={styles.statsBox}>
-          <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]} onPress={() => props.navigation.navigate('Ratings', {event})}>{rating}</Text>
-          <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('Ratings', {event})}>Ratings</Text>
-       </View>
+       {
+         past &&
+        <View style={styles.statsBox}>
+            <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]} onPress={() => props.navigation.navigate('Ratings', {event})}>{rating}</Text>
+            <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('Ratings', {event})}>Ratings</Text>
+        </View>
+        }
     </View>
     <View style={[styles.descContainer]}>
       <Text style={[styles.text, { fontSize: 24, color: '#B92126', fontWeight: "200"}]}>Host: </Text>
