@@ -127,7 +127,7 @@ const OrgMemberList = (props) => {
     );
 
   const SPACING = 20;
-  const ItemView = ({ item }) => {
+  const ItemView = (item) => {
     return (
       <SafeAreaView>
       <View style={{
