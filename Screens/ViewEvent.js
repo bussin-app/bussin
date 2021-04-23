@@ -158,7 +158,7 @@ const ViewEvent = (props) => {
   <SafeAreaView>
         <View style={styles.infoContainer}>
       <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{name}</Text>
-      <Text style={[styles.subText, { fontSize: 20}]}>{description}</Text>
+      <Text style={[styles.text, { fontSize: 20}]}>{description}</Text>
     </View>
     <View style={styles.statsContainer}>
       <View style={styles.statsBox}>
@@ -169,7 +169,7 @@ const ViewEvent = (props) => {
           <Text style={[styles.text, { fontSize: 24 }]}>{attendeeCount}</Text>
           <Text style={[styles.text, styles.subText]}>Current Attendees</Text>
        </View>
-       <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
+       <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderRightWidth: 1 }]}>
           <Text style={[styles.text, { fontSize: 24 }]}>{maxAttendees - attendeeCount}</Text>
           <Text style={[styles.text, styles.subText]}>Space Left</Text>
        </View>
