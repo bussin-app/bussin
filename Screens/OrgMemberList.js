@@ -78,6 +78,27 @@ const OrgMemberList = (props) => {
     // }
   };
 
+  const makeAdmin = async (item) => {
+    let storedToken = await AsyncStorage.getItem('@bussin-token');
+    if (!storedToken) return;
+    setToken(storedToken);
+
+    let res = await fetch('https://bussin.blakekjohnson.dev/api/organization/makeAdmin', {
+      method: "PUT",
+      headers: {
+        'Authorization': `Bearer ${storedToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        orgID: props.route.params.item._id,
+        newAdmin: item._id,
+      }),
+    });
+
+    res = await res.json();
+    console.log(res);
+  };
+
   const removeMember = async (item) => {
     // Add backend connection
     let storedToken = await AsyncStorage.getItem('@bussin-token');
@@ -162,6 +183,9 @@ const OrgMemberList = (props) => {
           <Button title={"Delete"} onPress={() => createRemoveAlert(item)} />
           <Button title={memberState} onPress={() => {
             toggleAdmin(item);
+          }} />
+          <Button title={(props.route.params.item.admins.includes(item.item._id) ? "" : "Make Admin")} onPress={() => {
+            makeAdmin(item.item);
           }} />
         </View>
         </View>
