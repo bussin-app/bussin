@@ -13,26 +13,39 @@ const Search = (props) => {
 
   const fetchData = async () => {
     let storedToken = await AsyncStorage.getItem('@bussin-token');
-    if (!storedToken) return;
     setToken(storedToken);
+    if (!storedToken) return;
 
-    let source = `${status.substr(0, status.length - 1)}/all`;
-    let response = await fetch(`https://bussin.blakekjohnson.dev/api/${source}`, {
-      headers: {
-        'Authorization': `Bearer ${storedToken}`,
-      }
-    });
+    let statusA = status;
+    try {
+      let stored = await AsyncStorage.getItem('stored-status');
+      if (stored != null) statusA = stored;
+    } catch (e) {}
 
-    // Convert response to JSON
-    response = await response.json();
+    if (statusA == null) statusA = 'events';
 
-    // Set data sources
-    setFilteredDataSource(response.items);
-    setMasterDataSource(response.items);
+    let source = `${statusA.substr(0, status.length - 1)}/all`;
+    try {
+      let response = await fetch(`https://bussin.blakekjohnson.dev/api/${source}`, {
+        headers: {
+          'Authorization': `Bearer ${storedToken}`,
+        }
+      });
+
+      // Convert response to JSON
+      response = await response.json();
+
+      // Set data sources
+      setFilteredDataSource(response.items);
+      setMasterDataSource(response.items);
+    } catch (e) {}
   };
 
-  const focusWrapper = () => {
-    setStatus('events');
+  const focusWrapper = async () => {
+    let stored = await AsyncStorage.getItem('stored-status');
+    if (stored != null) {
+      setStatus(stored);
+    }
   };
 
   useEffect(() => {
@@ -43,15 +56,18 @@ const Search = (props) => {
     fetchData();
   }, [status]);
 
-  const changeStatus = (status) => {
+  const changeStatus = async (status) => {
     if (status == 'events') {
       setStatus('users');
+      await AsyncStorage.setItem('stored-status', 'users');
       return;
     } else if (status == 'users') {
       setStatus('organizations');
+      await AsyncStorage.setItem('stored-status', 'organizations');
       return;
     } else if (status == 'organizations') {
       setStatus('events');
+      await AsyncStorage.setItem('stored-status', 'events');
       return;
     }
   }
