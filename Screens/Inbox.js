@@ -132,6 +132,18 @@ const Inbox = (props) => {
     }
   }, [filter]);
 
+  const dismissReminder = async (item) => {
+    let reminderURI = `https://bussin.blakekjohnson.dev/api/reminder/${item._id}`;
+    let token = await AsyncStorage.getItem('@bussin-token');
+    if (!token) return;
+
+    await fetch(reminderURI, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    fetchReminders();
+  };
+
   const changeFilter = async (filter) => {
     if (filter == 'friends') {
       setFilter('invites');
@@ -171,10 +183,19 @@ const Inbox = (props) => {
         </Text>
           {filter == 'invites' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }}>To:</Text>}
           {filter == 'invites' && item && item.foreignID && <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue', fontWeight: "300"  }}>{item.foreignID.name}</Text>}
-          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <Button title={"Accept"} onPress={() => replyRequest(1, item)}></Button>
-            <Button title={"Deny"} onPress={() => replyRequest(2, item)}></Button>
-          </View>
+          {
+            filter != 'reminders' &&
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <Button title={"Accept"} onPress={() => replyRequest(1, item)}></Button>
+              <Button title={"Deny"} onPress={() => replyRequest(2, item)}></Button>
+            </View>
+          }
+          {
+            filter == 'reminders' &&
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <Button title={"Dismiss"} onPress={() => dismissReminder(item)}></Button>
+            </View>
+          }
 
         </View>
       </SafeAreaView>
