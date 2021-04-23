@@ -117,7 +117,7 @@ const Search = (props) => {
         shadowOpacity: .3,
         shadowRadius: 20
       }}>
-        <Text style={{ fontSize: 25, fontWeight: "200" }} onPress={() => getItem(item)}>
+        <Text style={{ fontSize: 25, fontWeight: "200", color: '#B92126' }} onPress={() => getItem(item)}>
           {item.name}
         </Text>
         <Text style={{ fontSize: 20 }}>

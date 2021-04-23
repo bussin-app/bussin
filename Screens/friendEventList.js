@@ -90,7 +90,6 @@ const FriendEventList = (props) => {
   const fetchEvents = async () => {
     let res = user.events;
     setEvents(res);
-    console.log(user.events);
     setLoading(false);
   };
 

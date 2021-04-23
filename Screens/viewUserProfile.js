@@ -147,7 +147,7 @@ const UserProfile = (props) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log(blockResponse.status);
+        //console.log(blockResponse.status);
 
         props.navigation.goBack();
     };
@@ -277,7 +277,7 @@ const UserProfile = (props) => {
                         </View>
                         <View style={styles.statsBox}>
                           <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('friendEventList', {user})}>{user.events.length}</Text>
-                          <Text style={[styles.text, styles.subText]}>events</Text>
+                          <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('friendEventList', {user})}>events</Text>
                          </View>
                     </View>
                 </ScrollView>
