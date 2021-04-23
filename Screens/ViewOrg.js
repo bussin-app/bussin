@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Alert, Button, StyleSheet, SafeAreaView } from "react-native";
+import { View, Text, Alert, Button, StyleSheet, SafeAreaView, Image} from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -102,7 +102,26 @@ const ViewOrg = (props) => {
   }, []);
 
   const styles = StyleSheet.create({
-
+    image: {
+      flex: 1,
+      height: undefined,
+      width: undefined
+    },
+    titleBar: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginTop: 24,
+      marginHorizontal: 16,
+      marginLeft: 390
+    },
+    profileImage: {
+      width: 200,
+      height: 200,
+      borderRadius: 100,
+      overflow: "hidden",
+      borderWidth: 1,
+      borderColor: "#000000"
+    },
     text: {
       fontFamily: "HelveticaNeue",
       color: "#52575D"
@@ -134,20 +153,26 @@ const ViewOrg = (props) => {
 
   return (
     <SafeAreaView>
+      <View style={styles.titleBar}></View>
+    <View style={{ alignSelf: "center" }}>
+        <View style={styles.profileImage}>
+            <Image source={require("../Assets/logo1.png")} style={styles.image} resizeMode="center"></Image>
+        </View>
+    </View>
       <View style={styles.infoContainer}>
-        <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{name}</Text>
+        <Text style={[styles.text, { fontWeight: "200", fontSize: 36, color: '#B92126' }]}>{name}</Text>
       </View>
       <View style={styles.statsContainer}>
         <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-          <Text style={[styles.text, { fontSize: 24 }]}>{memberCount}</Text>
+          <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]}>{memberCount}</Text>
           <Text style={[styles.text, styles.subText]}>Members</Text>
         </View>
         <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-          <Text style={[styles.text, { fontSize: 24 }]}>{followingCount}</Text>
+          <Text style={[styles.text, { fontSize: 24, fontWeight: "300"}]}>{followingCount}</Text>
           <Text style={[styles.text, styles.subText]}>Followers</Text>
         </View>
         <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-          <Text style={[styles.text, { fontSize: 24 }]}>{host}</Text>
+          <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]}>{host}</Text>
           <Text style={[styles.text, styles.subText]}>Hosted by</Text>
         </View>
       </View>

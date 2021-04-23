@@ -123,10 +123,10 @@ const Search = (props) => {
         <Text style={{ fontSize: 25, fontWeight: "200", color: '#B92126' }} onPress={() => getItem(item)}>
           {item.name}
         </Text>
-        <Text style={{ fontSize: 20 }}>
+        <Text style={{ fontSize: 20, fontWeight: "300" }}>
           {item.description || item.username || ""}
         </Text>
-        <Text style={{ fontSize: 15, textAlign: 'right' }}>
+        <Text style={{ fontSize: 15, textAlign: 'right', fontWeight: "300" }}>
           {formatDate(item.date) || item.eventPoints || ""}
         </Text>
       </View>

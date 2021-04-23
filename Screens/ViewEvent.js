@@ -233,16 +233,16 @@ const ViewEvent = (props) => {
        </View>
     </View>
     <View style={[styles.descContainer]}>
-      <Text style={[styles.text, { fontSize: 30, color: '#B92126', fontWeight: "200"}]}>Host: </Text>
-      <Text style={[styles.text, { fontSize: 30, fontWeight: "300"}]}>{host}</Text>
+      <Text style={[styles.text, { fontSize: 24, color: '#B92126', fontWeight: "200"}]}>Host: </Text>
+      <Text style={[styles.text, { fontSize: 24, fontWeight: "300"}]}>{host}</Text>
     </View>
     <View style={[styles.descContainer]}>
-      <Text style={[styles.text, { fontSize: 30, color: '#B92126', fontWeight: "200"}]}>Time: </Text>
-      <Text style={[styles.text, { fontSize: 30, fontWeight: "300"}]}>{time}</Text>
+      <Text style={[styles.text, { fontSize: 24, color: '#B92126', fontWeight: "200"}]}>Time: </Text>
+      <Text style={[styles.text, { fontSize: 24, fontWeight: "300"}]}>{time}</Text>
     </View>
     <View style={[styles.descContainer]}>
-      <Text style={[styles.text, { fontSize: 30, color: '#B92126', fontWeight: "200"}]}>Date: </Text>
-      <Text style={[styles.text, { fontSize: 30, fontWeight: "300"}]}>{date}</Text>
+      <Text style={[styles.text, { fontSize: 24, color: '#B92126', fontWeight: "200"}]}>Date: </Text>
+      <Text style={[styles.text, { fontSize: 24, fontWeight: "300"}]}>{date}</Text>
     </View>
     <View style={[styles.infoContainer]}>
       <Text onPress={() => Linking.openURL(url)}>
