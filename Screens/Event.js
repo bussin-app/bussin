@@ -211,6 +211,9 @@ const Event = (props) => {
     let year = dateParts[0];
     let monthNum = dateParts[1];
     let curDate = dateParts[2].substring(0, 2);
+    if (curDate < 10) {
+      curDate = dateParts[2].substring(1,2);
+    }
     var month = new Array();
     month[0] = "Jan";
     month[1] = "Feb";
