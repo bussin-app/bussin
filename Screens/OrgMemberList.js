@@ -41,7 +41,6 @@ const OrgMemberList = (props) => {
     setData(unsortedArray);
   };
   const toggleAdmin = async (item) => {
-    console.log(memberState);
     // Add backend connection
     let storedToken = await AsyncStorage.getItem('@bussin-token');
     if (!storedToken) return;
@@ -96,7 +95,28 @@ const OrgMemberList = (props) => {
     });
 
     res = await res.json();
-    console.log(res);
+    fetchOrgs();
+  };
+
+  const demoteAdmin = async (item) => {
+    let storedToken = await AsyncStorage.getItem('@bussin-token');
+    if (!storedToken) return;
+    setToken(storedToken);
+
+    let res = await fetch('https://bussin.blakekjohnson.dev/api/organization/demoteAdmin', {
+      method: "PUT",
+      headers: {
+        'Authorization': `Bearer ${storedToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        orgID: props.route.params.item._id,
+        demAdminID: item._id,
+      }),
+    });
+
+    res = await res.json();
+    fetchOrgs();
   };
 
   const removeMember = async (item) => {
@@ -104,7 +124,6 @@ const OrgMemberList = (props) => {
     let storedToken = await AsyncStorage.getItem('@bussin-token');
     if (!storedToken) return;
     setToken(storedToken);
-    console.log(props.route.params.item._id);
 
     let response = await fetch("https://bussin.blakekjohnson.dev/api/organization/deleteUser", {
       method: "PUT",
@@ -114,14 +133,13 @@ const OrgMemberList = (props) => {
       },
       body: JSON.stringify({
         orgID: props.route.params.item._id,
-        delUserID: item._id,
+        delUserID: item.item._id,
       }),
     });
 
-    if (response.status != 200) {
-      //log(response.status, await response.json());
-      return;
-    }
+    if (res.status != 200) return;
+
+    fetchOrgs();
   };
 
   useEffect(() => {
@@ -181,12 +199,19 @@ const OrgMemberList = (props) => {
             </Text>
           </View>
           <Button title={"Delete"} onPress={() => createRemoveAlert(item)} />
-          <Button title={memberState} onPress={() => {
-            toggleAdmin(item);
-          }} />
-          <Button title={(props.route.params.item.admins.includes(item.item._id) ? "" : "Make Admin")} onPress={() => {
-            makeAdmin(item.item);
-          }} />
+          <Button title={item.item.admin ? 'Admin' : 'Member'} disabled={true} />
+          {
+            !item.item.admin &&
+            <Button title={"Make Admin"} onPress={() => {
+              makeAdmin(item.item);
+            }} />
+          }
+          {
+            item.item.admin &&
+            <Button title={"Demote Admin"} onPress={() => {
+              demoteAdmin(item.item);
+            }} />
+          }
         </View>
         </View>
       </SafeAreaView>
