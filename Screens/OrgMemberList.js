@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, Text, StyleSheet, View, FlatList, StatusBar, Button, Alert} from 'react-native';
+import { SafeAreaView, Text, StyleSheet, View, FlatList, StatusBar, Button, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const OrgMemberList = (props) => {
@@ -8,7 +8,8 @@ const OrgMemberList = (props) => {
   const [sortedMembers, setSortedMembers] = useState([]);
   const [sorted, setSorted] = useState('false');
   const [source, setSource] = useState('members');
-  const [data, setData] = useState([]); 
+  const [data, setData] = useState([]);
+  const [memberState, setMemberState] = useState("Member");
 
   const fetchOrgs = async () => {
     let storedToken = await AsyncStorage.getItem('@bussin-token');
@@ -16,14 +17,14 @@ const OrgMemberList = (props) => {
     setToken(storedToken);
 
     let response = await fetch("https://bussin.blakekjohnson.dev/api/organization/getUsers", {
-            method: "PUT",
-            headers: {
-              'Authorization': `Bearer ${storedToken}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              orgID: props.route.params.item._id,
-            }),
+      method: "PUT",
+      headers: {
+        'Authorization': `Bearer ${storedToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        orgID: props.route.params.item._id,
+      }),
     });
 
     // Convert response to JSON
@@ -39,6 +40,43 @@ const OrgMemberList = (props) => {
     setSortedMembers(sortedArray);
     setData(unsortedArray);
   };
+  const toggleAdmin = async (item) => {
+    console.log(memberState);
+    // Add backend connection
+    let storedToken = await AsyncStorage.getItem('@bussin-token');
+    if (!storedToken) return;
+    setToken(storedToken);
+
+    if (memberState == "Member") {
+      // Make into an admin
+      setMemberState("Admin");
+
+      return;
+    }
+    else {
+      // Make into a member
+      setMemberState("Member");
+    }
+
+    // Skeleton code for both Converting to admin and reverting to member
+
+    // let response = await fetch("https://bussin.blakekjohnson.dev/api/organization/deleteUser", {
+    //         method: "PUT",
+    //         headers: {
+    //           'Authorization': `Bearer ${storedToken}`,
+    //           'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({
+    //           orgID: props.route.params.item._id,
+    //           delUserID: item._id,
+    //         }),
+    // });
+
+    // if (response.status != 200) {
+    //   console.log(response.status, await response.json());
+    //   return;
+    // }
+  };
 
   const removeMember = async (item) => {
     // Add backend connection
@@ -48,50 +86,48 @@ const OrgMemberList = (props) => {
     console.log(props.route.params.item._id);
 
     let response = await fetch("https://bussin.blakekjohnson.dev/api/organization/deleteUser", {
-            method: "PUT",
-            headers: {
-              'Authorization': `Bearer ${storedToken}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              orgID: props.route.params.item._id,
-              delUserID: item._id,
-            }),
+      method: "PUT",
+      headers: {
+        'Authorization': `Bearer ${storedToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        orgID: props.route.params.item._id,
+        delUserID: item._id,
+      }),
     });
 
     if (response.status != 200) {
+      //log(response.status, await response.json());
       return;
     }
-
   };
 
   useEffect(() => {
-    props.navigation.addListener('focus', async () => {
-    let { type } = props.route.params;
-    setSource(type);
-    await fetchOrgs();
+    props.navigation.addListener('focus', () => {
+      let { type } = props.route.params;
+      setSource(type);
+      fetchOrgs();
     });
-
   }, []);
 
   const createRemoveAlert = (item) =>
-        Alert.alert(
-            "Remove member",
-            "",
-            [
-                {
-                    text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
-                },
-                { text: "Remove", onPress: () => removeMember(item) }
-            ],
-            { cancelable: false }
-        );
+    Alert.alert(
+      "Remove member",
+      "",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Remove", onPress: () => removeMember(item) }
+      ],
+      { cancelable: false }
+    );
 
   const SPACING = 20;
-  const ItemView = (item) => {
-    console.log(item);
+  const ItemView = ({ item }) => {
     return (
       <SafeAreaView>
       <View style={{
@@ -115,8 +151,19 @@ const OrgMemberList = (props) => {
           <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
           {item.item.eventPoints}
           </Text>
+          <View style={{ alignContents: "row" }}>
+            <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }}>
+              {item.username}
+            </Text>
+            <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
+              {item.eventPoints}
+            </Text>
+          </View>
+          <Button title={"Delete"} onPress={() => createRemoveAlert(item)} />
+          <Button title={memberState} onPress={() => {
+            toggleAdmin(item);
+          }} />
         </View>
-            <Button title = {"Delete"} onPress={() => createRemoveAlert(item)}/>
         </View>
       </SafeAreaView>
     );
@@ -136,7 +183,7 @@ const OrgMemberList = (props) => {
   };
 
   const getItem = (item) => {
-      props.navigation.navigate('viewUserProfile', { user: item });
+    props.navigation.navigate('viewUserProfile', { user: item });
   };
 
   if (!token) {
@@ -160,7 +207,6 @@ const OrgMemberList = (props) => {
       </View>
     </SafeAreaView>
   );
-  
 };
 
 export default OrgMemberList;

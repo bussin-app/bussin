@@ -77,7 +77,8 @@ const Event = (props) => {
             method: "POST",
             body: JSON.stringify({
               reminder: {
-                  to: attendee, 
+                  to: attendee,
+                  from: item.host._id,
                   eventID: item._id,
                   description: "testing"
                }
@@ -113,7 +114,7 @@ const Event = (props) => {
             style: "cancel"
           },
           { text: "Edit", onPress: () => props.navigation.navigate("EditOrg", { item }) },
-          { text: "See members", onPress: () => props.navigation.navigate("OrgMemberList", {type: "orgs", item})},
+          { text: "View Members", onPress: () => props.navigation.navigate("OrgMemberList", {type: "orgs", item})},
           { text: "Invite Friends", onPress: () => props.navigation.navigate("FriendList", {type: "orgs", item})}
         ],
         { cancelable: false }
