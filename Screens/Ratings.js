@@ -39,7 +39,6 @@ const Ratings = (props) => {
                 'Content-Type': 'application/json',
             }
         });
-        console.log(res.status);
         props.navigation.navigate('ViewEvent', {event});
     } catch (e) { console.error(e); return; }
     

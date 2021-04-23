@@ -30,7 +30,6 @@ const Report = (props) => {
                 'Content-Type': 'application/json',
             },
         });
-        console.log(reportResponse.status);
 
         let blockURI = `https://bussin.blakekjohnson.dev/api/block/${user._id}`;
         let blockResponse = await fetch(blockURI, {
@@ -39,7 +38,7 @@ const Report = (props) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log(blockResponse.status);
+        //console.log(blockResponse.status);
 
         props.navigation.goBack();
     };

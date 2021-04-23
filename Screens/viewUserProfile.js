@@ -147,7 +147,7 @@ const UserProfile = (props) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log(blockResponse.status);
+        //console.log(blockResponse.status);
 
         props.navigation.goBack();
     };

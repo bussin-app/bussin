@@ -231,7 +231,6 @@ const Event = (props) => {
   const changeSort = () => {
     if (sorted === 'true') {
       setSorted('false');
-      console.log()
       setFilteredDataSource(sortedEventArray);
     } else {
       setSorted('true');
