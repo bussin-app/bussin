@@ -29,13 +29,9 @@ const OrgMemberList = (props) => {
     // Convert response to JSON
     response = await response.json();
 
-    if (response.status !== 200) {
-      return;
-    }
-
     // Set data source
     
-    let unsortedArray = [...response];
+    let unsortedArray = [...response.users];
     let sortedArray = unsortedArray.sort((a, b) => { 
       return a.name.localeCompare(b.name);
     });
@@ -49,6 +45,7 @@ const OrgMemberList = (props) => {
     let storedToken = await AsyncStorage.getItem('@bussin-token');
     if (!storedToken) return;
     setToken(storedToken);
+    console.log(props.route.params.item._id);
 
     let response = await fetch("https://bussin.blakekjohnson.dev/api/organization/deleteUser", {
             method: "PUT",
@@ -69,10 +66,10 @@ const OrgMemberList = (props) => {
   };
 
   useEffect(() => {
-    props.navigation.addListener('focus', () => {
+    props.navigation.addListener('focus', async () => {
     let { type } = props.route.params;
     setSource(type);
-    fetchOrgs();
+    await fetchOrgs();
     });
 
   }, []);
@@ -109,14 +106,14 @@ const OrgMemberList = (props) => {
       }}>
         
         <Text style={{ fontSize: 25, fontFamily: 'HelveticaNeue', fontWeight: "200" }} onPress={() => getItem(item)}>
-          {item.name}
+          {item.item.name}
         </Text>
         <View style={{ alignContents: "row"}}>
           <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }}>
-          {item.username}
+          {item.item.username}
           </Text>
           <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
-          {item.eventPoints}
+          {item.item.eventPoints}
           </Text>
         </View>
             <Button title = {"Delete"} onPress={() => createRemoveAlert(item)}/>
@@ -151,7 +148,7 @@ const OrgMemberList = (props) => {
       <View style={{ alignItems: 'center' }}>
         <Text style={{ fontSize: 30, fontFamily: 'HelveticaNeue', fontWeight: "200" }}>Your Members</Text>
         <FlatList
-          data={data}
+          data={members}
           keyExtractor={(item, index) => index.toString()}
           ItemSeparatorComponent={ItemSeparatorView}
           contentContainerStyle={{
