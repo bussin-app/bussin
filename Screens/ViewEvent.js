@@ -116,7 +116,29 @@ const ViewEvent = (props) => {
     month[9] = "Oct";
     month[10] = "Nov";
     month[11] = "Dec";
-    let formattedString =month[monthNum - 1] + " " + curDate + ", " + year;
+
+    let time = date.split(':');
+      let hours = time[0].substring(time[0].length - 2);
+      let minutes = time[1];
+
+      // calculate
+      let timeValue;
+
+      if (hours > 0 && hours <= 12) {
+        timeValue = hours;
+      } else if (hours > 12) {
+        timeValue = "" + (hours - 12);
+      } else if (hours == 0) {
+        timeValue = "12";
+      }
+
+      timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+      timeValue += (hours >= 12) ? " pm" : " am";  // get AM/PM
+
+      //let formattedString = curDate + " " + month[monthNum - 1] + ", " + year + " " + timeValue;
+      let formattedString = month[monthNum -1] + " " + curDate + ", " + year; 
+      //let formattedString =month[monthNum - 1] + " " + curDate + ", " + year;
+      setTime(timeValue);
     return formattedString;
   }
 
@@ -203,6 +225,7 @@ const ViewEvent = (props) => {
     </View>
     <View style={[styles.infoContainer, {alignContent: 'start'}]}>
       <Text style={[styles.text, { fontSize: 20}]}>Host: {host}</Text>
+      <Text style={[styles.text, { fontSize: 20}]}>Time: {time}</Text>
       <Text style={[styles.text, { fontSize: 20}]}>Date: {date}</Text>
       <Text onPress={() => Linking.openURL(url)}>
         {url}
