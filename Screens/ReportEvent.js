@@ -10,7 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const Report = (props) => {
     const [type, setType] = useState("");
     const [description, setDescription] = useState("");
-    let { user } = props.route.params;
+    let { event } = props.route.params;
 
     const sendReport = async () => {
         // Construct the reason for the report
@@ -21,7 +21,7 @@ const Report = (props) => {
         let token = await AsyncStorage.getItem('@bussin-token');
         if (!token) return;
 
-        let reportURI = `https://bussin.blakekjohnson.dev/api/report/user/${user._id}`;
+        let reportURI = `https://bussin.blakekjohnson.dev/api/report/event/${event._id}`;
         let reportResponse = await fetch(reportURI, {
             body,
             method: 'POST',
@@ -31,14 +31,6 @@ const Report = (props) => {
             },
         });
 
-        let blockURI = `https://bussin.blakekjohnson.dev/api/block/${user._id}`;
-        let blockResponse = await fetch(blockURI, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        //console.log(blockResponse.status);
 
         props.navigation.goBack();
     };
@@ -50,7 +42,7 @@ const Report = (props) => {
             enableOnAndroid={true}
         >
             <FormContainer title={"Send Report"}>
-                <Text style = {{fontFamily: 'HelveticaNeue', fontSize: 15, fontWeight: "300" }}>{user.name}</Text>
+                <Text style = {{fontFamily: 'HelveticaNeue', fontSize: 15, fontWeight: "300" }}>{event.name}</Text>
                 <Picker
                     style={{ height: 200, width: 300 }}
                     selectedValue={type}

@@ -136,6 +136,7 @@ const UserProfile = (props) => {
             { cancelable: false }
         );
     }
+
     const blockUser = async () => {
         let token = await AsyncStorage.getItem('@bussin-token');
         if (!token) return;
@@ -152,7 +153,34 @@ const UserProfile = (props) => {
         props.navigation.goBack();
     };
 
-    const createReportAlert = () => {
+    const unblockUser = async () => {
+        let token = await AsyncStorage.getItem('@bussin-token');
+        if (!token) return;
+
+        let unblockURI = `https://bussin.blakekjohnson.dev/api/block/${user._id}`;
+        let unblockResponse = await fetch(unblockURI, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        props.navigation.goBack();
+    }
+
+    const createUnblockAlert = () => {
+        Alert.alert(
+            "Unblock User",
+            "Do you want to unblock this user?",
+            [
+                { text: "Cancel", style: "cancel" },
+                { text: "Unblock", onPress: () => unblockUser() }
+            ],
+            { cancelable: false }
+        );
+    };
+
+    const createBlockReportUserAlert = () => {
         Alert.alert(
             "Report or Block User",
             "Do you want to report or block this user?",
@@ -177,6 +205,21 @@ const UserProfile = (props) => {
             ],
             { cancelable: false }
         );
+    };
+
+    const createReportAlert = async () => {
+        let token = await AsyncStorage.getItem('@bussin-token');
+        if (!token) return;
+
+        let currentUserResponse = await fetch('https://bussin.blakekjohnson.dev/api/user', {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        let blockList = (await currentUserResponse.json()).user.blockList;
+        if (blockList.includes(user._id)) {
+            createUnblockAlert();
+        } else {
+            createBlockReportUserAlert();
+        }
     }
 
     const updateEnabled = async () => {
@@ -259,24 +302,24 @@ const UserProfile = (props) => {
                     </View>
                     <View style={styles.infoContainer}>
                         <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{user.name}</Text>
-                        <Text style={[styles.text, { color: "#AEB5BC", fontSize: 20 }]}>{user.username}</Text>
+                        <Text style={[styles.text, { color: "#AEB5BC", fontSize: 20, fontWeight: "300" }]}>{user.username}</Text>
                     </View>
 
                     <View style={styles.statsContainer}>
                         <View style={styles.statsBox}>
-                            <Text style={[styles.text, { fontSize: 24 }]}>{user.eventPoints}</Text>
+                            <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]}>{user.eventPoints}</Text>
                             <Text style={[styles.text, styles.subText]}>Bussin Score</Text>
                         </View>
                         <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderRightWidth: 1, borderLeftWidth: 1 }]}>
-                            <Text style={[styles.text, { fontSize: 24 }]}>{user.friends.length}</Text>
+                            <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]}>{user.friends.length}</Text>
                             <Text style={[styles.text, styles.subText]}>Friends</Text>
                         </View>
                          <View style={[styles.statsBox, { borderColor: "#DFD8C8",  borderRightWidth: 1, borderLeftWidth: 1 }]}>
-                         <Text style={[styles.text, { fontSize: 24 }]}>{user.organizations.length}</Text>
+                         <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]}>{user.organizations.length}</Text>
                          <Text style={[styles.text, styles.subText]}>Organizations</Text>
                         </View>
                         <View style={styles.statsBox}>
-                          <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('friendEventList', {user})}>{user.events.length}</Text>
+                          <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]} onPress={() => props.navigation.navigate('friendEventList', {user})}>{user.events.length}</Text>
                           <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('friendEventList', {user})}>events</Text>
                          </View>
                     </View>

@@ -230,6 +230,9 @@ const Event = (props) => {
     let year = dateParts[0];
     let monthNum = dateParts[1];
     let curDate = dateParts[2].substring(0, 2);
+    if (curDate < 10) {
+      curDate = dateParts[2].substring(1,2);
+    }
     var month = new Array();
     month[0] = "Jan";
     month[1] = "Feb";
@@ -270,10 +273,10 @@ const Event = (props) => {
           <Text style={{ fontSize: 25, fontWeight: "200" }} onPress={() => createAlert(item)}>
             {item.name}
           </Text>
-          <Text style={{ fontSize: 20 }} onPress={() => createAlert(item)}>
+          <Text style={{ fontSize: 20, fontWeight: "300"  }} onPress={() => createAlert(item)}>
             {item.description || ""}
           </Text>
-          <Text style={{ fontSize: 15, textAlign: 'right' }} onPress={() => createAlert(item)}>
+          <Text style={{ fontSize: 15, textAlign: 'right', fontWeight: "300"  }} onPress={() => createAlert(item)}>
             {formatDate(item.date) || ""}
           </Text>
         </View>

@@ -64,6 +64,9 @@ const PastEvent = (props) => {
   const getItem = (item) => {
     props.navigation.navigate('ViewEvent', { event: item });
   };
+  const reportEvent = async (item) => {
+    props.navigation.navigate('ReportEvent', { event: item });
+  }
 
   const SPACING = 20;
   const ItemSeparatorView = () => {
@@ -94,12 +97,14 @@ const PastEvent = (props) => {
         <Text style={{ fontSize: 25, fontFamily: 'HelveticaNeue', fontWeight: "200" }} onPress={() => getItem(item)}>
           {item.name}
         </Text>
-        <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue' }}>
+        <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue', fontWeight: "300"  }}>
           {item.description}
         </Text>
-        <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue', textAlign: 'right' }}>
+        <Text style={{ fontSize: 15, fontFamily: 'HelveticaNeue', textAlign: 'right', fontWeight: "300"  }}>
           {formatDate(item.date)}
         </Text>
+        <Button style={[ { fontSize: 20 }]} title={'Report'} onPress={()=>reportEvent(item)}  />
+        
       </View>
     );
   };

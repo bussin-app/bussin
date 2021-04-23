@@ -185,24 +185,24 @@ const UserProfile = (props) => {
 
               <View style={styles.infoContainer}>
                   <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{profile.name}</Text>
-                  <Text style={[styles.text, { color: "#AEB5BC", fontSize: 20 }]}>{profile.username}</Text>
+                  <Text style={[styles.text, { color: "#AEB5BC", fontSize: 20, fontWeight: "300" }]}>{profile.username}</Text>
               </View>
 
               <View style={styles.statsContainer}>
                   <View style={styles.statsBox}>
-                      <Text style={[styles.text, { fontSize: 24 }]}>{profile.eventPoints}</Text>
+                      <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]}>{profile.eventPoints}</Text>
                       <Text style={[styles.text, styles.subText]}>Bussin Score</Text>
                   </View>
                   <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('PastEvent')}>{numPast}</Text>
+                      <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]} onPress={() => props.navigation.navigate('PastEvent')}>{numPast}</Text>
                       <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('PastEvent')} >Past Events</Text>
                   </View>
                   <View style={[styles.statsBox, {borderColor: "#DFD8C8", borderRightWidth: 1}]}>
-                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('FriendList', {type: 'friends'})}>{profile.friends.length}</Text>
+                      <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]} onPress={() => props.navigation.navigate('FriendList', {type: 'friends'})}>{profile.friends.length}</Text>
                       <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('FriendList', {type: 'friends'})}>Friends</Text>
                   </View>
                   <View style={styles.statsBox}>
-                      <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('OrgFollowing')}>{profile.followedOrganizations.length}</Text>
+                      <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]} onPress={() => props.navigation.navigate('OrgFollowing')}>{profile.followedOrganizations.length}</Text>
                       <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('OrgFollowing')}>Organizations</Text>
                   </View>
               </View>
@@ -216,7 +216,6 @@ const UserProfile = (props) => {
                         !!profile.googleUID &&
                         <Button title="Google Account Linked" disabled={true} />
                     }
-                    <Button title='Find Friends' onPress={() => props.navigation.navigate('FindFriends')} />
                     <Button title='Create an Organization' onPress={() => props.navigation.navigate('CreateOrg')} />
                     <Button title='Log Out' onPress={logOut} />
               </View>

@@ -103,6 +103,9 @@ const ViewEvent = (props) => {
     let year = dateParts[0];
     let monthNum = dateParts[1];
     let curDate = dateParts[2].substring(0,2);
+    if (curDate < 10) {
+      curDate = dateParts[2].substring(1,2);
+    }
     var month = new Array();
     month[0] = "Jan";
     month[1] = "Feb";
@@ -116,7 +119,29 @@ const ViewEvent = (props) => {
     month[9] = "Oct";
     month[10] = "Nov";
     month[11] = "Dec";
-    let formattedString =month[monthNum - 1] + " " + curDate + ", " + year;
+
+    let time = date.split(':');
+      let hours = time[0].substring(time[0].length - 2);
+      let minutes = time[1];
+
+      // calculate
+      let timeValue;
+
+      if (hours > 0 && hours <= 12) {
+        timeValue = hours;
+      } else if (hours > 12) {
+        timeValue = "" + (hours - 12);
+      } else if (hours == 0) {
+        timeValue = "12";
+      }
+
+      timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+      timeValue += (hours >= 12) ? " pm" : " am";  // get AM/PM
+
+      //let formattedString = curDate + " " + month[monthNum - 1] + ", " + year + " " + timeValue;
+      let formattedString = month[monthNum -1] + " " + curDate + ", " + year; 
+      //let formattedString =month[monthNum - 1] + " " + curDate + ", " + year;
+      setTime(timeValue);
     return formattedString;
   }
 
@@ -162,7 +187,13 @@ const ViewEvent = (props) => {
     statsContainer: {
         flexDirection: "row",
         alignSelf: "center",
-        marginTop: 32
+        marginTop: 32,
+        fontWeight: "300"
+    },
+    descContainer: {
+        flexDirection: "row",
+        alignSelf: "center",
+        marginTop: 10
     },
     statsBox: {
         alignItems: "center",
@@ -181,35 +212,45 @@ const ViewEvent = (props) => {
     </View>
     <View style={styles.infoContainer}>
       <Text style={[styles.text, { fontWeight: "200", fontSize: 36, color: '#B92126'}]}>{name}</Text>
-      <Text style={[styles.text, { fontSize: 20}]}>{description}</Text>
+      <Text style={[styles.text, { fontSize: 20, fontWeight: "300"}]}>{description}</Text>
     </View>
     <View style={styles.statsContainer}>
       <View style={styles.statsBox}>
-          <Text style={[styles.text, { fontSize: 24 }]}>{maxAttendees}</Text>
+          <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]}>{maxAttendees}</Text>
           <Text style={[styles.text, styles.subText]}>Max Attendees</Text>
        </View>
        <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-          <Text style={[styles.text, { fontSize: 24 }]}>{attendeeCount}</Text>
+          <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]}>{attendeeCount}</Text>
           <Text style={[styles.text, styles.subText]}>Current Attendees</Text>
        </View>
        <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderRightWidth: 1 }]}>
-          <Text style={[styles.text, { fontSize: 24 }]}>{maxAttendees - attendeeCount}</Text>
+          <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]}>{maxAttendees - attendeeCount}</Text>
           <Text style={[styles.text, styles.subText]}>Space Left</Text>
        </View>
        <View style={styles.statsBox}>
-          <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('Ratings', {event})}>{rating}</Text>
+          <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]} onPress={() => props.navigation.navigate('Ratings', {event})}>{rating}</Text>
           <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('Ratings', {event})}>Ratings</Text>
        </View>
     </View>
-    <View style={[styles.infoContainer, {alignContent: 'start'}]}>
-      <Text style={[styles.text, { fontSize: 20}]}>Host: {host}</Text>
-      <Text style={[styles.text, { fontSize: 20}]}>Date: {date}</Text>
+    <View style={[styles.descContainer]}>
+      <Text style={[styles.text, { fontSize: 24, color: '#B92126', fontWeight: "200"}]}>Host: </Text>
+      <Text style={[styles.text, { fontSize: 24, fontWeight: "300"}]}>{host}</Text>
+    </View>
+    <View style={[styles.descContainer]}>
+      <Text style={[styles.text, { fontSize: 24, color: '#B92126', fontWeight: "200"}]}>Time: </Text>
+      <Text style={[styles.text, { fontSize: 24, fontWeight: "300"}]}>{time}</Text>
+    </View>
+    <View style={[styles.descContainer]}>
+      <Text style={[styles.text, { fontSize: 24, color: '#B92126', fontWeight: "200"}]}>Date: </Text>
+      <Text style={[styles.text, { fontSize: 24, fontWeight: "300"}]}>{date}</Text>
+    </View>
+    <View style={[styles.infoContainer]}>
       <Text onPress={() => Linking.openURL(url)}>
         {url}
       </Text>
-      { attending && <Text style={[styles.text, { fontSize: 20}]}>You are already attending this event</Text>}
-      { full && <Text style={[styles.text, { fontSize: 20}]}>This event has reached the max number of attendees</Text>}
-      { !attending && !full && <Button style={[styles.text, { fontSize: 20}]} title='Attend' onPress={attend} />}
+      { attending && <Text style={[styles.text, { fontSize: 20 , fontWeight: "300"}]}>You are already attending this event</Text>}
+      { full && <Text style={[styles.text, { fontSize: 20, fontWeight: "300"}]}>This event has reached the max number of attendees</Text>}
+      { !attending && !full && <Button style={[styles.text, { fontSize: 20, fontWeight: "300"}]} title='Attend' onPress={attend} />}
     </View>
   </SafeAreaView>
   );

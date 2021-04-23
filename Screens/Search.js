@@ -87,6 +87,9 @@ const Search = (props) => {
     let year = dateParts[0];
     let monthNum = dateParts[1];
     let curDate = dateParts[2].substring(0,2);
+    if (curDate < 10) {
+      curDate = dateParts[2].substring(1,2);
+    }
     var month = new Array();
     month[0] = "Jan";
     month[1] = "Feb";
@@ -120,10 +123,10 @@ const Search = (props) => {
         <Text style={{ fontSize: 25, fontWeight: "200", color: '#B92126' }} onPress={() => getItem(item)}>
           {item.name}
         </Text>
-        <Text style={{ fontSize: 20 }}>
+        <Text style={{ fontSize: 20, fontWeight: "300" }}>
           {item.description || item.username || ""}
         </Text>
-        <Text style={{ fontSize: 15, textAlign: 'right' }}>
+        <Text style={{ fontSize: 15, textAlign: 'right', fontWeight: "300" }}>
           {formatDate(item.date) || item.eventPoints || ""}
         </Text>
       </View>
