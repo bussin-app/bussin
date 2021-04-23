@@ -216,7 +216,6 @@ const UserProfile = (props) => {
                         !!profile.googleUID &&
                         <Button title="Google Account Linked" disabled={true} />
                     }
-                    <Button title='Find Friends' onPress={() => props.navigation.navigate('FindFriends')} />
                     <Button title='Create an Organization' onPress={() => props.navigation.navigate('CreateOrg')} />
                     <Button title='Log Out' onPress={logOut} />
               </View>
