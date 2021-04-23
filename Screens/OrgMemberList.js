@@ -137,7 +137,7 @@ const OrgMemberList = (props) => {
       }),
     });
 
-    if (res.status != 200) return;
+    if (response.status != 200) return;
 
     fetchOrgs();
   };
