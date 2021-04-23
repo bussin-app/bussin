@@ -35,6 +35,7 @@ const ViewEvent = (props) => {
       res = await res.json();
       res = res.event;
 
+      let tempEvent = res;
       setEvent(res);
       setName(res.name);
       setDescription(res.description || 'No description');
@@ -53,11 +54,11 @@ const ViewEvent = (props) => {
           'Authorization': `Bearer ${token}`
         }
       });
-      response = await res.json();
-      setFull(event.attendees.length >= event.maxAttendees);
-      setAttending(event.attendees.includes(response.user._id));
+      response = await response.json();
+      setFull(tempEvent.attendees.length >= tempEvent.maxAttendees);
+      setAttending(tempEvent.attendees.includes(response.user._id));
 
-    } catch (e) {return;}
+    } catch (e) { console.error(e); return;}
   };
 
   useEffect(() => {
