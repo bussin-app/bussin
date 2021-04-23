@@ -237,7 +237,7 @@ const Inbox = (props) => {
           {filter == 'invites' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }}>To:</Text>}
           {filter == 'invites' && item && item.foreignID && <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue', fontWeight: "300"  }}>{item.foreignID.name}</Text>}
           {filter == 'reminders' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }}>For:</Text>}
-          {filter == 'reminders' && item && <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue', fontWeight: "300"  }}>{item.eventID.name} on {formatDate(item.eventID.date)}</Text>}
+          {filter == 'reminders' && item && <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue', fontWeight: "300"  }}>{item.eventID.name} at {formatDate(item.eventID.date)}</Text>}
           {
             filter != 'reminders' &&
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
