@@ -70,7 +70,6 @@ const OrgMemberList = (props) => {
       console.log(response.status, await response.json());
       return;
     }
-
   };
 
   useEffect(() => {
@@ -79,7 +78,6 @@ const OrgMemberList = (props) => {
     setSource(type);
     fetchOrgs();
     });
-
   }, []);
 
   const createRemoveAlert = (item) =>
@@ -170,7 +168,6 @@ const OrgMemberList = (props) => {
       </View>
     </SafeAreaView>
   );
-  
 };
 
 export default OrgMemberList;

@@ -43,7 +43,7 @@ const ViewEvent = (props) => {
       setEventID(res._id);
       setMaxAttendees(res.maxAttendees);
       setRating(res.rating);
-      setURL(res.url || 'No URL');
+      setURL(res.url || '');
       
       
       setHost(res.host.ref.name);
