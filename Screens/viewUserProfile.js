@@ -276,7 +276,7 @@ const UserProfile = (props) => {
                          <Text style={[styles.text, styles.subText]}>Organizations</Text>
                         </View>
                         <View style={styles.statsBox}>
-                          <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('PastEvent')}>{user.events.length}</Text>
+                          <Text style={[styles.text, { fontSize: 24 }]} onPress={() => props.navigation.navigate('friendEventList', {user})}>{user.events.length}</Text>
                           <Text style={[styles.text, styles.subText]}>events</Text>
                          </View>
                     </View>
