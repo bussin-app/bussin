@@ -17,6 +17,7 @@ const ViewEvent = (props) => {
   const [maxAttendees, setMaxAttendees] = useState('');
   const [rating, setRating] = useState(0);
   const [event, setEvent] = useState("");
+  const [past, setPast] = useState(false);
   const [url, setURL] = useState('');
 
   const fetchEventData = async () => {
@@ -35,6 +36,7 @@ const ViewEvent = (props) => {
       res = await res.json();
       res = res.event;
 
+      let tempEvent = res;
       setEvent(res);
       setName(res.name);
       setDescription(res.description || 'No description');
@@ -44,6 +46,7 @@ const ViewEvent = (props) => {
       setMaxAttendees(res.maxAttendees);
       setRating(res.rating);
       setURL(res.url || '');
+      setPast(res.past);
       
       
       setHost(res.host.ref.name);
@@ -53,11 +56,11 @@ const ViewEvent = (props) => {
           'Authorization': `Bearer ${token}`
         }
       });
-      response = await res.json();
-      setFull(event.attendees.length >= event.maxAttendees);
-      setAttending(event.attendees.includes(response.user._id));
+      response = await response.json();
+      setFull(tempEvent.attendees.length >= tempEvent.maxAttendees);
+      setAttending(tempEvent.attendees.includes(response.user._id));
 
-    } catch (e) {return;}
+    } catch (e) { console.error(e); return;}
   };
 
   useEffect(() => {
@@ -99,13 +102,11 @@ const ViewEvent = (props) => {
       return '';
     }
 
+    let actualDate = new Date(date);
+    let monthNum = actualDate.toLocaleDateString().split('/')[0];
+    let curDate = actualDate.toLocaleDateString().split('/')[1];
     let dateParts = date.split("-");
     let year = dateParts[0];
-    let monthNum = dateParts[1];
-    let curDate = dateParts[2].substring(0,2);
-    if (curDate < 10) {
-      curDate = dateParts[2].substring(1,2);
-    }
     var month = new Array();
     month[0] = "Jan";
     month[1] = "Feb";
@@ -120,29 +121,11 @@ const ViewEvent = (props) => {
     month[10] = "Nov";
     month[11] = "Dec";
 
-    let time = date.split(':');
-      let hours = time[0].substring(time[0].length - 2);
-      let minutes = time[1];
-
-      // calculate
-      let timeValue;
-
-      if (hours > 0 && hours <= 12) {
-        timeValue = hours;
-      } else if (hours > 12) {
-        timeValue = "" + (hours - 12);
-      } else if (hours == 0) {
-        timeValue = "12";
-      }
-
-      timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
-      timeValue += (hours >= 12) ? " pm" : " am";  // get AM/PM
-
-      //let formattedString = curDate + " " + month[monthNum - 1] + ", " + year + " " + timeValue;
-      let formattedString = month[monthNum -1] + " " + curDate + ", " + year; 
-      //let formattedString =month[monthNum - 1] + " " + curDate + ", " + year;
-      setTime(timeValue);
-    return formattedString;
+    let timeD = actualDate.toLocaleTimeString();
+    let timeArr = timeD.split(':');
+    timeArr[2] = timeArr[2].substr(-2);
+    setTime(`${timeArr[0]}:${timeArr[1]} ${timeArr[2]}`);
+    return `${month[monthNum - 1]} ${curDate}, ${year}`;
   }
 
 
@@ -227,10 +210,13 @@ const ViewEvent = (props) => {
           <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]}>{maxAttendees - attendeeCount}</Text>
           <Text style={[styles.text, styles.subText]}>Space Left</Text>
        </View>
-       <View style={styles.statsBox}>
-          <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]} onPress={() => props.navigation.navigate('Ratings', {event})}>{rating}</Text>
-          <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('Ratings', {event})}>Ratings</Text>
-       </View>
+       {
+         past &&
+        <View style={styles.statsBox}>
+            <Text style={[styles.text, { fontSize: 24, fontWeight: "300" }]} onPress={() => props.navigation.navigate('Ratings', {event})}>{rating}</Text>
+            <Text style={[styles.text, styles.subText]} onPress={() => props.navigation.navigate('Ratings', {event})}>Ratings</Text>
+        </View>
+        }
     </View>
     <View style={[styles.descContainer]}>
       <Text style={[styles.text, { fontSize: 24, color: '#B92126', fontWeight: "200"}]}>Host: </Text>

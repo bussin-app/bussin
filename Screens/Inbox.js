@@ -7,6 +7,8 @@ const Inbox = (props) => {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState(['friends']);
   const [title, setTitle] = useState(['friends']);
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
 
   const fetchRequests = async () => {
     let storedToken = await AsyncStorage.getItem('@bussin-token');
@@ -64,6 +66,57 @@ const Inbox = (props) => {
     // Set data sources
     setData(response);
   };
+
+  const formatDate = (date) => {
+    if (date == undefined) {
+      return '';
+    }
+
+    let dateParts = date.split("-");
+    let year = dateParts[0];
+    let monthNum = dateParts[1];
+    let curDate = dateParts[2].substring(0,2);
+    if (curDate < 10) {
+      curDate = dateParts[2].substring(1,2);
+    }
+    var month = new Array();
+    month[0] = "Jan";
+    month[1] = "Feb";
+    month[2] = "Mar";
+    month[3] = "Apr";
+    month[4] = "May";
+    month[5] = "Jun";
+    month[6] = "Jul";
+    month[7] = "Aug";
+    month[8] = "Sep";
+    month[9] = "Oct";
+    month[10] = "Nov";
+    month[11] = "Dec";
+
+    let time = date.split(':');
+      let hours = time[0].substring(time[0].length - 2);
+      let minutes = time[1];
+
+      // calculate
+      let timeValue;
+
+      if (hours > 0 && hours <= 12) {
+        timeValue = hours;
+      } else if (hours > 12) {
+        timeValue = "" + (hours - 12);
+      } else if (hours == 0) {
+        timeValue = "12";
+      }
+
+      timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+      timeValue += (hours >= 12) ? " pm" : " am";  // get AM/PM
+
+      //let formattedString = curDate + " " + month[monthNum - 1] + ", " + year + " " + timeValue;
+      let formattedString = timeValue + " on " + month[monthNum -1] + " " + curDate + ", " + year; 
+      //let formattedString =month[monthNum - 1] + " " + curDate + ", " + year;
+      return(formattedString);
+
+  }
 
 
 
@@ -132,6 +185,18 @@ const Inbox = (props) => {
     }
   }, [filter]);
 
+  const dismissReminder = async (item) => {
+    let reminderURI = `https://bussin.blakekjohnson.dev/api/reminder/${item._id}`;
+    let token = await AsyncStorage.getItem('@bussin-token');
+    if (!token) return;
+
+    await fetch(reminderURI, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    fetchReminders();
+  };
+
   const changeFilter = async (filter) => {
     if (filter == 'friends') {
       setFilter('invites');
@@ -171,10 +236,21 @@ const Inbox = (props) => {
         </Text>
           {filter == 'invites' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }}>To:</Text>}
           {filter == 'invites' && item && item.foreignID && <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue', fontWeight: "300"  }}>{item.foreignID.name}</Text>}
-          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <Button title={"Accept"} onPress={() => replyRequest(1, item)}></Button>
-            <Button title={"Deny"} onPress={() => replyRequest(2, item)}></Button>
-          </View>
+          {filter == 'reminders' && <Text style={{ fontWeight: "200", fontSize: 25, fontFamily: 'HelveticaNeue' }}>For:</Text>}
+          {filter == 'reminders' && item && <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue', fontWeight: "300"  }}>{item.eventID.name} at {formatDate(item.eventID.date)}</Text>}
+          {
+            filter != 'reminders' &&
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <Button title={"Accept"} onPress={() => replyRequest(1, item)}></Button>
+              <Button title={"Deny"} onPress={() => replyRequest(2, item)}></Button>
+            </View>
+          }
+          {
+            filter == 'reminders' &&
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <Button title={"Dismiss"} onPress={() => dismissReminder(item)}></Button>
+            </View>
+          }
 
         </View>
       </SafeAreaView>

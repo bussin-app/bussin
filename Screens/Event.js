@@ -38,35 +38,22 @@ const Event = (props) => {
     //console.log(response.items);
 
     // Set data sources
-    setFilteredDataSource(response.items);
-    // setMasterDataSource(response.items);
-
-    if (source === 'https://bussin.blakekjohnson.dev/api/event/' || source === 'https://bussin.blakekjohnson.dev/api/event/attend') {
-      console.log(response.items.length);
-
-      setEventArray([...response.items]);
-      setSortedEventArray(eventArray.sort((a, b) => {
-        if (a.attendees.length < b.attendees.length) {
-          return 1;
+    if (status == 'attend_events') {
+      let ogDupes = [];
+      for (let i = 0; i < response.items.length; i++) {
+        let add = true;
+        for (let j = 0; j < ogDupes.length; j++) {
+          if (ogDupes[j].name == response.items[i].name) {
+            add =false;
+          }
         }
-        if (a.attendees.length > b.attendees.length)  {
-          return -1;
+        if (add) {
+          ogDupes.push(response.items[i]);
         }
-
-        return 0;
-      }));
-
-      /*
-
-      if (sorted === 'true') {
-        setFilteredDataSource(sortedEventArray);
-        console.log(sortedEventArray);
-        setSorted('false');
-        return;
       }
-      setFilteredDataSource(eventArray);
-      */
-      setFilteredDataSource(eventArray);
+      setFilteredDataSource(ogDupes);
+    } else {
+      setFilteredDataSource(response.items);
     }
   };
 
@@ -252,9 +239,15 @@ const Event = (props) => {
   }
 
   const changeSort = () => {
-    // setSorted((sorted == 'true') ? 'false' : 'true');
-    sorted = (sorted == 'true') ? 'false' : 'true';
-    setFilteredDataSource((sorted == 'true') ? sortedEventArray : eventArray);
+    if (sorted === 'true') {
+      setSorted('false');
+      console.log('UNSORT');
+      setFilteredDataSource(sortedEventArray);
+    } else {
+      setSorted('true');
+      console.log('SORTED')
+      setFilteredDataSource(eventArray);
+    }
   }
 
   const SPACING = 20;
@@ -320,11 +313,6 @@ const Event = (props) => {
         <Button title={(status == 'host_events') ? "My Hosted Events" :
           ((status == 'attend_events') ? "My Attending Events" : "My Organizations"
           )} onPress={() => changeStatus(status)} />
-      </View>
-      <View style={{ textAlign: 'left' }}>
-        <Button title={(status == 'host_events') ? "Sort" :
-          ((status == 'attend_events') ? "Sort" : " "
-          )} onPress={() => changeSort()} />
       </View>
       <View>
         <FlatList
