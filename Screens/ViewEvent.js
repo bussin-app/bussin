@@ -245,7 +245,7 @@ const ViewEvent = (props) => {
       <Text style={[styles.text, { fontSize: 24, fontWeight: "300"}]}>{date}</Text>
     </View>
     <View style={[styles.infoContainer]}>
-      <Text onPress={() => Linking.openURL(url)}>
+      <Text onPress={() => Linking.openURL(((url.startsWith('http://www.') || url.startsWith('https://www.') || url.startsWith('https://') || url.startsWith('http://') )) ? url : 'http://www.' + url)}>
         {url}
       </Text>
       { attending && <Text style={[styles.text, { fontSize: 20 , fontWeight: "300"}]}>You are already attending this event</Text>}

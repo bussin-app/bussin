@@ -39,10 +39,12 @@ const Event = (props) => {
 
     // Set data sources
     setFilteredDataSource(response.items);
-    setMasterDataSource(response.items);
+    // setMasterDataSource(response.items);
 
     if (source === 'https://bussin.blakekjohnson.dev/api/event/' || source === 'https://bussin.blakekjohnson.dev/api/event/attend') {
-      setEventArray(response.items);
+      console.log(response.items.length);
+
+      setEventArray([...response.items]);
       setSortedEventArray(eventArray.sort((a, b) => {
         if (a.attendees.length < b.attendees.length) {
           return 1;
@@ -64,7 +66,6 @@ const Event = (props) => {
       }
       setFilteredDataSource(eventArray);
       */
-      console.log(eventArray);
       setFilteredDataSource(eventArray);
     }
   };
