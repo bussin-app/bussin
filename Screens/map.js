@@ -398,7 +398,7 @@ const map = (props) => {
               key={event.id}
               coordinate={{ latitude: event.location.coordinates[0], longitude: event.location.coordinates[1] }}
               title={event.name}
-              description={event.date}
+              description={new Date(event.date).toLocaleDateString()}
             />
           )}
       </>

@@ -116,7 +116,7 @@ const Event = (props) => {
                     placeholder={"Optional: Address"}
                     name={"eventAddress"}
                     id={"eventAddress"}
-                    onChange={(text) => setEventAddress(text)}
+                    onChangeText={(text) => setEventAddress(text)}
                 />
                 <Input
                     placeholder={"Optional: A Link"}

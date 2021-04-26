@@ -37,16 +37,22 @@ const Event = (props) => {
     //console.log(response.items);
 
     // Set data sources
-    setFilteredDataSource(response.items);
-    setMasterDataSource(response.items);
-
-    if (source === 'https://bussin.blakekjohnson.dev/api/event/' || source === 'https://bussin.blakekjohnson.dev/api/event/attend') {
-      setEventArray(response.items);
-      setSortedEventArray(response.items.sort((a, b) => {
-        return a.attendees.length - b.attendees.length;
-      }));
-
-
+    if (status == 'attend_events') {
+      let ogDupes = [];
+      for (let i = 0; i < response.items.length; i++) {
+        let add = true;
+        for (let j = 0; j < ogDupes.length; j++) {
+          if (ogDupes[j].name == response.items[i].name) {
+            add =false;
+          }
+        }
+        if (add) {
+          ogDupes.push(response.items[i]);
+        }
+      }
+      setFilteredDataSource(ogDupes);
+    } else {
+      setFilteredDataSource(response.items);
     }
   };
 
@@ -234,9 +240,11 @@ const Event = (props) => {
   const changeSort = () => {
     if (sorted === 'true') {
       setSorted('false');
+      console.log('UNSORT');
       setFilteredDataSource(sortedEventArray);
     } else {
       setSorted('true');
+      console.log('SORTED')
       setFilteredDataSource(eventArray);
     }
   }
@@ -304,11 +312,6 @@ const Event = (props) => {
         <Button title={(status == 'host_events') ? "My Hosted Events" :
           ((status == 'attend_events') ? "My Attending Events" : "My Organizations"
           )} onPress={() => changeStatus(status)} />
-      </View>
-      <View style={{ textAlign: 'left' }}>
-        <Button title={(status == 'host_events') ? "Sort" :
-          ((status == 'attend_events') ? "Sort" : " "
-          )} onPress={() => changeSort()} />
       </View>
       <View>
         <FlatList
