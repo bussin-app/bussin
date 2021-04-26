@@ -443,7 +443,7 @@ const map = (props) => {
     <MapView
       style={{ flex: 1 }}
       provider={PROVIDER_GOOGLE}
-      customMapStyle={mapStyle}
+      //customMapStyle={mapStyle}
       initialRegion={{
         latitude: 40.43,
         longitude: -86.91,
