@@ -1,4 +1,5 @@
 # bussin
+Bussin app unifies the processes of **planning, hosting, and even attending events into one mobile app**. Bussin will allow organizers to post their event location on a map for all of their friends to see, and for the attendees to confirm their attendance. Users will **be able to connect to other users and organizations by following them, friending them, and joining an organization.** **Private hosts can send invitations to attendees and relay information confidentially**. 
 
 ## Design Doc
 [Design Document.pdf](https://github.com/bussin-app/bussin/files/7214324/Design.Document.pdf)
